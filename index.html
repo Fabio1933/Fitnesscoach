@@ -87,9 +87,6 @@
           </div>
         </div>
         <div class="flex items-center gap-1 md:hidden">
-          <button onclick="requestNotificationPermission()" id="btn-notify-mobile" class="text-zinc-400 hover:text-amber-400 p-2" title="Erinnerungen">
-            <i data-lucide="bell" class="w-5 h-5"></i>
-          </button>
           <button onclick="openApiKeyModal()" class="text-zinc-400 hover:text-brand-400 p-2" title="API Key">
             <i data-lucide="key" class="w-5 h-5"></i>
           </button>
@@ -104,20 +101,14 @@
         <button onclick="switchTab('postit')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm text-zinc-400 hover:text-zinc-200 hover:bg-surface-card transition-all" data-tab="postit">
           <i data-lucide="sticky-note" class="w-4 h-4 text-amber-400"></i>
           <span class="flex-1 text-left">Post-it Zielcheck</span>
-          <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30 font-bold">Sa 07:30</span>
         </button>
         <button onclick="switchTab('checkin')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm text-zinc-400 hover:text-zinc-200 hover:bg-surface-card transition-all" data-tab="checkin">
           <i data-lucide="scale" class="w-4 h-4"></i>
           <span class="flex-1 text-left">Fitness-Check-in</span>
-          <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-zinc-800 text-brand-400 border border-brand-500/30 font-bold">Sa 07:00</span>
         </button>
         <button onclick="switchTab('workout')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm text-zinc-400 hover:text-zinc-200 hover:bg-surface-card transition-all" data-tab="workout">
           <i data-lucide="dumbbell" class="w-4 h-4 text-brand-400"></i>
           <span>Workouts & Plan</span>
-        </button>
-        <button onclick="switchTab('todos')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm text-zinc-400 hover:text-zinc-200 hover:bg-surface-card transition-all" data-tab="todos">
-          <i data-lucide="list-todo" class="w-4 h-4 text-accent-400"></i>
-          <span>To-Dos</span>
         </button>
         <button onclick="switchTab('habits')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm text-zinc-400 hover:text-zinc-200 hover:bg-surface-card transition-all" data-tab="habits">
           <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
@@ -136,10 +127,6 @@
     </div>
 
     <div class="hidden md:block mt-6 pt-4 border-t border-surface-border space-y-2">
-      <button onclick="requestNotificationPermission()" class="w-full text-left text-[11px] text-zinc-400 hover:text-amber-400 flex items-center gap-2 p-1.5 rounded-lg hover:bg-surface-card transition-colors">
-        <i data-lucide="bell" class="w-4 h-4 text-amber-400"></i>
-        <span id="btn-notify-desktop-text">Push-Erinnerungen</span>
-      </button>
       <button onclick="openApiKeyModal()" class="w-full text-left text-[11px] text-zinc-400 hover:text-brand-400 flex items-center gap-2 p-1.5 rounded-lg hover:bg-surface-card transition-colors">
         <i data-lucide="key" class="w-4 h-4 text-brand-400"></i>
         <span>Gemini API Key</span>
@@ -237,26 +224,19 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
-          <button onclick="switchTab('todos')" class="bg-surface-card hover:bg-surface-border p-4 rounded-xl border border-surface-border text-left transition-all flex items-center justify-between">
-            <div>
-              <div class="text-xs font-bold text-white flex items-center gap-1.5">
-                <i data-lucide="list-todo" class="w-4 h-4 text-accent-400"></i>
-                To-Dos & Aufgaben
+        <!-- Schnellzugriff Kachel für Habits -->
+        <div>
+          <button onclick="switchTab('habits')" class="w-full bg-surface-card hover:bg-surface-border p-4 rounded-2xl border border-surface-border text-left transition-all flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
+                <i data-lucide="check-circle-2" class="w-5 h-5"></i>
               </div>
-              <p class="text-[11px] text-zinc-400 mt-0.5" id="dash-todo-summary">0 offene Aufgaben</p>
-            </div>
-            <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-500"></i>
-          </button>
-          <button onclick="switchTab('habits')" class="bg-surface-card hover:bg-surface-border p-4 rounded-xl border border-surface-border text-left transition-all flex items-center justify-between">
-            <div>
-              <div class="text-xs font-bold text-white flex items-center gap-1.5">
-                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
-                Tages-Habits abhaken
+              <div>
+                <div class="text-sm font-bold text-white">Tages-Habits abhaken</div>
+                <p class="text-xs text-zinc-400 mt-0.5">Kreatin, Omega-3, Snack, Flohsamenschalen</p>
               </div>
-              <p class="text-[11px] text-zinc-400 mt-0.5">Kreatin, Omega-3, Snack, Flohsamenschalen</p>
             </div>
-            <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-500"></i>
+            <i data-lucide="chevron-right" class="w-5 h-5 text-zinc-500"></i>
           </button>
         </div>
 
@@ -347,8 +327,7 @@
             <div class="bg-surface-card p-4 md:p-6 rounded-2xl border border-surface-border space-y-4">
               <div class="border-b border-surface-border pb-3 flex justify-between items-center">
                 <div>
-                  <span class="text-[10px] font-mono uppercase tracking-wider bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded font-bold">Samstag 07:30</span>
-                  <h3 class="font-bold text-base text-white mt-1">Interaktive Wochenabfrage</h3>
+                  <h3 class="font-bold text-base text-white">Interaktive Wochenabfrage</h3>
                   <p class="text-xs text-zinc-400">Trage deine Ergebnisse ein für die Trainerbewertung.</p>
                 </div>
               </div>
@@ -392,8 +371,7 @@
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div class="bg-surface-card p-4 md:p-5 rounded-2xl border border-surface-border space-y-4">
             <div>
-              <span class="text-xs uppercase font-extrabold tracking-wider bg-brand-500/10 text-brand-400 px-2 py-0.5 rounded border border-brand-500/30">Samstag 07:00</span>
-              <h3 class="font-bold text-base text-white mt-1">Körperdaten erfassen</h3>
+              <h3 class="font-bold text-base text-white">Körperdaten erfassen</h3>
               <p class="text-xs text-zinc-400">Nüchtern wiegen & messen.</p>
             </div>
 
@@ -433,7 +411,6 @@
                     <input type="number" id="checkin-cutdays" placeholder="4" class="w-full mt-1 bg-surface-card border border-surface-border rounded-lg px-2 py-1.5 font-mono text-white focus:outline-none focus:border-brand-500">
                   </div>
                 </div>
-                <!-- Motivation Training & Ernährung getrennt -->
                 <div class="grid grid-cols-2 gap-2">
                   <div>
                     <label class="text-[10px] text-zinc-400">Motivation Training (1-10)</label>
@@ -497,57 +474,12 @@
         </div>
       </section>
 
-      <!-- ================= 4. TO-DOS TAB (MIT EINKLAPPBAREN ERLEDIGTEN) ================= -->
-      <section id="view-todos" class="space-y-6 hidden">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 bg-surface-card p-4 md:p-5 rounded-2xl border border-surface-border">
-          <div>
-            <h3 class="text-base md:text-lg font-bold text-white flex items-center gap-2">
-              <i data-lucide="list-todo" class="w-5 h-5 text-accent-400"></i>
-              To-Dos & Aufgaben
-            </h3>
-            <p class="text-xs text-zinc-400">Aufgaben verwalten, abhaken oder bei Bedarf wieder aufleben lassen.</p>
-          </div>
-          <button onclick="openTodoModal()" class="bg-brand-500 hover:bg-brand-400 text-black font-bold px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 transition-all shadow-md">
-            <i data-lucide="plus" class="w-4 h-4"></i> Neues To-Do
-          </button>
-        </div>
-
-        <div class="space-y-4">
-          <!-- Offene Aufgaben -->
-          <div class="bg-surface-card p-4 md:p-5 rounded-2xl border border-surface-border space-y-4">
-            <div class="flex justify-between items-center">
-              <h4 class="font-bold text-sm text-white flex items-center gap-2">
-                <i data-lucide="circle-dot" class="w-4 h-4 text-brand-400"></i> Offene Aufgaben
-              </h4>
-              <span class="text-[10px] text-zinc-500 font-mono" id="todos-open-count">0 Aufgaben</span>
-            </div>
-            <div id="todos-open-list" class="space-y-2.5"></div>
-          </div>
-
-          <!-- Einklappbarer Bereich für erledigte Aufgaben -->
-          <div class="bg-surface-card rounded-2xl border border-surface-border overflow-hidden">
-            <button onclick="toggleDoneAccordion()" class="w-full p-4 flex items-center justify-between text-left hover:bg-surface-850 transition-colors">
-              <div class="flex items-center gap-2">
-                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
-                <span class="font-bold text-sm text-zinc-300">Erledigte Aufgaben</span>
-                <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-surface-900 text-zinc-400 border border-surface-border" id="todos-done-count">0</span>
-              </div>
-              <i data-lucide="chevron-down" id="done-accordion-icon" class="w-4 h-4 text-zinc-400 transition-transform duration-200"></i>
-            </button>
-            <div id="todos-done-container" class="hidden p-4 pt-0 border-t border-surface-border/50">
-              <div id="todos-done-list" class="space-y-2.5 mt-3"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= 5. HABIT TRACKER TAB ================= -->
+      <!-- ================= 4. HABIT TRACKER TAB (OHNE UHRZEITEN) ================= -->
       <section id="view-habits" class="space-y-6 hidden">
         <div class="bg-surface-card p-4 md:p-5 rounded-2xl border border-surface-border flex flex-col md:flex-row justify-between md:items-center gap-4">
           <div>
-            <span class="text-xs uppercase font-extrabold tracking-wider bg-brand-500/10 text-brand-400 px-2 py-0.5 rounded border border-brand-500/30">Routinen</span>
-            <h3 class="text-base md:text-lg font-bold text-white mt-1">Tägliche Habits & Feste Zeiten</h3>
-            <p class="text-xs text-zinc-400">06:00 Kreatin • 12:15 Omega3 • 15:00 Mandeln/Beeren • 20:00 Flohsamenschalen</p>
+            <h3 class="text-base md:text-lg font-bold text-white">Tägliche Habits & Routinen</h3>
+            <p class="text-xs text-zinc-400">Kreatin • Omega 3 • Mandeln/Beeren • Flohsamenschalen</p>
           </div>
           <div class="flex items-center gap-2">
             <button onclick="resetHabitsWeek()" class="px-3 py-2 rounded-xl bg-surface-900 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 text-xs border border-surface-border flex items-center gap-1.5 transition-colors" title="Alle Habits zurücksetzen">
@@ -582,13 +514,13 @@
         </div>
       </section>
 
-      <!-- ================= 6. ERNÄHRUNG & CSV TAB ================= -->
+      <!-- ================= 5. ERNÄHRUNG & CSV TAB ================= -->
       <section id="view-nutrition" class="space-y-6 hidden">
         <div class="bg-surface-card p-6 rounded-2xl border border-dashed border-zinc-700 text-center">
           <div class="w-12 h-12 rounded-2xl bg-brand-500/10 text-brand-400 mx-auto flex items-center justify-center mb-3">
             <i data-lucide="file-spreadsheet" class="w-6 h-6"></i>
           </div>
-          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-brand-400 border border-brand-500/30">Freitag 20:00 Routine</span>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-brand-400 border border-brand-500/30">Tracking Routine</span>
           <h3 class="text-base font-bold text-white mt-2">Ernährungs-CSV importieren</h3>
           <p class="text-xs text-zinc-400 max-w-md mx-auto mt-1 mb-4">
             Lade deine wöchentliche CSV-Datei hoch. TAGESSUMME-Zeilen werden automatisch ignoriert.
@@ -636,7 +568,7 @@
         </div>
       </section>
 
-      <!-- ================= 7. WORKOUT LOGGER ================= -->
+      <!-- ================= 6. WORKOUT LOGGER ================= -->
       <section id="view-workout" class="space-y-6 hidden">
         <div class="bg-surface-card p-4 md:p-5 rounded-2xl border border-surface-border">
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -665,7 +597,7 @@
         <div id="exercises-list" class="space-y-3"></div>
       </section>
 
-      <!-- ================= 8. CHAT TAB ================= -->
+      <!-- ================= 7. CHAT TAB ================= -->
       <section id="view-chat" class="h-[calc(100vh-14rem)] md:h-[calc(100vh-10rem)] flex flex-col bg-surface-card rounded-2xl border border-surface-border overflow-hidden hidden">
         <div class="p-3.5 border-b border-surface-border flex items-center justify-between bg-surface-850">
           <div class="flex items-center gap-2.5">
@@ -702,41 +634,38 @@
 
   <!-- MOBILE SCROLLABLE BOTTOM BAR -->
   <nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-surface-850 border-t border-surface-border flex items-center gap-1 px-2 z-40 backdrop-blur overflow-x-auto no-scrollbar">
-    <button onclick="switchTab('dashboard')" class="flex flex-col items-center justify-center shrink-0 w-14 gap-1 text-[10px] text-brand-400 font-medium">
+    <button onclick="switchTab('dashboard')" class="flex flex-col items-center justify-center shrink-0 w-16 gap-1 text-[10px] text-brand-400 font-medium">
       <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
       <span>Dash</span>
     </button>
-    <button onclick="switchTab('postit')" class="flex flex-col items-center justify-center shrink-0 w-14 gap-1 text-[10px] text-amber-400 font-medium">
+    <button onclick="switchTab('postit')" class="flex flex-col items-center justify-center shrink-0 w-16 gap-1 text-[10px] text-amber-400 font-medium">
       <i data-lucide="sticky-note" class="w-4 h-4"></i>
       <span>Post-it</span>
     </button>
-    <button onclick="switchTab('checkin')" class="flex flex-col items-center justify-center shrink-0 w-14 gap-1 text-[10px] text-zinc-400 hover:text-white">
+    <button onclick="switchTab('checkin')" class="flex flex-col items-center justify-center shrink-0 w-16 gap-1 text-[10px] text-zinc-400 hover:text-white">
       <i data-lucide="scale" class="w-4 h-4"></i>
       <span>Check-in</span>
     </button>
-    <button onclick="switchTab('workout')" class="flex flex-col items-center justify-center shrink-0 w-14 gap-1 text-[10px] text-zinc-400 hover:text-white">
+    <button onclick="switchTab('workout')" class="flex flex-col items-center justify-center shrink-0 w-16 gap-1 text-[10px] text-zinc-400 hover:text-white">
       <i data-lucide="dumbbell" class="w-4 h-4"></i>
       <span>Workout</span>
     </button>
-    <button onclick="switchTab('todos')" class="flex flex-col items-center justify-center shrink-0 w-14 gap-1 text-[10px] text-accent-400 font-medium">
-      <i data-lucide="list-todo" class="w-4 h-4"></i>
-      <span>To-Dos</span>
-    </button>
-    <button onclick="switchTab('habits')" class="flex flex-col items-center justify-center shrink-0 w-14 gap-1 text-[10px] text-emerald-400 font-medium">
+    <button onclick="switchTab('habits')" class="flex flex-col items-center justify-center shrink-0 w-16 gap-1 text-[10px] text-emerald-400 font-medium">
       <i data-lucide="check-circle-2" class="w-4 h-4"></i>
       <span>Habits</span>
     </button>
-    <button onclick="switchTab('nutrition')" class="flex flex-col items-center justify-center shrink-0 w-14 gap-1 text-[10px] text-zinc-400 hover:text-white">
+    <button onclick="switchTab('nutrition')" class="flex flex-col items-center justify-center shrink-0 w-16 gap-1 text-[10px] text-zinc-400 hover:text-white">
       <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
       <span>CSV</span>
     </button>
-    <button onclick="switchTab('chat')" class="flex flex-col items-center justify-center shrink-0 w-14 gap-1 text-[10px] text-zinc-400 hover:text-white">
+    <button onclick="switchTab('chat')" class="flex flex-col items-center justify-center shrink-0 w-16 gap-1 text-[10px] text-zinc-400 hover:text-white">
       <i data-lucide="bot" class="w-4 h-4"></i>
       <span>Marcus</span>
     </button>
   </nav>
 
   <!-- MODALS -->
+  <!-- MODAL: SCHRITTE -->
   <div id="modal-steps" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-surface-card border border-surface-border w-full max-w-sm p-5 rounded-2xl space-y-4 shadow-2xl">
       <div class="flex items-center justify-between border-b border-surface-border pb-2.5">
@@ -757,7 +686,7 @@
     </div>
   </div>
 
-  <!-- MODAL: HABIT (ANLEGEN & BEARBEITEN) -->
+  <!-- MODAL: HABIT (ANLEGEN & BEARBEITEN - OHNE UHRZEIT) -->
   <div id="modal-new-habit" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-surface-card border border-surface-border w-full max-w-md p-5 rounded-2xl space-y-4">
       <div class="flex items-center justify-between border-b border-surface-border pb-2.5">
@@ -770,10 +699,6 @@
           <label class="text-zinc-400">Name der Gewohnheit</label>
           <input type="text" id="input-habit-name" placeholder="z. B. Magnesium vor dem Schlafen" class="w-full mt-1 bg-surface-900 border border-surface-border rounded-xl px-3 py-2 text-white">
         </div>
-        <div>
-          <label class="text-zinc-400">Uhrzeit</label>
-          <input type="time" id="input-habit-time" class="w-full mt-1 bg-surface-900 border border-surface-border rounded-xl px-3 py-2 text-white">
-        </div>
       </div>
       <div class="flex justify-end gap-2 pt-2 border-t border-surface-border">
         <button onclick="closeHabitModal()" class="px-3 py-1.5 text-xs text-zinc-400">Abbrechen</button>
@@ -782,62 +707,7 @@
     </div>
   </div>
 
-  <!-- MODAL: TO-DO (ANLEGEN & BEARBEITEN) -->
-  <div id="modal-new-todo" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-surface-card border border-surface-border w-full max-w-md p-5 rounded-2xl space-y-3.5">
-      <div class="flex items-center justify-between border-b border-surface-border pb-2.5">
-        <h3 class="font-bold text-white text-sm flex items-center gap-2" id="modal-todo-title">
-          <i data-lucide="list-todo" class="w-4 h-4 text-accent-400"></i>
-          Neues To-Do anlegen
-        </h3>
-        <button onclick="closeTodoModal()" class="text-zinc-500 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
-      </div>
-
-      <input type="hidden" id="input-todo-edit-id" value="">
-
-      <div class="space-y-3 text-xs">
-        <div>
-          <label class="text-zinc-400 font-medium">Aufgabenbeschreibung*</label>
-          <input type="text" id="input-todo-text" placeholder="z. B. Forellen einkaufen oder Gym-Tasche packen" class="w-full mt-1 bg-surface-900 border border-surface-border rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brand-500">
-        </div>
-
-        <div>
-          <label class="text-zinc-400 font-medium">Wiederholung</label>
-          <select id="input-todo-recurrence" class="w-full mt-1 bg-surface-900 border border-surface-border rounded-xl px-2.5 py-2 text-white">
-            <option value="none">Einmalig</option>
-            <option value="daily">Täglich</option>
-            <option value="weekly">Wöchentlich</option>
-          </select>
-        </div>
-
-        <div class="p-3 bg-surface-900/60 rounded-xl border border-surface-border space-y-2">
-          <span class="text-[11px] font-bold text-accent-400 uppercase tracking-wider flex items-center gap-1.5">
-            <i data-lucide="clock" class="w-3.5 h-3.5"></i> Fälligkeit & Erinnerung
-          </span>
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="text-[10px] text-zinc-400">Fälligkeitsdatum</label>
-              <input type="date" id="input-todo-due-date" class="w-full mt-1 bg-surface-card border border-surface-border rounded-lg px-2.5 py-1.5 text-white">
-            </div>
-            <div>
-              <label class="text-[10px] text-zinc-400">Uhrzeit</label>
-              <input type="time" id="input-todo-due-time" class="w-full mt-1 bg-surface-card border border-surface-border rounded-lg px-2.5 py-1.5 text-white">
-            </div>
-          </div>
-          <label class="flex items-center gap-2 cursor-pointer pt-1">
-            <input type="checkbox" id="input-todo-remind" checked class="w-4 h-4 rounded bg-surface-card text-brand-500">
-            <span class="text-[11px] text-zinc-300">Push-Erinnerung zur Fälligkeit senden</span>
-          </label>
-        </div>
-      </div>
-
-      <div class="flex justify-end gap-2 pt-2 border-t border-surface-border">
-        <button onclick="closeTodoModal()" class="px-3 py-1.5 text-xs text-zinc-400 hover:text-white">Abbrechen</button>
-        <button onclick="saveCustomTodo()" class="px-4 py-2 text-xs font-bold bg-brand-500 hover:bg-brand-400 text-black rounded-xl shadow-md">To-Do speichern</button>
-      </div>
-    </div>
-  </div>
-
+  <!-- MODAL: API KEY -->
   <div id="modal-api-key" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-surface-card border border-surface-border w-full max-w-md p-5 rounded-2xl space-y-3">
       <h3 class="font-bold text-white text-sm">Gemini API Key hinterlegen</h3>
@@ -855,7 +725,7 @@
     // 1. ZENTRALE GLOBALE TAB-STEUERUNG
     window.switchTab = function(tabId) {
       try {
-        const views = ['dashboard', 'postit', 'checkin', 'workout', 'todos', 'habits', 'nutrition', 'chat'];
+        const views = ['dashboard', 'postit', 'checkin', 'workout', 'habits', 'nutrition', 'chat'];
         views.forEach(v => {
           const el = document.getElementById('view-' + v);
           if (el) el.classList.add('hidden');
@@ -874,12 +744,11 @@
 
         const titles = {
           dashboard: "Dashboard Übersicht",
-          postit: "Wöchentlicher Post-it-Zielcheck (Sa 07:30)",
-          checkin: "Fitness-Check-in & Körperdaten (Sa 07:00)",
+          postit: "Post-it Zielcheck",
+          checkin: "Fitness-Check-in",
           workout: "Trainingsplan & Technogym Logger",
-          todos: "To-Dos & Aufgaben",
-          habits: "Habit Tracker (Feste Uhrzeiten)",
-          nutrition: "Ernährungs-CSV Analyse (Fr 20:00)",
+          habits: "Habit Tracker",
+          nutrition: "Ernährungs-CSV Analyse",
           chat: "Coach Marcus (Chat)"
         };
         const titleEl = document.getElementById('page-title');
@@ -889,7 +758,6 @@
         if (tabId === 'postit') { renderPostitWidget(); renderPostitForm(); renderPostitHistoryTable(); }
         if (tabId === 'checkin') renderFullWeighingChart();
         if (tabId === 'workout') renderWorkoutExercises();
-        if (tabId === 'todos') renderTodos();
         if (tabId === 'habits') renderHabitsTable();
         if (tabId === 'nutrition' && state.parsedWeekData) renderParsedNutritionUI(state.parsedWeekData);
         if (tabId === 'chat') scrollChatToBottom();
@@ -916,11 +784,12 @@
       { weekRange: "31.10.–06.11.2026", overallP: 37, goalsSnapshot: "Schritte 57%, Schlaf 29%, Supps 43%, Gym 0%, Süßes 57%" }
     ];
 
+    // Standard-Habits ohne Uhrzeiten
     const DEFAULT_HABITS = [
-      { id: "h_kreatin", name: "Kreatin einnehmen", time: "06:00 Uhr", days: [false, false, false, false, false, false, false], streak: 0 },
-      { id: "h_omega3", name: "Omega 3 einnehmen", time: "12:15 Uhr", days: [false, false, false, false, false, false, false], streak: 0 },
-      { id: "h_snack", name: "Himbeeren/Apfel + Mandeln", time: "15:00 Uhr", days: [false, false, false, false, false, false, false], streak: 0 },
-      { id: "h_flohsamen", name: "Flohsamenschalen", time: "20:00 Uhr", days: [false, false, false, false, false, false, false], streak: 0 }
+      { id: "h_kreatin", name: "Kreatin einnehmen", days: [false, false, false, false, false, false, false], streak: 0 },
+      { id: "h_omega3", name: "Omega 3 einnehmen", days: [false, false, false, false, false, false, false], streak: 0 },
+      { id: "h_snack", name: "Himbeeren/Apfel + Mandeln", days: [false, false, false, false, false, false, false], streak: 0 },
+      { id: "h_flohsamen", name: "Flohsamenschalen", days: [false, false, false, false, false, false, false], streak: 0 }
     ];
 
     const WORKOUT_PLANS = {
@@ -967,36 +836,34 @@
       { date: "2026-11-07", weight: 110.1, kfa: 36.1, waist: 118.0, gymCount: 1, cutDays: 3, steps: 6800, motivationTraining: 6, motivationNutrition: 6 }
     ];
 
-    // 3. CENTRAL STATE
+    // 3. CENTRAL STATE (To-Dos komplett entfernt)
     let state = {
-      habits: JSON.parse(localStorage.getItem('fc_habits_v15') || 'null') || DEFAULT_HABITS,
-      todos: JSON.parse(localStorage.getItem('fc_todos_v15') || 'null') || [],
-      checkins: JSON.parse(localStorage.getItem('fc_checkins_v15') || 'null') || DEFAULT_CHECKINS,
-      activeGoals: JSON.parse(localStorage.getItem('fc_goals_v15') || 'null') || DEFAULT_ACTIVE_GOALS,
-      postitHistory: JSON.parse(localStorage.getItem('fc_postit_v15') || 'null') || DEFAULT_POSTIT_HISTORY,
-      avgSteps: parseFloat(localStorage.getItem('fc_avg_steps_v15') || '0'),
-      chatHistory: JSON.parse(localStorage.getItem('fc_chat_v15') || 'null') || [
+      habits: JSON.parse(localStorage.getItem('fc_habits_v17') || 'null') || DEFAULT_HABITS,
+      checkins: JSON.parse(localStorage.getItem('fc_checkins_v17') || 'null') || DEFAULT_CHECKINS,
+      activeGoals: JSON.parse(localStorage.getItem('fc_goals_v17') || 'null') || DEFAULT_ACTIVE_GOALS,
+      postitHistory: JSON.parse(localStorage.getItem('fc_postit_v17') || 'null') || DEFAULT_POSTIT_HISTORY,
+      avgSteps: parseFloat(localStorage.getItem('fc_avg_steps_v17') || '0'),
+      chatHistory: JSON.parse(localStorage.getItem('fc_chat_v17') || 'null') || [
         {
           sender: "coach",
           text: "Servus Athlet! Ich bin dein persönlicher Fitness-Coach Marcus 💪.\n\nIch bin bereit. Wie läuft dein Training oder deine Ernährung heute?"
         }
       ],
       currentWorkoutKey: "kraftA",
-      workoutLogs: JSON.parse(localStorage.getItem('fc_workout_logs_v15') || '{}'),
-      parsedWeekData: JSON.parse(localStorage.getItem('fc_parsed_week_v15') || 'null')
+      workoutLogs: JSON.parse(localStorage.getItem('fc_workout_logs_v17') || '{}'),
+      parsedWeekData: JSON.parse(localStorage.getItem('fc_parsed_week_v17') || 'null')
     };
 
     function persistData() {
       try {
-        localStorage.setItem('fc_habits_v15', JSON.stringify(state.habits));
-        localStorage.setItem('fc_todos_v15', JSON.stringify(state.todos));
-        localStorage.setItem('fc_checkins_v15', JSON.stringify(state.checkins));
-        localStorage.setItem('fc_goals_v15', JSON.stringify(state.activeGoals));
-        localStorage.setItem('fc_postit_v15', JSON.stringify(state.postitHistory));
-        localStorage.setItem('fc_chat_v15', JSON.stringify(state.chatHistory));
-        localStorage.setItem('fc_workout_logs_v15', JSON.stringify(state.workoutLogs));
-        localStorage.setItem('fc_parsed_week_v15', JSON.stringify(state.parsedWeekData));
-        localStorage.setItem('fc_avg_steps_v15', state.avgSteps.toString());
+        localStorage.setItem('fc_habits_v17', JSON.stringify(state.habits));
+        localStorage.setItem('fc_checkins_v17', JSON.stringify(state.checkins));
+        localStorage.setItem('fc_goals_v17', JSON.stringify(state.activeGoals));
+        localStorage.setItem('fc_postit_v17', JSON.stringify(state.postitHistory));
+        localStorage.setItem('fc_chat_v17', JSON.stringify(state.chatHistory));
+        localStorage.setItem('fc_workout_logs_v17', JSON.stringify(state.workoutLogs));
+        localStorage.setItem('fc_parsed_week_v17', JSON.stringify(state.parsedWeekData));
+        localStorage.setItem('fc_avg_steps_v17', state.avgSteps.toString());
       } catch (e) {
         console.warn("Storage Error:", e);
       }
@@ -1081,7 +948,7 @@
       });
     }
 
-    // 6. WORKOUT LOGGER (1-KLICK HAKEN)
+    // 6. WORKOUT LOGGER (1-KLICK HAKEN OHNE KG)
     function loadWorkout(k) {
       state.currentWorkoutKey = k;
       ['kraftA', 'cardio', 'kraftB'].forEach(key => {
@@ -1143,192 +1010,13 @@
       }
     }
 
-    // 7. TO-DOS LOGIK (ZUKLAPPBARE ERLEDIGTE + ENTHAKEN ZUM WIEDERBELEBEN)
-    let isDoneAccordionOpen = false;
-
-    function toggleDoneAccordion() {
-      isDoneAccordionOpen = !isDoneAccordionOpen;
-      const container = document.getElementById('todos-done-container');
-      const icon = document.getElementById('done-accordion-icon');
-      if (!container || !icon) return;
-
-      if (isDoneAccordionOpen) {
-        container.classList.remove('hidden');
-        icon.classList.add('rotate-180');
-      } else {
-        container.classList.add('hidden');
-        icon.classList.remove('rotate-180');
-      }
-    }
-
-    function renderTodos() {
-      const openList = document.getElementById('todos-open-list');
-      const doneList = document.getElementById('todos-done-list');
-      const openCountEl = document.getElementById('todos-open-count');
-      const doneCountEl = document.getElementById('todos-done-count');
-      const dashSummary = document.getElementById('dash-todo-summary');
-
-      const openTodos = state.todos.filter(t => !t.done);
-      const doneTodos = state.todos.filter(t => t.done);
-
-      if (openList) {
-        if (openTodos.length === 0) {
-          openList.innerHTML = `<div class="p-6 text-center text-xs text-zinc-500 border border-dashed border-surface-border rounded-xl">Keine offenen Aufgaben. Erstelle eine neue Aufgabe über "+ Neues To-Do"!</div>`;
-        } else {
-          openList.innerHTML = openTodos.map(t => {
-            const dueBadge = formatDueStatus(t.dueDate, t.dueTime);
-            const recLabel = t.recurrence === 'daily' ? 'Täglich' : (t.recurrence === 'weekly' ? 'Wöchentlich' : '');
-
-            return `
-              <div class="flex items-center justify-between p-3 rounded-xl bg-surface-900 border border-surface-border hover:border-zinc-700 transition-colors">
-                <label class="flex items-start gap-3 cursor-pointer text-xs text-zinc-200 flex-1">
-                  <input type="checkbox" onchange="toggleTodo('${t.id}')" class="w-4 h-4 rounded mt-0.5 text-brand-500 bg-surface-card">
-                  <div>
-                    <div class="font-medium leading-snug">${t.text}</div>
-                    <div class="flex flex-wrap items-center gap-1.5 mt-1">
-                      ${dueBadge}
-                      ${recLabel ? `<span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-surface-850 text-accent-400 border border-surface-border">🔄 ${recLabel}</span>` : ''}
-                      ${t.remind ? '<span class="text-[9px] text-zinc-400 font-mono flex items-center gap-0.5"><i data-lucide="bell" class="w-2.5 h-2.5 text-amber-400"></i> Push</span>' : ''}
-                    </div>
-                  </div>
-                </label>
-                <div class="flex items-center gap-1 shrink-0 ml-2">
-                  <button onclick="editTodo('${t.id}')" class="text-zinc-500 hover:text-amber-400 p-1" title="Bearbeiten"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i></button>
-                  <button onclick="deleteTodo('${t.id}')" class="text-zinc-600 hover:text-red-400 p-1" title="Löschen"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
-                </div>
-              </div>
-            `;
-          }).join('');
-        }
-      }
-
-      if (doneList) {
-        if (doneTodos.length === 0) {
-          doneList.innerHTML = `<div class="p-4 text-center text-xs text-zinc-500">Keine erledigten Aufgaben vorhanden.</div>`;
-        } else {
-          doneList.innerHTML = doneTodos.map(t => {
-            return `
-              <div class="flex items-center justify-between p-3 rounded-xl bg-surface-900/40 border border-surface-border/60 transition-colors">
-                <label class="flex items-start gap-3 cursor-pointer text-xs line-through text-zinc-500 flex-1" title="Häkchen entfernen, um Aufgabe wieder nach oben zu holen">
-                  <input type="checkbox" checked onchange="toggleTodo('${t.id}')" class="w-4 h-4 rounded mt-0.5 text-brand-500 bg-surface-card">
-                  <div>
-                    <div class="font-medium leading-snug">${t.text}</div>
-                  </div>
-                </label>
-                <div class="flex items-center gap-1 shrink-0 ml-2">
-                  <button onclick="deleteTodo('${t.id}')" class="text-zinc-600 hover:text-red-400 p-1" title="Endgültig löschen"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
-                </div>
-              </div>
-            `;
-          }).join('');
-        }
-      }
-
-      if (openCountEl) openCountEl.innerText = `${openTodos.length} offen`;
-      if (doneCountEl) doneCountEl.innerText = `${doneTodos.length}`;
-      if (dashSummary) dashSummary.innerText = `${openTodos.length} offene Aufgaben`;
-      if (window.lucide) { try { lucide.createIcons(); } catch(e){} }
-    }
-
-    function formatDueStatus(dueDate, dueTime) {
-      if (!dueDate) return '';
-      const now = new Date();
-      const targetStr = dueTime ? `${dueDate}T${dueTime}:00` : `${dueDate}T23:59:59`;
-      const targetDate = new Date(targetStr);
-      const isOverdue = targetDate < now;
-      const dateFormatted = dueDate.split('-').reverse().slice(0, 2).join('.');
-
-      if (isOverdue) {
-        return `<span class="text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/30 font-bold flex items-center gap-1"><i data-lucide="alert-circle" class="w-3 h-3"></i> Überfällig (${dateFormatted}${dueTime ? ' ' + dueTime : ''})</span>`;
-      } else {
-        const isToday = targetDate.toDateString() === now.toDateString();
-        const badgeColor = isToday ? 'bg-amber-500/20 text-amber-400 border-amber-500/30' : 'bg-surface-850 text-zinc-300 border-surface-border';
-        return `<span class="text-[10px] font-mono px-2 py-0.5 rounded border ${badgeColor} font-medium flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i> ${isToday ? 'Heute ' + (dueTime || '') : dateFormatted + (dueTime ? ' ' + dueTime : '')}</span>`;
-      }
-    }
-
-    function toggleTodo(id) {
-      const t = state.todos.find(item => item.id === id);
-      if (t) {
-        t.done = !t.done;
-        persistData();
-        renderTodos();
-      }
-    }
-
-    function openTodoModal() {
-      document.getElementById('modal-todo-title').innerText = "Neues To-Do anlegen";
-      document.getElementById('input-todo-edit-id').value = '';
-      document.getElementById('input-todo-text').value = '';
-      document.getElementById('input-todo-due-date').value = new Date().toISOString().split('T')[0];
-      document.getElementById('input-todo-due-time').value = '18:00';
-      document.getElementById('input-todo-recurrence').value = 'none';
-      document.getElementById('input-todo-remind').checked = true;
-      document.getElementById('modal-new-todo').classList.remove('hidden');
-    }
-
-    function editTodo(id) {
-      const t = state.todos.find(item => item.id === id);
-      if (!t) return;
-      document.getElementById('modal-todo-title').innerText = "To-Do bearbeiten";
-      document.getElementById('input-todo-edit-id').value = t.id;
-      document.getElementById('input-todo-text').value = t.text;
-      document.getElementById('input-todo-due-date').value = t.dueDate || '';
-      document.getElementById('input-todo-due-time').value = t.dueTime || '';
-      document.getElementById('input-todo-recurrence').value = t.recurrence || 'none';
-      document.getElementById('input-todo-remind').checked = !!t.remind;
-      document.getElementById('modal-new-todo').classList.remove('hidden');
-    }
-
-    function closeTodoModal() {
-      document.getElementById('modal-new-todo').classList.add('hidden');
-    }
-
-    function saveCustomTodo() {
-      const text = document.getElementById('input-todo-text').value.trim();
-      const recurrence = document.getElementById('input-todo-recurrence').value;
-      const dueDate = document.getElementById('input-todo-due-date').value;
-      const dueTime = document.getElementById('input-todo-due-time').value;
-      const remind = document.getElementById('input-todo-remind').checked;
-      const editId = document.getElementById('input-todo-edit-id').value;
-
-      if (!text) return alert("Bitte Aufgabenbeschreibung eingeben!");
-
-      if (editId) {
-        const t = state.todos.find(item => item.id === editId);
-        if (t) {
-          t.text = text;
-          t.dueDate = dueDate;
-          t.dueTime = dueTime;
-          t.recurrence = recurrence;
-          t.remind = remind;
-        }
-      } else {
-        const item = { id: "t_" + Date.now(), text, dueDate, dueTime, recurrence, remind, notified: false, done: false };
-        state.todos.push(item);
-      }
-
-      persistData();
-      closeTodoModal();
-      renderTodos();
-    }
-
-    function deleteTodo(id) {
-      if (confirm("Aufgabe wirklich löschen?")) {
-        state.todos = state.todos.filter(item => item.id !== id);
-        persistData();
-        renderTodos();
-      }
-    }
-
-    // 8. HABITS LOGIK
+    // 7. HABITS LOGIK (OHNE UHRZEITEN)
     function renderHabitsTable() {
       const tbody = document.getElementById('habits-table-body');
       if (!tbody) return;
       tbody.innerHTML = state.habits.map((h, hIdx) => `
         <tr class="hover:bg-surface-850">
-          <td class="p-3 font-medium text-zinc-200">
-            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-surface-900 text-brand-400 font-bold mr-2">${h.time}</span>
+          <td class="p-3.5 font-medium text-zinc-200">
             <span>${h.name}</span>
           </td>
           ${h.days.map((c, dIdx) => `<td class="p-3 text-center"><input type="checkbox" ${c ? 'checked' : ''} onchange="toggleHabitDay(${hIdx}, ${dIdx})" class="w-4 h-4 rounded bg-surface-900 text-brand-500"></td>`).join('')}
@@ -1366,7 +1054,6 @@
       document.getElementById('modal-habit-title').innerText = "Neues Habit anlegen";
       document.getElementById('input-habit-edit-index').value = "-1";
       document.getElementById('input-habit-name').value = '';
-      document.getElementById('input-habit-time').value = '12:00';
       document.getElementById('modal-new-habit').classList.remove('hidden');
     }
 
@@ -1376,7 +1063,6 @@
       document.getElementById('modal-habit-title').innerText = "Habit bearbeiten";
       document.getElementById('input-habit-edit-index').value = idx;
       document.getElementById('input-habit-name').value = h.name;
-      document.getElementById('input-habit-time').value = h.time ? h.time.replace(' Uhr', '') : '';
       document.getElementById('modal-new-habit').classList.remove('hidden');
     }
 
@@ -1384,18 +1070,14 @@
 
     function saveCustomHabit() {
       const n = document.getElementById('input-habit-name').value.trim();
-      const t = document.getElementById('input-habit-time').value.trim();
       const editIdx = parseInt(document.getElementById('input-habit-edit-index').value);
 
       if (!n) return alert("Name fehlt!");
 
-      const formattedTime = t ? `${t} Uhr` : 'Täglich';
-
       if (editIdx >= 0 && state.habits[editIdx]) {
         state.habits[editIdx].name = n;
-        state.habits[editIdx].time = formattedTime;
       } else {
-        state.habits.push({ id: "h_" + Date.now(), name: n, time: formattedTime, days: [false,false,false,false,false,false,false], streak: 0 });
+        state.habits.push({ id: "h_" + Date.now(), name: n, days: [false,false,false,false,false,false,false], streak: 0 });
       }
 
       persistData();
@@ -1405,7 +1087,7 @@
 
     function deleteHabit(idx) { if (confirm("Löschen?")) { state.habits.splice(idx, 1); persistData(); renderHabitsTable(); } }
 
-    // 9. POST-IT LOGIK
+    // 8. POST-IT LOGIK
     function renderPostitWidget() {
       const listEl = document.getElementById('postit-goals-list');
       const dashListEl = document.getElementById('dash-postit-list');
@@ -1620,7 +1302,7 @@ Antworte in zwei Teilen:
       reader.readAsDataURL(file);
     }
 
-    // 10. CHECK-IN LOGIK (GETRENNTE MOTIVATION TRAINING & ERNÄHRUNG)
+    // 9. CHECK-IN LOGIK (MOTIVATION TRAINING & ERNÄHRUNG GETRENNT)
     let fullChartInstance = null;
     function renderFullWeighingChart() {
       const ctx = document.getElementById('fullWeightChart');
@@ -1704,7 +1386,7 @@ Antworte in zwei Teilen:
       }
     }
 
-    // 11. CSV PARSER
+    // 10. CSV PARSER
     function calculateCutDayScore(d) {
       let s = 10.0;
       if (d.kcal >= 1600 && d.kcal <= 1800) {} else if (d.kcal >= 1500 && d.kcal <= 1900) s -= 0.5; else s -= 2.0;
@@ -1801,7 +1483,7 @@ Antworte in zwei Teilen:
       sendQuickMessage(`Hier ist meine Ernährungs-CSV der Woche:\n\`\`\`json\n${JSON.stringify(state.parsedWeekData.days, null, 2)}\n\`\`\`\nBitte führe die Tagesanalysen (A-E) und die Wochenbilanz durch!`);
     }
 
-    // 12. CHAT & API MIT AUTOMATISCHEM RETRY BEI 503-ÜBERLASTUNG
+    // 11. CHAT & API MIT AUTOMATISCHEM RETRY BEI 503-ÜBERLASTUNG
     const COACH_MARCUS_SYSTEM_PROMPT = `
 Du bist Coach Marcus, der persönliche Fitness- und Ernährungscoach des Nutzers.
 Konstanz statt Perfektion.
@@ -1809,7 +1491,7 @@ Konstanz statt Perfektion.
 Startdaten: 110,1 kg | 36,1% KFA | 118 cm Bauch -> Ziel: 85,0 kg.
 Wochenplan: 4 Cut-Tage (1.700 kcal, 150-170g P, 150-180g C, 40-55g F, >=30g Ballaststoffe) | 1 Genusstag (2.000 kcal) | 2 Fitnessstudio-Einheiten (2-1-2 Kadenz) | 7.000 Schritte täglich.
 Technogym Geräte vor Ort: Leg Press #1, Leg Curl #3, Pulldown #14 / Vert. Traction #13, Low Row #16, Chest Press #23 / Upper Back #15, Shoulder Press #30, Crunches #36, Lower Back #37, Leg Ext. #4 / Prone Curl #2, Pectoral #24, Arm Curl #33, Arm Ext. #34.
-Routinen: 06:00 Kreatin, 12:15 Omega3, 15:00 Mandeln/Beeren, 20:00 Flohsamenschalen. Freitag 20:00 CSV-Auswertung, Samstag 07:00 Check-in, Samstag 07:30 Post-it Check.
+Routinen: Kreatin, Omega-3, Mandeln/Beeren, Flohsamenschalen. Freitag CSV-Auswertung, Samstag Check-in, Samstag Post-it Check.
 
 POST-IT CHECK STRUKTUR:
 A. Gesamtübersicht mit Text-Fortschrittsbalken & Vorwochenvergleich.
@@ -1840,7 +1522,6 @@ D. Erst am Schluss nach Bestätigung oder neuem Post-it Foto fragen!
       if (c) c.scrollTop = c.scrollHeight;
     }
 
-    // Robuster Aufruf mit automatischem Modell-Ausweichen bei 503 (High Demand)
     async function callGeminiApi(apiKey, contents) {
       const modelsToTry = ['gemini-3.8-flash', 'gemini-2.5-flash'];
       let lastError = null;
@@ -1935,64 +1616,7 @@ D. Erst am Schluss nach Bestätigung oder neuem Post-it Foto fragen!
       closeApiKeyModal();
     }
 
-    // 13. PUSH-BENACHRICHTIGUNGEN
-    function requestNotificationPermission() {
-      if (typeof window.Notification === "undefined") {
-        alert("Benachrichtigungen werden in dieser Browser-Umgebung nicht unterstützt.");
-        return;
-      }
-      try {
-        Notification.requestPermission().then(permission => {
-          if (permission === "granted") {
-            new Notification("Fitnesscoach aktiviert!", {
-              body: "Erinnerungen für Habits, To-Dos und Check-ins sind scharfgeschaltet."
-            });
-            updateNotifyBtnText();
-          }
-        });
-      } catch (e) {
-        console.warn("Notification error:", e);
-      }
-    }
-
-    function updateNotifyBtnText() {
-      const btnText = document.getElementById('btn-notify-desktop-text');
-      if (btnText && typeof Notification !== "undefined" && Notification.permission === "granted") {
-        btnText.innerText = "Erinnerungen aktiv ✓";
-      }
-    }
-
-    setInterval(() => {
-      if (typeof Notification === "undefined" || Notification.permission !== "granted") return;
-      const now = new Date();
-      const todayDateStr = now.toISOString().split('T')[0];
-      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-      const day = now.getDay();
-
-      if (timeStr === "06:00") new Notification("Habit: Kreatin nehmen", { body: "06:00 Uhr – Zeit für deine tägliche Portion Kreatin!" });
-      else if (timeStr === "12:15") new Notification("Habit: Omega-3 nehmen", { body: "12:15 Uhr – Omega-3 Kapseln zum Mittagessen einnehmen." });
-      else if (timeStr === "15:00") new Notification("Snack: Mandeln & Beeren", { body: "15:00 Uhr – Gesunder Snack für deine Cut-Makros." });
-      else if (timeStr === "20:00") new Notification("Abendroutine: Flohsamenschalen", { body: "20:00 Uhr – 5g Flohsamenschalen einnehmen." });
-      else if (day === 5 && timeStr === "20:00") new Notification("Freitag-Routine: Ernährungs-CSV", { body: "20:00 Uhr – Bitte exportiere deine CSV und lass sie von Marcus bewerten." });
-      else if (day === 6 && timeStr === "07:00") new Notification("Samstag 07:00: Nüchtern wiegen!", { body: "Fitness-Check-in: Gewicht & Bauchumfang messen." });
-      else if (day === 6 && timeStr === "07:30") new Notification("Samstag 07:30: Post-it Zielcheck", { body: "Ziele der Woche auswerten und neues Post-it an den Spiegel hängen!" });
-
-      state.todos.forEach(todo => {
-        if (!todo.done && todo.remind && !todo.notified && todo.dueDate) {
-          const isDueNow = todo.dueDate === todayDateStr && (!todo.dueTime || todo.dueTime <= timeStr);
-          if (isDueNow) {
-            new Notification("📌 To-Do fällig: " + todo.text, {
-              body: "Jetzt erledigen und abhaken!"
-            });
-            todo.notified = true;
-            persistData();
-            renderTodos();
-          }
-        }
-      });
-    }, 60000);
-
-    // 14. INITIALISIERUNG
+    // 12. INITIALISIERUNG
     window.addEventListener('DOMContentLoaded', () => {
       try {
         renderDashboardCharts();
@@ -2000,21 +1624,13 @@ D. Erst am Schluss nach Bestätigung oder neuem Post-it Foto fragen!
         renderPostitForm();
         renderPostitHistoryTable();
         renderWorkoutExercises();
-        renderTodos();
         renderHabitsTable();
         renderChat();
         renderStepsTile();
-        updateNotifyBtnText();
         
         const cDate = document.getElementById('checkin-date');
         if (cDate) cDate.value = new Date().toISOString().split('T')[0];
 
-        const headerDate = document.getElementById('current-date-header');
-        if (headerDate) {
-          const d = new Date();
-          headerDate.innerText = d.toLocaleDateString('de-AT', { weekday: 'long', day: '2-digit', month: '2-digit' });
-        }
-        
         if (window.lucide) {
           try { lucide.createIcons(); } catch(e){}
         }

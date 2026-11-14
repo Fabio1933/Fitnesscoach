@@ -12,15 +12,15 @@
   <meta name="theme-color" content="#09090b">
 
   <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
   <!-- Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="[https://cdn.jsdelivr.net/npm/chart.js](https://cdn.jsdelivr.net/npm/chart.js)"></script>
   <!-- PapaParse for CSV -->
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="[https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js](https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js)"></script>
   <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="[https://unpkg.com/lucide@latest](https://unpkg.com/lucide@latest)"></script>
   <!-- Marked for Markdown in Chat -->
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="[https://cdn.jsdelivr.net/npm/marked/marked.min.js](https://cdn.jsdelivr.net/npm/marked/marked.min.js)"></script>
 
   <script>
     tailwind.config = {
@@ -51,7 +51,7 @@
     }
   </script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Kalam:wght@400;700&display=swap');
+    @import url('[https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Kalam:wght@400;700&display=swap](https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Kalam:wght@400;700&display=swap)');
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
       -webkit-tap-highlight-color: transparent;
@@ -142,7 +142,7 @@
         <p class="text-[11px] text-zinc-400 hidden sm:block">Konstanz statt Perfektion – Woche für Woche.</p>
       </div>
       <div class="text-right">
-        <div class="text-xs font-semibold text-brand-400 font-mono" id="header-mission-text">110.1 kg → 85.0 kg</div>
+        <div class="text-xs font-semibold text-zinc-300 font-mono" id="current-date-header">Wochenübersicht</div>
       </div>
     </header>
 
@@ -224,19 +224,17 @@
           </div>
         </div>
 
-        <!-- Schnellzugriff Kachel für Habits -->
+        <!-- Schnelleinstieg Habits -->
         <div>
-          <button onclick="switchTab('habits')" class="w-full bg-surface-card hover:bg-surface-border p-4 rounded-2xl border border-surface-border text-left transition-all flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center shrink-0">
-                <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+          <button onclick="switchTab('habits')" class="w-full bg-surface-card hover:bg-surface-border p-4 rounded-xl border border-surface-border text-left transition-all flex items-center justify-between">
+            <div>
+              <div class="text-xs font-bold text-white flex items-center gap-1.5">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+                Tages-Habits abhaken
               </div>
-              <div>
-                <div class="text-sm font-bold text-white">Tages-Habits abhaken</div>
-                <p class="text-xs text-zinc-400 mt-0.5">Kreatin, Omega-3, Snack, Flohsamenschalen</p>
-              </div>
+              <p class="text-[11px] text-zinc-400 mt-0.5">Kreatin, Omega-3, Himbeeren/Apfel + Mandeln, Flohsamenschalen</p>
             </div>
-            <i data-lucide="chevron-right" class="w-5 h-5 text-zinc-500"></i>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-500"></i>
           </button>
         </div>
 
@@ -325,11 +323,14 @@
 
           <div class="lg:col-span-2 space-y-5">
             <div class="bg-surface-card p-4 md:p-6 rounded-2xl border border-surface-border space-y-4">
-              <div class="border-b border-surface-border pb-3 flex justify-between items-center">
+              <div class="border-b border-surface-border pb-3 flex justify-between items-start gap-3">
                 <div>
                   <h3 class="font-bold text-base text-white">Interaktive Wochenabfrage</h3>
-                  <p class="text-xs text-zinc-400">Trage deine Ergebnisse ein für die Trainerbewertung.</p>
+                  <p class="text-xs text-zinc-400">Deine Eingaben werden automatisch zwischengespeichert.</p>
                 </div>
+                <button onclick="resetPostitForm()" class="px-3 py-1.5 rounded-xl bg-surface-900 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 text-xs border border-surface-border flex items-center gap-1.5 transition-colors shrink-0" title="Alle Eingaben zurücksetzen">
+                  <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Zurücksetzen
+                </button>
               </div>
 
               <div class="space-y-3 text-xs" id="postit-form-container">
@@ -337,7 +338,7 @@
 
               <div class="p-3.5 bg-surface-900/70 rounded-xl border border-surface-border space-y-1.5 text-xs">
                 <label class="font-bold text-zinc-200">Optionale Anmerkungen</label>
-                <input type="text" id="postit-notes" placeholder="z. B. Spaziergänge eingebaut, gute Routine..." class="w-full bg-surface-card border border-surface-border rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
+                <input type="text" id="postit-notes" oninput="savePostitDraft()" placeholder="z. B. Spaziergänge eingebaut, gute Routine..." class="w-full bg-surface-card border border-surface-border rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
               </div>
 
               <button onclick="submitPostitCheckin()" class="w-full py-3 bg-amber-400 hover:bg-amber-300 text-black font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-amber-400/10">
@@ -474,12 +475,13 @@
         </div>
       </section>
 
-      <!-- ================= 4. HABIT TRACKER TAB (OHNE UHRZEITEN) ================= -->
+      <!-- ================= 4. HABIT TRACKER TAB ================= -->
       <section id="view-habits" class="space-y-6 hidden">
         <div class="bg-surface-card p-4 md:p-5 rounded-2xl border border-surface-border flex flex-col md:flex-row justify-between md:items-center gap-4">
           <div>
-            <h3 class="text-base md:text-lg font-bold text-white">Tägliche Habits & Routinen</h3>
-            <p class="text-xs text-zinc-400">Kreatin • Omega 3 • Mandeln/Beeren • Flohsamenschalen</p>
+            <span class="text-xs uppercase font-extrabold tracking-wider bg-brand-500/10 text-brand-400 px-2 py-0.5 rounded border border-brand-500/30">Routinen</span>
+            <h3 class="text-base md:text-lg font-bold text-white mt-1">Tägliche Habits</h3>
+            <p class="text-xs text-zinc-400">Kreatin • Omega-3 • Himbeeren/Apfel + Mandeln • Flohsamenschalen</p>
           </div>
           <div class="flex items-center gap-2">
             <button onclick="resetHabitsWeek()" class="px-3 py-2 rounded-xl bg-surface-900 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 text-xs border border-surface-border flex items-center gap-1.5 transition-colors" title="Alle Habits zurücksetzen">
@@ -520,7 +522,6 @@
           <div class="w-12 h-12 rounded-2xl bg-brand-500/10 text-brand-400 mx-auto flex items-center justify-center mb-3">
             <i data-lucide="file-spreadsheet" class="w-6 h-6"></i>
           </div>
-          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-800 text-brand-400 border border-brand-500/30">Tracking Routine</span>
           <h3 class="text-base font-bold text-white mt-2">Ernährungs-CSV importieren</h3>
           <p class="text-xs text-zinc-400 max-w-md mx-auto mt-1 mb-4">
             Lade deine wöchentliche CSV-Datei hoch. TAGESSUMME-Zeilen werden automatisch ignoriert.
@@ -633,39 +634,38 @@
   </main>
 
   <!-- MOBILE SCROLLABLE BOTTOM BAR -->
-  <nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-surface-850 border-t border-surface-border flex items-center gap-1 px-2 z-40 backdrop-blur overflow-x-auto no-scrollbar">
-    <button onclick="switchTab('dashboard')" class="flex flex-col items-center justify-center shrink-0 w-16 gap-1 text-[10px] text-brand-400 font-medium">
+  <nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-surface-850 border-t border-surface-border flex items-center justify-around px-1 z-40 backdrop-blur overflow-x-auto no-scrollbar">
+    <button onclick="switchTab('dashboard')" class="flex flex-col items-center justify-center shrink-0 w-13 gap-1 text-[10px] text-brand-400 font-medium">
       <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
       <span>Dash</span>
     </button>
-    <button onclick="switchTab('postit')" class="flex flex-col items-center justify-center shrink-0 w-16 gap-1 text-[10px] text-amber-400 font-medium">
+    <button onclick="switchTab('postit')" class="flex flex-col items-center justify-center shrink-0 w-13 gap-1 text-[10px] text-amber-400 font-medium">
       <i data-lucide="sticky-note" class="w-4 h-4"></i>
       <span>Post-it</span>
     </button>
-    <button onclick="switchTab('checkin')" class="flex flex-col items-center justify-center shrink-0 w-16 gap-1 text-[10px] text-zinc-400 hover:text-white">
+    <button onclick="switchTab('checkin')" class="flex flex-col items-center justify-center shrink-0 w-13 gap-1 text-[10px] text-zinc-400 hover:text-white">
       <i data-lucide="scale" class="w-4 h-4"></i>
       <span>Check-in</span>
     </button>
-    <button onclick="switchTab('workout')" class="flex flex-col items-center justify-center shrink-0 w-16 gap-1 text-[10px] text-zinc-400 hover:text-white">
+    <button onclick="switchTab('workout')" class="flex flex-col items-center justify-center shrink-0 w-13 gap-1 text-[10px] text-zinc-400 hover:text-white">
       <i data-lucide="dumbbell" class="w-4 h-4"></i>
       <span>Workout</span>
     </button>
-    <button onclick="switchTab('habits')" class="flex flex-col items-center justify-center shrink-0 w-16 gap-1 text-[10px] text-emerald-400 font-medium">
+    <button onclick="switchTab('habits')" class="flex flex-col items-center justify-center shrink-0 w-13 gap-1 text-[10px] text-emerald-400 font-medium">
       <i data-lucide="check-circle-2" class="w-4 h-4"></i>
       <span>Habits</span>
     </button>
-    <button onclick="switchTab('nutrition')" class="flex flex-col items-center justify-center shrink-0 w-16 gap-1 text-[10px] text-zinc-400 hover:text-white">
+    <button onclick="switchTab('nutrition')" class="flex flex-col items-center justify-center shrink-0 w-13 gap-1 text-[10px] text-zinc-400 hover:text-white">
       <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
       <span>CSV</span>
     </button>
-    <button onclick="switchTab('chat')" class="flex flex-col items-center justify-center shrink-0 w-16 gap-1 text-[10px] text-zinc-400 hover:text-white">
+    <button onclick="switchTab('chat')" class="flex flex-col items-center justify-center shrink-0 w-13 gap-1 text-[10px] text-zinc-400 hover:text-white">
       <i data-lucide="bot" class="w-4 h-4"></i>
       <span>Marcus</span>
     </button>
   </nav>
 
   <!-- MODALS -->
-  <!-- MODAL: SCHRITTE -->
   <div id="modal-steps" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-surface-card border border-surface-border w-full max-w-sm p-5 rounded-2xl space-y-4 shadow-2xl">
       <div class="flex items-center justify-between border-b border-surface-border pb-2.5">
@@ -686,7 +686,7 @@
     </div>
   </div>
 
-  <!-- MODAL: HABIT (ANLEGEN & BEARBEITEN - OHNE UHRZEIT) -->
+  <!-- MODAL: HABIT (OHNE UHRZEIT) -->
   <div id="modal-new-habit" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-surface-card border border-surface-border w-full max-w-md p-5 rounded-2xl space-y-4">
       <div class="flex items-center justify-between border-b border-surface-border pb-2.5">
@@ -744,8 +744,8 @@
 
         const titles = {
           dashboard: "Dashboard Übersicht",
-          postit: "Post-it Zielcheck",
-          checkin: "Fitness-Check-in",
+          postit: "Wöchentlicher Post-it-Zielcheck",
+          checkin: "Fitness-Check-in & Körperdaten",
           workout: "Trainingsplan & Technogym Logger",
           habits: "Habit Tracker",
           nutrition: "Ernährungs-CSV Analyse",
@@ -784,7 +784,6 @@
       { weekRange: "31.10.–06.11.2026", overallP: 37, goalsSnapshot: "Schritte 57%, Schlaf 29%, Supps 43%, Gym 0%, Süßes 57%" }
     ];
 
-    // Standard-Habits ohne Uhrzeiten
     const DEFAULT_HABITS = [
       { id: "h_kreatin", name: "Kreatin einnehmen", days: [false, false, false, false, false, false, false], streak: 0 },
       { id: "h_omega3", name: "Omega 3 einnehmen", days: [false, false, false, false, false, false, false], streak: 0 },
@@ -836,12 +835,13 @@
       { date: "2026-11-07", weight: 110.1, kfa: 36.1, waist: 118.0, gymCount: 1, cutDays: 3, steps: 6800, motivationTraining: 6, motivationNutrition: 6 }
     ];
 
-    // 3. CENTRAL STATE (To-Dos komplett entfernt)
+    // 3. CENTRAL STATE
     let state = {
       habits: JSON.parse(localStorage.getItem('fc_habits_v17') || 'null') || DEFAULT_HABITS,
       checkins: JSON.parse(localStorage.getItem('fc_checkins_v17') || 'null') || DEFAULT_CHECKINS,
       activeGoals: JSON.parse(localStorage.getItem('fc_goals_v17') || 'null') || DEFAULT_ACTIVE_GOALS,
       postitHistory: JSON.parse(localStorage.getItem('fc_postit_v17') || 'null') || DEFAULT_POSTIT_HISTORY,
+      postitDraft: JSON.parse(localStorage.getItem('fc_postit_draft_v17') || '{"values": {}, "notes": ""}'),
       avgSteps: parseFloat(localStorage.getItem('fc_avg_steps_v17') || '0'),
       chatHistory: JSON.parse(localStorage.getItem('fc_chat_v17') || 'null') || [
         {
@@ -860,6 +860,7 @@
         localStorage.setItem('fc_checkins_v17', JSON.stringify(state.checkins));
         localStorage.setItem('fc_goals_v17', JSON.stringify(state.activeGoals));
         localStorage.setItem('fc_postit_v17', JSON.stringify(state.postitHistory));
+        localStorage.setItem('fc_postit_draft_v17', JSON.stringify(state.postitDraft));
         localStorage.setItem('fc_chat_v17', JSON.stringify(state.chatHistory));
         localStorage.setItem('fc_workout_logs_v17', JSON.stringify(state.workoutLogs));
         localStorage.setItem('fc_parsed_week_v17', JSON.stringify(state.parsedWeekData));
@@ -912,10 +913,7 @@
       const text = `${weightStr} kg → 85.0 kg`;
       
       const sidebarEl = document.getElementById('sidebar-mission-text');
-      const headerEl = document.getElementById('header-mission-text');
-
       if (sidebarEl) sidebarEl.innerText = text;
-      if (headerEl) headerEl.innerText = text;
     }
 
     let dashChartInstance = null;
@@ -948,7 +946,7 @@
       });
     }
 
-    // 6. WORKOUT LOGGER (1-KLICK HAKEN OHNE KG)
+    // 6. WORKOUT LOGGER (1-KLICK HAKEN)
     function loadWorkout(k) {
       state.currentWorkoutKey = k;
       ['kraftA', 'cardio', 'kraftB'].forEach(key => {
@@ -1016,7 +1014,7 @@
       if (!tbody) return;
       tbody.innerHTML = state.habits.map((h, hIdx) => `
         <tr class="hover:bg-surface-850">
-          <td class="p-3.5 font-medium text-zinc-200">
+          <td class="p-3 font-medium text-zinc-200">
             <span>${h.name}</span>
           </td>
           ${h.days.map((c, dIdx) => `<td class="p-3 text-center"><input type="checkbox" ${c ? 'checked' : ''} onchange="toggleHabitDay(${hIdx}, ${dIdx})" class="w-4 h-4 rounded bg-surface-900 text-brand-500"></td>`).join('')}
@@ -1087,7 +1085,7 @@
 
     function deleteHabit(idx) { if (confirm("Löschen?")) { state.habits.splice(idx, 1); persistData(); renderHabitsTable(); } }
 
-    // 8. POST-IT LOGIK
+    // 8. POST-IT LOGIK (MIT ZWISCHENSPEICHERN & ZURÜCKSETZEN)
     function renderPostitWidget() {
       const listEl = document.getElementById('postit-goals-list');
       const dashListEl = document.getElementById('dash-postit-list');
@@ -1113,23 +1111,29 @@
       const container = document.getElementById('postit-form-container');
       if (!container) return;
 
+      const draftValues = (state.postitDraft && state.postitDraft.values) ? state.postitDraft.values : {};
+
       container.innerHTML = state.activeGoals.map((goal, idx) => {
+        const savedVal = draftValues[idx] !== undefined ? draftValues[idx] : '';
         let inputHtml = '';
+
         if (goal.type === 'numeric') {
-          inputHtml = `<input type="number" id="postit-val-${idx}" placeholder="z. B. ${goal.targetVal || 7000}" class="w-full bg-surface-card border border-surface-border rounded-xl px-3 py-2 font-mono text-white focus:outline-none focus:border-amber-400">`;
+          inputHtml = `<input type="number" id="postit-val-${idx}" value="${savedVal}" oninput="savePostitDraft()" placeholder="z. B. ${goal.targetVal || 7000}" class="w-full bg-surface-card border border-surface-border rounded-xl px-3 py-2 font-mono text-white focus:outline-none focus:border-amber-400">`;
         } else if (goal.type === 'gym') {
+          const sel = savedVal !== '' ? savedVal.toString() : '0';
           inputHtml = `
-            <select id="postit-val-${idx}" class="w-full bg-surface-card border border-surface-border rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
-              <option value="0">0-mal (0%)</option>
-              <option value="1">1-mal (50%)</option>
-              <option value="2">2-mal (100% - Ziel erreicht)</option>
-              <option value="3">3-mal oder öfter (100%)</option>
+            <select id="postit-val-${idx}" onchange="savePostitDraft()" class="w-full bg-surface-card border border-surface-border rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
+              <option value="0" ${sel === '0' ? 'selected' : ''}>0-mal (0%)</option>
+              <option value="1" ${sel === '1' ? 'selected' : ''}>1-mal (50%)</option>
+              <option value="2" ${sel === '2' ? 'selected' : ''}>2-mal (100% - Ziel erreicht)</option>
+              <option value="3" ${sel === '3' ? 'selected' : ''}>3-mal oder öfter (100%)</option>
             </select>
           `;
         } else {
+          const sel = savedVal !== '' ? savedVal.toString() : '0';
           inputHtml = `
-            <select id="postit-val-${idx}" class="w-full bg-surface-card border border-surface-border rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
-              ${[0,1,2,3,4,5,6,7].map(d => `<option value="${d}">${d} von 7 Tagen (${Math.round(d/7*100)}%)</option>`).join('')}
+            <select id="postit-val-${idx}" onchange="savePostitDraft()" class="w-full bg-surface-card border border-surface-border rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
+              ${[0,1,2,3,4,5,6,7].map(d => `<option value="${d}" ${sel === d.toString() ? 'selected' : ''}>${d} von 7 Tagen (${Math.round(d/7*100)}%)</option>`).join('')}
             </select>
           `;
         }
@@ -1146,6 +1150,33 @@
           </div>
         `;
       }).join('');
+
+      const notesEl = document.getElementById('postit-notes');
+      if (notesEl) {
+        notesEl.value = (state.postitDraft && state.postitDraft.notes) ? state.postitDraft.notes : '';
+      }
+    }
+
+    function savePostitDraft() {
+      const values = {};
+      for (let i = 0; i < state.activeGoals.length; i++) {
+        const el = document.getElementById(`postit-val-${i}`);
+        if (el) values[i] = el.value;
+      }
+      const notesEl = document.getElementById('postit-notes');
+      state.postitDraft = {
+        values: values,
+        notes: notesEl ? notesEl.value : ''
+      };
+      persistData();
+    }
+
+    function resetPostitForm() {
+      if (confirm("Möchtest du alle Eingaben im Post-it Check zurücksetzen?")) {
+        state.postitDraft = { values: {}, notes: '' };
+        persistData();
+        renderPostitForm();
+      }
     }
 
     function submitPostitCheckin() {
@@ -1278,6 +1309,7 @@ Antworte in zwei Teilen:
                 const parsedGoals = JSON.parse(jsonMatch[1]);
                 if (Array.isArray(parsedGoals) && parsedGoals.length > 0) {
                   state.activeGoals = parsedGoals;
+                  state.postitDraft = { values: {}, notes: '' };
                   persistData();
                   renderPostitWidget();
                   renderPostitForm();
@@ -1302,7 +1334,7 @@ Antworte in zwei Teilen:
       reader.readAsDataURL(file);
     }
 
-    // 9. CHECK-IN LOGIK (MOTIVATION TRAINING & ERNÄHRUNG GETRENNT)
+    // 9. CHECK-IN LOGIK
     let fullChartInstance = null;
     function renderFullWeighingChart() {
       const ctx = document.getElementById('fullWeightChart');
@@ -1483,7 +1515,7 @@ Antworte in zwei Teilen:
       sendQuickMessage(`Hier ist meine Ernährungs-CSV der Woche:\n\`\`\`json\n${JSON.stringify(state.parsedWeekData.days, null, 2)}\n\`\`\`\nBitte führe die Tagesanalysen (A-E) und die Wochenbilanz durch!`);
     }
 
-    // 11. CHAT & API MIT AUTOMATISCHEM RETRY BEI 503-ÜBERLASTUNG
+    // 11. CHAT & DIREKTE GEMINI API (OHNE FALLBACK-SCHLEIFE)
     const COACH_MARCUS_SYSTEM_PROMPT = `
 Du bist Coach Marcus, der persönliche Fitness- und Ernährungscoach des Nutzers.
 Konstanz statt Perfektion.
@@ -1491,7 +1523,7 @@ Konstanz statt Perfektion.
 Startdaten: 110,1 kg | 36,1% KFA | 118 cm Bauch -> Ziel: 85,0 kg.
 Wochenplan: 4 Cut-Tage (1.700 kcal, 150-170g P, 150-180g C, 40-55g F, >=30g Ballaststoffe) | 1 Genusstag (2.000 kcal) | 2 Fitnessstudio-Einheiten (2-1-2 Kadenz) | 7.000 Schritte täglich.
 Technogym Geräte vor Ort: Leg Press #1, Leg Curl #3, Pulldown #14 / Vert. Traction #13, Low Row #16, Chest Press #23 / Upper Back #15, Shoulder Press #30, Crunches #36, Lower Back #37, Leg Ext. #4 / Prone Curl #2, Pectoral #24, Arm Curl #33, Arm Ext. #34.
-Routinen: Kreatin, Omega-3, Mandeln/Beeren, Flohsamenschalen. Freitag CSV-Auswertung, Samstag Check-in, Samstag Post-it Check.
+Routinen: Kreatin, Omega3, Mandeln/Beeren, Flohsamenschalen.
 
 POST-IT CHECK STRUKTUR:
 A. Gesamtübersicht mit Text-Fortschrittsbalken & Vorwochenvergleich.
@@ -1522,39 +1554,35 @@ D. Erst am Schluss nach Bestätigung oder neuem Post-it Foto fragen!
       if (c) c.scrollTop = c.scrollHeight;
     }
 
+    // Direkter, schneller Aufruf über gemini-2.5-flash ohne Denkbudget
     async function callGeminiApi(apiKey, contents) {
-      const modelsToTry = ['gemini-3.8-flash', 'gemini-2.5-flash'];
-      let lastError = null;
+      try {
+        const res = await fetch(`[https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$](https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$){apiKey}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            system_instruction: { parts: [{ text: COACH_MARCUS_SYSTEM_PROMPT }] },
+            contents: contents,
+            generationConfig: { 
+              temperature: 0.35, 
+              maxOutputTokens: 2000,
+              thinkingConfig: { thinkingBudget: 0 }
+            }
+          })
+        });
 
-      for (const model of modelsToTry) {
-        try {
-          const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              system_instruction: { parts: [{ text: COACH_MARCUS_SYSTEM_PROMPT }] },
-              contents: contents,
-              generationConfig: { temperature: 0.35, maxOutputTokens: 2000 }
-            })
-          });
-
-          const resData = await res.json();
-          if (res.ok && resData.candidates && resData.candidates[0].content) {
-            return { ok: true, text: resData.candidates[0].content.parts[0].text };
-          }
-
-          if (res.status === 503 || res.status === 429) {
-            lastError = `Modell ${model} war temporär überlastet (503/429).`;
-            continue;
-          }
-
-          return { ok: false, error: resData.error ? `(${resData.error.code}) ${resData.error.message}` : "Serverfehler" };
-        } catch (e) {
-          lastError = e.message;
+        const resData = await res.json();
+        if (res.ok && resData.candidates && resData.candidates[0].content) {
+          return { ok: true, text: resData.candidates[0].content.parts[0].text };
         }
-      }
 
-      return { ok: false, error: lastError || "Google Server temporär überlastet. Bitte in wenigen Sekunden erneut tippen." };
+        return { 
+          ok: false, 
+          error: resData.error ? `(${resData.error.code}) ${resData.error.message}` : "Unbekannter Serverfehler" 
+        };
+      } catch (e) {
+        return { ok: false, error: e.message };
+      }
     }
 
     async function handleUserSendMessage() {
@@ -1566,7 +1594,7 @@ D. Erst am Schluss nach Bestätigung oder neuem Post-it Foto fragen!
       renderChat();
 
       const typingId = "coach_typing_" + Date.now();
-      state.chatHistory.push({ sender: 'coach', text: "_Marcus tippt..._", id: typingId });
+      state.chatHistory.push({ sender: 'coach', text: "_Marcus antwortet..._", id: typingId });
       renderChat();
 
       const apiKey = (localStorage.getItem('apex_gemini_api_key') || '').trim();
@@ -1598,7 +1626,7 @@ D. Erst am Schluss nach Bestätigung oder neuem Post-it Foto fragen!
       if (result.ok) {
         state.chatHistory.push({ sender: 'coach', text: result.text });
       } else {
-        state.chatHistory.push({ sender: 'coach', text: `❌ **Google Rückmeldung:** ${result.error}` });
+        state.chatHistory.push({ sender: 'coach', text: `❌ **Fehler:** ${result.error}` });
       }
 
       persistData(); 
@@ -1631,6 +1659,12 @@ D. Erst am Schluss nach Bestätigung oder neuem Post-it Foto fragen!
         const cDate = document.getElementById('checkin-date');
         if (cDate) cDate.value = new Date().toISOString().split('T')[0];
 
+        const headerDate = document.getElementById('current-date-header');
+        if (headerDate) {
+          const d = new Date();
+          headerDate.innerText = d.toLocaleDateString('de-AT', { weekday: 'long', day: '2-digit', month: '2-digit' });
+        }
+        
         if (window.lucide) {
           try { lucide.createIcons(); } catch(e){}
         }

@@ -11,355 +11,690 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#09090b">
 
-  <!-- Tailwind CSS CDN -->
-  <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
-  <!-- Chart.js -->
-  <script src="[https://cdn.jsdelivr.net/npm/chart.js](https://cdn.jsdelivr.net/npm/chart.js)"></script>
-  <!-- PapaParse for CSV -->
-  <script src="[https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js](https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js)"></script>
-  <!-- Lucide Icons -->
-  <script src="[https://unpkg.com/lucide@latest](https://unpkg.com/lucide@latest)"></script>
-  <!-- Marked for Markdown in Chat -->
-  <script src="[https://cdn.jsdelivr.net/npm/marked/marked.min.js](https://cdn.jsdelivr.net/npm/marked/marked.min.js)"></script>
+  <!-- Chart.js, PapaParse, Lucide, Marked -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              50: '#ecfdf5',
-              400: '#34d399',
-              500: '#10b981',
-              600: '#059669',
-            },
-            accent: {
-              400: '#22d3ee',
-              500: '#06b6d4',
-            },
-            surface: {
-              800: '#18181b',
-              850: '#121215',
-              900: '#09090b',
-              card: '#1c1c21',
-              border: '#27272a'
-            }
-          }
-        }
-      }
-    }
-  </script>
   <style>
-    @import url('[https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Kalam:wght@400;700&display=swap](https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Kalam:wght@400;700&display=swap)');
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      -webkit-tap-highlight-color: transparent;
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Kalam:wght@400;700&display=swap');
+
+    :root {
+      --bg-900: #09090b;
+      --bg-850: #121215;
+      --bg-800: #18181b;
+      --bg-card: #1c1c21;
+      --border: #27272a;
+      --brand-400: #34d399;
+      --brand-500: #10b981;
+      --brand-600: #059669;
+      --accent-400: #22d3ee;
+      --amber-400: #fbbf24;
+      --amber-300: #fcd34d;
+      --text-main: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --text-dim: #71717a;
     }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-900);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      body { flex-direction: row; }
+    }
+
     .font-mono { font-family: 'JetBrains Mono', monospace; }
     .font-handwriting { font-family: 'Kalam', cursive; }
+    .hidden { display: none !important; }
+    .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* Scrollbars */
     ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-track { background: #09090b; }
-    ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 2px; }
+    ::-webkit-scrollbar-track { background: var(--bg-900); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Sidebar & Layout */
+    .sidebar {
+      width: 100%;
+      background-color: var(--bg-850);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0;
+      z-index: 30;
+    }
+
+    @media (min-width: 768px) {
+      .sidebar {
+        width: 16rem;
+        border-bottom: none;
+        border-right: 1px solid var(--border);
+      }
+    }
+
+    .brand-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.25rem 0.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .brand-header { margin-bottom: 1.5rem; }
+    }
+
+    .brand-left { display: flex; align-items: center; gap: 0.75rem; }
+
+    .logo-box {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 0.75rem;
+      background: linear-gradient(45deg, var(--brand-600), var(--brand-500), var(--amber-400));
+      padding: 2px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+    }
+
+    .logo-inner {
+      width: 100%;
+      height: 100%;
+      background-color: var(--bg-900);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-inner svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      color: var(--brand-400);
+    }
+
+    .brand-title {
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 0.375rem;
+    }
+
+    .badge-pro {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--brand-400);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .brand-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+    /* Navigation */
+    .desktop-nav { display: none; flex-direction: column; gap: 0.375rem; }
+    @media (min-width: 768px) { .desktop-nav { display: flex; } }
+
+    .nav-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.625rem 0.75rem;
+      border-radius: 0.75rem;
+      font-weight: 500;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      background: transparent;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: left;
+    }
+
+    .nav-btn:hover { color: #fff; background-color: var(--bg-card); }
+    .nav-btn.active {
+      background-color: rgba(16, 185, 129, 0.12);
+      color: var(--brand-400);
+      border-color: rgba(16, 185, 129, 0.25);
+    }
+
+    .sidebar-footer {
+      display: none;
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    @media (min-width: 768px) { .sidebar-footer { display: block; } }
+
+    /* Main Content */
+    .main-viewport {
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: 6rem;
+      max-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    @media (min-width: 768px) { .main-viewport { padding-bottom: 1.5rem; } }
+
+    .top-header {
+      height: 3.75rem;
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: rgba(18, 18, 21, 0.9);
+      backdrop-filter: blur(8px);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      flex-shrink: 0;
+    }
+
+    .content-area {
+      padding: 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    @media (min-width: 768px) { .content-area { padding: 1.5rem; } }
+
+    /* Cards & Grids */
+    .card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1.25rem;
+      padding: 1.25rem;
+    }
+
+    .hero-card {
+      background: linear-gradient(145deg, #1c1c21 0%, #141418 100%);
+      border: 1px solid var(--border);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    .grid-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+    }
+    @media (min-width: 1024px) { .grid-stats { grid-template-columns: repeat(4, 1fr); gap: 1rem; } }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+    @media (min-width: 1024px) { .grid-2 { grid-template-columns: repeat(2, 1fr); } }
+
+    .grid-3-split { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+    @media (min-width: 1024px) { .grid-3-split { grid-template-columns: 1fr 2fr; } }
+
+    .grid-3-split-rev { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+    @media (min-width: 1024px) { .grid-3-split-rev { grid-template-columns: 2fr 1fr; } }
+
+    .stat-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1rem;
+    }
+
+    /* Buttons & Inputs */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      font-size: 0.75rem;
+      padding: 0.625rem 1rem;
+      border-radius: 0.75rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+
+    .btn-primary { background-color: var(--brand-500); color: #000; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25); }
+    .btn-primary:hover { background-color: var(--brand-400); }
+
+    .btn-amber { background-color: var(--amber-400); color: #000; box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2); }
+    .btn-amber:hover { background-color: var(--amber-300); }
+
+    .btn-secondary { background-color: var(--bg-850); color: var(--text-main); border-color: var(--border); }
+    .btn-secondary:hover { background-color: #27272a; }
+
+    .btn-ghost { background: transparent; color: var(--text-muted); padding: 0.375rem; }
+    .btn-ghost:hover { color: #fff; background: var(--bg-850); }
+
+    input[type="text"], input[type="number"], input[type="date"], input[type="password"], select {
+      width: 100%;
+      background-color: var(--bg-900);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.75rem;
+      color: #fff;
+      outline: none;
+    }
+
+    input:focus, select:focus { border-color: var(--brand-500); }
+
+    input[type="checkbox"] {
+      width: 1.1rem;
+      height: 1.1rem;
+      accent-color: var(--brand-500);
+      cursor: pointer;
+    }
+
+    /* Post-it Note */
+    .postit-note {
+      background: linear-gradient(135deg, #fde68a 0%, #fcd34d 100%);
+      color: #18181b;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      position: relative;
+    }
+
+    /* Tables */
+    .table-wrap { overflow-x: auto; width: 100%; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.75rem; text-align: left; }
+    th { background-color: rgba(9, 9, 11, 0.6); color: var(--text-muted); padding: 0.75rem; border-bottom: 1px solid var(--border); font-weight: 600; }
+    td { padding: 0.75rem; border-bottom: 1px solid var(--border); color: var(--text-main); }
+    tr:hover td { background-color: rgba(255, 255, 255, 0.02); }
+
+    /* Mobile Bottom Bar */
+    .mobile-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 4rem;
+      background-color: var(--bg-850);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 0 0.25rem;
+      z-index: 40;
+    }
+    @media (min-width: 768px) { .mobile-nav { display: none; } }
+
+    .mob-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 0.25rem;
+      cursor: pointer;
+      flex: 1;
+    }
+    .mob-btn.active { color: var(--brand-400); }
+
+    /* Chat */
+    .chat-box {
+      height: calc(100vh - 11rem);
+      display: flex;
+      flex-direction: column;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1.25rem;
+      overflow: hidden;
+    }
+    @media (min-width: 768px) { .chat-box { height: calc(100vh - 8rem); } }
+
+    .chat-messages { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: 1rem; }
+    .msg-row { display: flex; gap: 0.625rem; align-items: flex-start; }
+    .msg-row.user { flex-direction: row-reverse; }
+    .msg-bubble {
+      max-width: 85%;
+      padding: 0.75rem 1rem;
+      border-radius: 1rem;
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+    .msg-bubble.coach { background-color: var(--bg-850); border: 1px solid var(--border); color: var(--text-main); }
+    .msg-bubble.user { background-color: var(--brand-500); color: #000; font-weight: 500; }
+    .msg-bubble p { margin-bottom: 0.5rem; }
+    .msg-bubble p:last-child { margin-bottom: 0; }
+    .msg-bubble ul, .msg-bubble ol { margin-left: 1.25rem; margin-bottom: 0.5rem; }
+
+    /* Modals */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(4px);
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-panel {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 1.25rem;
+      padding: 1.25rem;
+      width: 100%;
+      max-width: 26rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* Utility Helpers */
+    .flex-between { display: flex; align-items: center; justify-content: space-between; }
+    .flex-center { display: flex; align-items: center; gap: 0.5rem; }
+    .space-y > * + * { margin-top: 0.75rem; }
+    .space-y-lg > * + * { margin-top: 1.25rem; }
+    .text-brand { color: var(--brand-400); }
+    .text-accent { color: var(--accent-400); }
+    .text-amber { color: var(--amber-400); }
+    .text-muted { color: var(--text-muted); }
+    .text-xs { font-size: 0.75rem; }
+    .text-sm { font-size: 0.875rem; }
+    .font-bold { font-weight: 700; }
+    .w-4 { width: 1rem; height: 1rem; }
+    .w-5 { width: 1.25rem; height: 1.25rem; }
   </style>
 </head>
-<body class="bg-surface-900 text-zinc-100 min-h-screen flex flex-col md:flex-row antialiased select-none selection:bg-brand-500 selection:text-black">
+<body>
 
   <!-- SIDEBAR NAVIGATION (Desktop) -->
-  <aside class="w-full md:w-64 bg-surface-850 border-b md:border-b-0 md:border-r border-surface-border p-4 flex flex-col justify-between shrink-0 z-30">
+  <aside class="sidebar">
     <div>
-      <div class="flex items-center justify-between md:justify-start gap-3 px-2 py-2 mb-2 md:mb-6">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-brand-500 to-amber-400 p-0.5 shadow-lg shadow-brand-500/20 shrink-0">
-            <div class="w-full h-full bg-surface-900 rounded-[10px] flex items-center justify-center">
-              <svg class="w-5 h-5 text-brand-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <div class="brand-header">
+        <div class="brand-left">
+          <div class="logo-box">
+            <div class="logo-inner">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path>
               </svg>
             </div>
           </div>
           <div>
-            <h1 class="font-extrabold text-base tracking-tight text-white flex items-center gap-1.5">
-              FITNESSCOACH <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-brand-500/20 text-brand-400 border border-brand-500/30">PRO</span>
-            </h1>
-            <p class="text-[11px] text-zinc-400 font-medium font-mono" id="sidebar-mission-text">110.1 kg → 85.0 kg</p>
+            <div class="brand-title">
+              FITNESSCOACH <span class="badge-pro">PRO</span>
+            </div>
+            <div class="brand-sub font-mono" id="sidebar-mission-text">110.1 kg → 85.0 kg</div>
           </div>
         </div>
-        <div class="flex items-center gap-1 md:hidden">
-          <button onclick="openApiKeyModal()" class="text-zinc-400 hover:text-brand-400 p-2" title="API Key">
-            <i data-lucide="key" class="w-5 h-5"></i>
-          </button>
-        </div>
+        <button onclick="openApiKeyModal()" class="btn-ghost" style="display:block;" title="Gemini API Key">
+          <i data-lucide="key" class="w-5"></i>
+        </button>
       </div>
 
-      <nav class="hidden md:space-y-1.5 md:block" id="nav-container">
-        <button onclick="switchTab('dashboard')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm transition-all bg-brand-500/10 text-brand-400 border border-brand-500/20" data-tab="dashboard">
-          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+      <nav class="desktop-nav" id="nav-container">
+        <button onclick="switchTab('dashboard')" class="nav-btn active" data-tab="dashboard">
+          <i data-lucide="layout-dashboard" class="w-4"></i>
           <span>Dashboard</span>
         </button>
-        <button onclick="switchTab('postit')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm text-zinc-400 hover:text-zinc-200 hover:bg-surface-card transition-all" data-tab="postit">
-          <i data-lucide="sticky-note" class="w-4 h-4 text-amber-400"></i>
-          <span class="flex-1 text-left">Post-it Zielcheck</span>
+        <button onclick="switchTab('postit')" class="nav-btn" data-tab="postit">
+          <i data-lucide="sticky-note" class="w-4 text-amber"></i>
+          <span>Post-it Zielcheck</span>
         </button>
-        <button onclick="switchTab('checkin')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm text-zinc-400 hover:text-zinc-200 hover:bg-surface-card transition-all" data-tab="checkin">
-          <i data-lucide="scale" class="w-4 h-4"></i>
-          <span class="flex-1 text-left">Fitness-Check-in</span>
+        <button onclick="switchTab('checkin')" class="nav-btn" data-tab="checkin">
+          <i data-lucide="scale" class="w-4"></i>
+          <span>Fitness-Check-in</span>
         </button>
-        <button onclick="switchTab('workout')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm text-zinc-400 hover:text-zinc-200 hover:bg-surface-card transition-all" data-tab="workout">
-          <i data-lucide="dumbbell" class="w-4 h-4 text-brand-400"></i>
+        <button onclick="switchTab('workout')" class="nav-btn" data-tab="workout">
+          <i data-lucide="dumbbell" class="w-4 text-brand"></i>
           <span>Workouts & Plan</span>
         </button>
-        <button onclick="switchTab('habits')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm text-zinc-400 hover:text-zinc-200 hover:bg-surface-card transition-all" data-tab="habits">
-          <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+        <button onclick="switchTab('habits')" class="nav-btn" data-tab="habits">
+          <i data-lucide="check-circle-2" class="w-4 text-brand"></i>
           <span>Habit Tracker</span>
         </button>
-        <button onclick="switchTab('nutrition')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm text-zinc-400 hover:text-zinc-200 hover:bg-surface-card transition-all" data-tab="nutrition">
-          <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+        <button onclick="switchTab('nutrition')" class="nav-btn" data-tab="nutrition">
+          <i data-lucide="file-spreadsheet" class="w-4"></i>
           <span>Ernährungs-CSV</span>
         </button>
-        <button onclick="switchTab('chat')" class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm text-zinc-400 hover:text-zinc-200 hover:bg-surface-card transition-all" data-tab="chat">
-          <i data-lucide="bot" class="w-4 h-4"></i>
-          <span class="flex-1 text-left">Coach Marcus</span>
-          <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+        <button onclick="switchTab('chat')" class="nav-btn" data-tab="chat">
+          <i data-lucide="bot" class="w-4"></i>
+          <span>Coach Marcus</span>
         </button>
       </nav>
     </div>
 
-    <div class="hidden md:block mt-6 pt-4 border-t border-surface-border space-y-2">
-      <button onclick="openApiKeyModal()" class="w-full text-left text-[11px] text-zinc-400 hover:text-brand-400 flex items-center gap-2 p-1.5 rounded-lg hover:bg-surface-card transition-colors">
-        <i data-lucide="key" class="w-4 h-4 text-brand-400"></i>
+    <div class="sidebar-footer">
+      <button onclick="openApiKeyModal()" class="nav-btn" style="font-size: 11px;">
+        <i data-lucide="key" class="w-4 text-brand"></i>
         <span>Gemini API Key</span>
       </button>
     </div>
   </aside>
 
   <!-- MAIN VIEWPORT -->
-  <main class="flex-1 overflow-y-auto pb-24 md:pb-6 max-h-[100vh] bg-surface-900 flex flex-col">
-    <header class="h-14 md:h-16 border-b border-surface-border px-4 md:px-6 flex items-center justify-between bg-surface-850/80 backdrop-blur sticky top-0 z-20">
+  <main class="main-viewport">
+    <header class="top-header">
       <div>
-        <h2 id="page-title" class="text-sm md:text-base font-bold text-white">Dashboard Übersicht</h2>
-        <p class="text-[11px] text-zinc-400 hidden sm:block">Konstanz statt Perfektion – Woche für Woche.</p>
+        <h2 id="page-title" style="font-size: 0.95rem; font-weight: 700;">Dashboard Übersicht</h2>
+        <p style="font-size: 11px; color: var(--text-muted);">Konstanz statt Perfektion – Woche für Woche.</p>
       </div>
-      <div class="text-right">
-        <div class="text-xs font-semibold text-zinc-300 font-mono" id="current-date-header">Wochenübersicht</div>
-      </div>
+      <div style="font-size: 11px; font-weight: 600; color: var(--text-muted);" class="font-mono" id="current-date-header">Wochenübersicht</div>
     </header>
 
-    <div class="p-4 md:p-6 flex-1 space-y-6">
+    <div class="content-area">
 
       <!-- ================= 1. DASHBOARD TAB ================= -->
-      <section id="view-dashboard" class="space-y-6">
-        <div class="overflow-hidden rounded-3xl bg-surface-card border border-surface-border shadow-2xl p-6 md:p-8 space-y-3">
-          <div class="flex items-center gap-2">
-            <span class="text-[10px] uppercase font-mono tracking-wider font-extrabold bg-brand-500/20 text-brand-400 border border-brand-500/30 px-2.5 py-0.5 rounded-full">
-              Mindset
-            </span>
-          </div>
-          <h3 class="text-xl md:text-2xl font-black text-white italic tracking-tight leading-tight">
+      <section id="view-dashboard" class="space-y-lg">
+        <div class="hero-card space-y">
+          <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; background: rgba(16,185,129,0.15); color: var(--brand-400); border: 1px solid rgba(16,185,129,0.3); padding: 3px 10px; border-radius: 99px;" class="font-mono">
+            Mindset
+          </span>
+          <h3 style="font-size: 1.35rem; font-weight: 800; font-style: italic; line-height: 1.25;">
             „Ich trainiere nicht für heute – ich baue den Körper von morgen.“
           </h3>
-          <p class="text-xs text-zinc-300 max-w-xl leading-relaxed">
+          <p class="text-xs text-muted" style="max-width: 36rem; line-height: 1.5;">
             Jedes Workout, jede Mahlzeit und jeder Schritt meißelt den Körper frei, den du aufbauen willst. Bleib fokussiert und zieh den Plan durch!
           </p>
-          <div class="pt-2 flex flex-wrap items-center gap-2.5">
-            <button onclick="switchTab('workout')" class="bg-brand-500 hover:bg-brand-400 text-black font-extrabold text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 transition-all shadow-lg shadow-brand-500/20">
-              <i data-lucide="dumbbell" class="w-4 h-4 fill-black"></i> Workout starten
+          <div style="display: flex; flex-wrap: wrap; gap: 0.625rem; padding-top: 0.25rem;">
+            <button onclick="switchTab('workout')" class="btn btn-primary">
+              <i data-lucide="dumbbell" class="w-4"></i> Workout starten
             </button>
-            <button onclick="switchTab('postit')" class="bg-surface-850 hover:bg-zinc-800 text-zinc-200 font-bold text-xs px-3.5 py-2.5 rounded-xl border border-surface-border flex items-center gap-1.5 transition-all">
-              <i data-lucide="sticky-note" class="w-4 h-4 text-amber-400"></i> Post-it Ziele
+            <button onclick="switchTab('postit')" class="btn btn-secondary">
+              <i data-lucide="sticky-note" class="w-4 text-amber"></i> Post-it Ziele
             </button>
           </div>
         </div>
 
         <!-- 4 Quick Stats -->
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-          <div class="bg-surface-card p-4 rounded-xl border border-surface-border">
-            <div class="flex justify-between items-start">
-              <span class="text-xs text-zinc-400">Aktuelles Gewicht</span>
-              <i data-lucide="scale" class="w-4 h-4 text-brand-400"></i>
+        <div class="grid-stats">
+          <div class="stat-card">
+            <div class="flex-between">
+              <span class="text-xs text-muted">Aktuelles Gewicht</span>
+              <i data-lucide="scale" class="w-4 text-brand"></i>
             </div>
-            <div class="text-xl md:text-2xl font-bold font-mono text-white mt-2" id="dash-weight">110.1 <span class="text-xs text-zinc-400">kg</span></div>
-            <div class="text-[11px] text-zinc-400 mt-1 flex items-center gap-1">
-              <span>Ziel: 85.0 kg</span>
-              <span class="text-accent-400 font-mono" id="dash-weight-diff">(-25.1 kg)</span>
-            </div>
-          </div>
-
-          <div class="bg-surface-card p-4 rounded-xl border border-surface-border">
-            <div class="flex justify-between items-start">
-              <span class="text-xs text-zinc-400">Bauchumfang</span>
-              <i data-lucide="activity" class="w-4 h-4 text-accent-400"></i>
-            </div>
-            <div class="text-xl md:text-2xl font-bold font-mono text-white mt-2" id="dash-waist">118 <span class="text-xs text-zinc-400">cm</span></div>
-            <div class="text-[11px] text-zinc-400 mt-1">
-              Körperfett: <span class="text-zinc-200 font-mono" id="dash-kfa">~36.1%</span>
+            <div style="font-size: 1.4rem; font-weight: 700; margin-top: 0.5rem;" class="font-mono" id="dash-weight">110.1 <span class="text-xs text-muted">kg</span></div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 0.25rem;">
+              Ziel: 85.0 kg <span class="text-accent font-mono" id="dash-weight-diff">(-25.1 kg)</span>
             </div>
           </div>
 
-          <div class="bg-surface-card p-4 rounded-xl border border-surface-border">
-            <div class="flex justify-between items-start">
-              <span class="text-xs text-zinc-400">Post-it Erfüllung</span>
-              <i data-lucide="check-check" class="w-4 h-4 text-amber-400"></i>
+          <div class="stat-card">
+            <div class="flex-between">
+              <span class="text-xs text-muted">Bauchumfang</span>
+              <i data-lucide="activity" class="w-4 text-accent"></i>
             </div>
-            <div class="text-xl md:text-2xl font-bold font-mono text-amber-400 mt-2" id="dash-postit-score">37 <span class="text-xs text-zinc-400">%</span></div>
-            <div class="text-[11px] text-zinc-400 mt-1">
+            <div style="font-size: 1.4rem; font-weight: 700; margin-top: 0.5rem;" class="font-mono" id="dash-waist">118 <span class="text-xs text-muted">cm</span></div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 0.25rem;">
+              Körperfett: <span style="color:#fff;" class="font-mono" id="dash-kfa">~36.1%</span>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="flex-between">
+              <span class="text-xs text-muted">Post-it Erfüllung</span>
+              <i data-lucide="check-check" class="w-4 text-amber"></i>
+            </div>
+            <div style="font-size: 1.4rem; font-weight: 700; margin-top: 0.5rem;" class="font-mono text-amber" id="dash-postit-score">37 <span class="text-xs text-muted">%</span></div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 0.25rem;">
               Vorwoche: 37% • Routine
             </div>
           </div>
 
-          <div onclick="openStepsModal()" class="bg-surface-card hover:bg-surface-border/60 cursor-pointer p-4 rounded-xl border border-surface-border transition-all group">
-            <div class="flex justify-between items-start">
-              <span class="text-xs text-zinc-400 group-hover:text-emerald-300 transition-colors flex items-center gap-1">
-                Schrittziel (Klick) <i data-lucide="edit-2" class="w-3 h-3 opacity-60"></i>
-              </span>
-              <i data-lucide="footprints" class="w-4 h-4 text-emerald-400"></i>
+          <div onclick="openStepsModal()" class="stat-card" style="cursor: pointer;">
+            <div class="flex-between">
+              <span class="text-xs text-muted flex-center">Schrittziel <i data-lucide="edit-2" style="width:12px;height:12px;"></i></span>
+              <i data-lucide="footprints" class="w-4 text-brand"></i>
             </div>
-            <div class="text-xl md:text-2xl font-bold font-mono text-emerald-400 mt-2" id="dash-steps-pct">
-              0 <span class="text-xs text-zinc-400">%</span>
-            </div>
-            <div class="text-[11px] text-zinc-400 mt-1 truncate" id="dash-steps-subtext">
+            <div style="font-size: 1.4rem; font-weight: 700; margin-top: 0.5rem;" class="font-mono text-brand" id="dash-steps-pct">0 <span class="text-xs text-muted">%</span></div>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 0.25rem;" class="truncate" id="dash-steps-subtext">
               Ø 0 / 7.000 Schritte
             </div>
           </div>
         </div>
 
         <!-- Schnelleinstieg Habits -->
-        <div>
-          <button onclick="switchTab('habits')" class="w-full bg-surface-card hover:bg-surface-border p-4 rounded-xl border border-surface-border text-left transition-all flex items-center justify-between">
-            <div>
-              <div class="text-xs font-bold text-white flex items-center gap-1.5">
-                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
-                Tages-Habits abhaken
-              </div>
-              <p class="text-[11px] text-zinc-400 mt-0.5">Kreatin, Omega-3, Himbeeren/Apfel + Mandeln, Flohsamenschalen</p>
+        <button onclick="switchTab('habits')" class="card flex-between" style="width: 100%; cursor: pointer; text-align: left;">
+          <div>
+            <div class="text-xs font-bold flex-center">
+              <i data-lucide="check-circle-2" class="w-4 text-brand"></i>
+              <span>Tages-Habits abhaken</span>
             </div>
-            <i data-lucide="chevron-right" class="w-4 h-4 text-zinc-500"></i>
-          </button>
-        </div>
+            <p style="font-size: 11px; color: var(--text-muted); margin-top: 0.25rem;">Kreatin, Omega-3, Himbeeren/Apfel + Mandeln, Flohsamenschalen</p>
+          </div>
+          <i data-lucide="chevron-right" class="w-4 text-muted"></i>
+        </button>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="lg:col-span-2 bg-surface-card p-4 md:p-5 rounded-2xl border border-surface-border">
-            <div class="flex items-center justify-between mb-4">
+        <!-- Chart & Spiegel-Ziele -->
+        <div class="grid-3-split-rev">
+          <div class="card">
+            <div class="flex-between" style="margin-bottom: 1rem;">
               <div>
-                <h4 class="font-bold text-sm text-white">Gewichts- & Umfangsverlauf</h4>
-                <p class="text-xs text-zinc-400">Chronologischer Trend</p>
+                <h4 class="text-sm font-bold">Gewichts- & Umfangsverlauf</h4>
+                <p class="text-xs text-muted">Chronologischer Trend</p>
               </div>
-              <button onclick="switchTab('checkin')" class="text-xs text-brand-400 hover:underline">Zum Check-in →</button>
+              <button onclick="switchTab('checkin')" class="btn-ghost text-xs text-brand">Zum Check-in →</button>
             </div>
-            <div class="h-56">
+            <div style="height: 14rem;">
               <canvas id="dashWeightChart"></canvas>
             </div>
           </div>
 
-          <div class="bg-surface-card p-4 md:p-5 rounded-2xl border border-surface-border flex flex-col justify-between">
+          <div class="card flex-between" style="flex-direction: column; align-items: stretch;">
             <div>
-              <div class="flex items-center gap-2 mb-3">
-                <div class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center">
-                  <i data-lucide="sticky-note" class="w-4 h-4"></i>
-                </div>
-                <h4 class="font-bold text-sm text-white">Aktuelle Spiegel-Ziele</h4>
+              <div class="flex-center" style="margin-bottom: 0.75rem;">
+                <i data-lucide="sticky-note" class="w-4 text-amber"></i>
+                <h4 class="text-sm font-bold">Aktuelle Spiegel-Ziele</h4>
               </div>
-              <ul class="text-xs text-zinc-300 space-y-2" id="dash-postit-list">
-              </ul>
+              <ul class="text-xs space-y" style="list-style: none; color: #d4d4d8;" id="dash-postit-list"></ul>
             </div>
-            <button onclick="switchTab('postit')" class="mt-4 w-full py-2 bg-amber-400 hover:bg-amber-300 text-black font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all shadow-md">
-              <i data-lucide="check-square" class="w-3.5 h-3.5 fill-black"></i> Wochenabfrage öffnen
+            <button onclick="switchTab('postit')" class="btn btn-amber" style="width: 100%; margin-top: 1rem;">
+              <i data-lucide="check-square" class="w-4"></i> Wochenabfrage öffnen
             </button>
           </div>
         </div>
       </section>
 
       <!-- ================= 2. POST-IT ZIELCHECK TAB ================= -->
-      <section id="view-postit" class="space-y-6 hidden">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="space-y-4">
-            <div class="bg-gradient-to-br from-amber-200 via-amber-300 to-yellow-200 text-zinc-900 p-6 rounded-2xl shadow-2xl border border-yellow-400/50 relative overflow-hidden transform -rotate-1 hover:rotate-0 transition-transform">
-              <div class="w-16 h-4 bg-yellow-500/30 absolute top-0 left-1/2 -translate-x-1/2 rounded-b"></div>
-              <div class="flex items-center justify-between border-b border-zinc-900/10 pb-2 mb-3">
-                <div class="font-handwriting font-bold text-lg flex items-center gap-1.5">
-                  <i data-lucide="pin" class="w-4 h-4 text-amber-800"></i> Spiegel-Post-it
+      <section id="view-postit" class="space-y-lg hidden">
+        <div class="grid-3-split">
+          <div class="space-y-lg">
+            <div class="postit-note">
+              <div class="flex-between" style="border-bottom: 1px solid rgba(0,0,0,0.12); padding-bottom: 0.5rem; margin-bottom: 0.75rem;">
+                <div class="font-handwriting font-bold" style="font-size: 1.15rem; display: flex; align-items: center; gap: 0.375rem;">
+                  <i data-lucide="pin" class="w-4"></i> Spiegel-Post-it
                 </div>
-                <span class="text-[10px] font-mono font-bold bg-black/10 px-2 py-0.5 rounded" id="postit-week-label">Aktuelle Woche</span>
+                <span style="font-size: 10px; background: rgba(0,0,0,0.1); padding: 2px 8px; border-radius: 4px;" class="font-mono font-bold">Aktuelle Woche</span>
               </div>
-              <ul class="font-handwriting text-base space-y-2 leading-relaxed text-zinc-950 font-bold" id="postit-goals-list">
-              </ul>
-              <div class="mt-4 pt-3 border-t border-zinc-900/10 text-[11px] font-mono text-zinc-700 italic text-right">
+              <ul class="font-handwriting font-bold space-y" style="font-size: 1rem; list-style: none;" id="postit-goals-list"></ul>
+              <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgba(0,0,0,0.12); font-size: 11px; text-align: right; font-style: italic;" class="font-mono">
                 „Jeden Samstag neu anpassen!“
               </div>
             </div>
 
-            <div class="bg-surface-card p-4 rounded-2xl border border-amber-500/30 bg-amber-500/5 space-y-3">
-              <div class="flex items-center gap-2">
-                <i data-lucide="camera" class="w-4 h-4 text-amber-400"></i>
-                <h4 class="font-bold text-xs text-white">Neues Post-it abfotografieren</h4>
+            <div class="card space-y" style="border-color: rgba(251, 191, 36, 0.3);">
+              <div class="flex-center">
+                <i data-lucide="camera" class="w-4 text-amber"></i>
+                <h4 class="text-xs font-bold">Neues Post-it abfotografieren</h4>
               </div>
-              <p class="text-[11px] text-zinc-300 leading-relaxed">
+              <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4;">
                 Fotografiere dein handschriftliches Post-it. Marcus liest die 5 Ziele automatisch aus und aktualisiert die App!
               </p>
-              <label class="w-full cursor-pointer bg-amber-400 hover:bg-amber-300 text-black font-bold py-2 px-3 rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-md">
-                <i data-lucide="upload" class="w-4 h-4"></i> Post-it Foto hochladen
+              <label class="btn btn-amber" style="width: 100%;">
+                <i data-lucide="upload" class="w-4"></i> Post-it Foto hochladen
                 <input type="file" id="postit-photo-input" accept="image/*" capture="environment" class="hidden" onchange="handlePostitPhotoUpload(event)">
               </label>
-              <div id="postit-ocr-status" class="hidden text-[11px] text-amber-300 font-mono text-center animate-pulse">
+              <div id="postit-ocr-status" class="hidden text-xs text-amber font-mono" style="text-align: center;">
                 Marcus liest Post-it aus...
-              </div>
-            </div>
-
-            <div class="bg-surface-card p-4 rounded-2xl border border-surface-border space-y-2 text-xs">
-              <div class="font-bold text-zinc-300 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
-                <i data-lucide="history" class="w-3.5 h-3.5 text-amber-400"></i> Bisheriger Verlauf
-              </div>
-              <div class="p-2 bg-surface-900 rounded-lg flex justify-between">
-                <span>Woche 1:</span>
-                <span class="font-mono text-zinc-400">0 %</span>
-              </div>
-              <div class="p-2 bg-surface-900 rounded-lg flex justify-between">
-                <span>Woche 2:</span>
-                <span class="font-mono text-amber-400 font-bold">37 %</span>
               </div>
             </div>
           </div>
 
-          <div class="lg:col-span-2 space-y-5">
-            <div class="bg-surface-card p-4 md:p-6 rounded-2xl border border-surface-border space-y-4">
-              <div class="border-b border-surface-border pb-3 flex justify-between items-start gap-3">
+          <div class="space-y-lg">
+            <div class="card space-y-lg">
+              <div class="flex-between" style="border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
                 <div>
-                  <h3 class="font-bold text-base text-white">Interaktive Wochenabfrage</h3>
-                  <p class="text-xs text-zinc-400">Deine Eingaben werden automatisch zwischengespeichert.</p>
+                  <h3 class="text-sm font-bold">Interaktive Wochenabfrage</h3>
+                  <p class="text-xs text-muted">Deine Eingaben werden automatisch zwischengespeichert.</p>
                 </div>
-                <button onclick="resetPostitForm()" class="px-3 py-1.5 rounded-xl bg-surface-900 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 text-xs border border-surface-border flex items-center gap-1.5 transition-colors shrink-0" title="Alle Eingaben zurücksetzen">
-                  <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Zurücksetzen
+                <button onclick="resetPostitForm()" class="btn btn-secondary" title="Alle Eingaben zurücksetzen">
+                  <i data-lucide="rotate-ccw" class="w-4"></i> Zurücksetzen
                 </button>
               </div>
 
-              <div class="space-y-3 text-xs" id="postit-form-container">
+              <div class="space-y" id="postit-form-container"></div>
+
+              <div style="background: var(--bg-900); padding: 0.875rem; border-radius: 0.875rem; border: 1px solid var(--border);" class="space-y">
+                <label class="text-xs font-bold" style="display: block;">Optionale Anmerkungen</label>
+                <input type="text" id="postit-notes" oninput="savePostitDraft()" placeholder="z. B. Spaziergänge eingebaut, gute Routine...">
               </div>
 
-              <div class="p-3.5 bg-surface-900/70 rounded-xl border border-surface-border space-y-1.5 text-xs">
-                <label class="font-bold text-zinc-200">Optionale Anmerkungen</label>
-                <input type="text" id="postit-notes" oninput="savePostitDraft()" placeholder="z. B. Spaziergänge eingebaut, gute Routine..." class="w-full bg-surface-card border border-surface-border rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
-              </div>
-
-              <button onclick="submitPostitCheckin()" class="w-full py-3 bg-amber-400 hover:bg-amber-300 text-black font-extrabold text-xs rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-amber-400/10">
-                <i data-lucide="send" class="w-4 h-4 fill-black"></i> Post-it Check-in speichern & an Marcus senden
+              <button onclick="submitPostitCheckin()" class="btn btn-amber" style="width: 100%; padding: 0.85rem;">
+                <i data-lucide="send" class="w-4"></i> Post-it Check-in speichern & an Marcus senden
               </button>
             </div>
 
-            <div class="bg-surface-card rounded-2xl border border-surface-border overflow-hidden">
-              <div class="p-3.5 border-b border-surface-border flex justify-between items-center">
-                <h4 class="font-bold text-xs text-zinc-300 uppercase tracking-wider">Post-it Wochenhistorie</h4>
+            <div class="card" style="padding: 0; overflow: hidden;">
+              <div style="padding: 0.875rem 1rem; border-bottom: 1px solid var(--border);">
+                <h4 class="text-xs font-bold text-muted" style="text-transform: uppercase;">Post-it Wochenhistorie</h4>
               </div>
-              <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs border-collapse">
-                  <thead class="bg-surface-900/60 text-zinc-400 font-mono border-b border-surface-border">
+              <div class="table-wrap">
+                <table>
+                  <thead>
                     <tr>
-                      <th class="p-3">Woche</th>
-                      <th class="p-3 text-right">Ziele</th>
-                      <th class="p-3 text-right font-bold text-amber-400">Gesamtquote</th>
+                      <th>Woche</th>
+                      <th>Ziele</th>
+                      <th style="text-align: right;">Quote</th>
                     </tr>
                   </thead>
-                  <tbody id="postit-history-tbody" class="divide-y divide-surface-border text-zinc-300 font-mono"></tbody>
+                  <tbody id="postit-history-tbody" class="font-mono"></tbody>
                 </table>
               </div>
             </div>
@@ -368,106 +703,102 @@
       </section>
 
       <!-- ================= 3. FITNESS CHECK-IN TAB ================= -->
-      <section id="view-checkin" class="space-y-6 hidden">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div class="bg-surface-card p-4 md:p-5 rounded-2xl border border-surface-border space-y-4">
+      <section id="view-checkin" class="space-y-lg hidden">
+        <div class="grid-3-split">
+          <div class="card space-y">
             <div>
-              <h3 class="font-bold text-base text-white">Körperdaten erfassen</h3>
-              <p class="text-xs text-zinc-400">Nüchtern wiegen & messen.</p>
+              <h3 class="text-sm font-bold">Körperdaten erfassen</h3>
+              <p class="text-xs text-muted">Nüchtern wiegen & messen.</p>
             </div>
 
-            <div class="space-y-3 text-xs">
-              <div>
-                <label class="text-zinc-400">Datum</label>
-                <input type="date" id="checkin-date" class="w-full mt-1 bg-surface-900 border border-surface-border rounded-xl px-3 py-2 text-white focus:outline-none focus:border-brand-500">
-              </div>
+            <div>
+              <label class="text-xs text-muted">Datum</label>
+              <input type="date" id="checkin-date" style="margin-top: 0.25rem;">
+            </div>
 
-              <div class="p-3 bg-surface-900/60 rounded-xl border border-surface-border space-y-2">
-                <span class="text-[11px] font-bold text-brand-400 uppercase tracking-wider">Kernmesswerte</span>
-                <div class="grid grid-cols-3 gap-2">
-                  <div>
-                    <label class="text-[10px] text-zinc-400">Gewicht (kg)*</label>
-                    <input type="number" step="0.1" id="checkin-weight" placeholder="110.1" class="w-full mt-1 bg-surface-card border border-surface-border rounded-lg px-2 py-1.5 font-mono text-white focus:outline-none focus:border-brand-500">
-                  </div>
-                  <div>
-                    <label class="text-[10px] text-zinc-400">KFA (%)</label>
-                    <input type="number" step="0.1" id="checkin-kfa" placeholder="36.1" class="w-full mt-1 bg-surface-card border border-surface-border rounded-lg px-2 py-1.5 font-mono text-white focus:outline-none focus:border-brand-500">
-                  </div>
-                  <div>
-                    <label class="text-[10px] text-zinc-400">Bauch (cm)</label>
-                    <input type="number" step="0.5" id="checkin-waist" placeholder="118.0" class="w-full mt-1 bg-surface-card border border-surface-border rounded-lg px-2 py-1.5 font-mono text-white focus:outline-none focus:border-brand-500">
-                  </div>
-                </div>
-              </div>
-
-              <div class="p-3 bg-surface-900/60 rounded-xl border border-surface-border space-y-2">
-                <span class="text-[11px] font-bold text-zinc-300 uppercase tracking-wider">Plan & Feedback</span>
-                <div class="grid grid-cols-2 gap-2">
-                  <div>
-                    <label class="text-[10px] text-zinc-400">Gym (Soll: 2)</label>
-                    <input type="number" id="checkin-gym" placeholder="2" class="w-full mt-1 bg-surface-card border border-surface-border rounded-lg px-2 py-1.5 font-mono text-white focus:outline-none focus:border-brand-500">
-                  </div>
-                  <div>
-                    <label class="text-[10px] text-zinc-400">Cut-Tage (Soll: 4)</label>
-                    <input type="number" id="checkin-cutdays" placeholder="4" class="w-full mt-1 bg-surface-card border border-surface-border rounded-lg px-2 py-1.5 font-mono text-white focus:outline-none focus:border-brand-500">
-                  </div>
-                </div>
-                <div class="grid grid-cols-2 gap-2">
-                  <div>
-                    <label class="text-[10px] text-zinc-400">Motivation Training (1-10)</label>
-                    <input type="number" min="1" max="10" id="checkin-motivation-training" placeholder="6" class="w-full mt-1 bg-surface-card border border-surface-border rounded-lg px-2 py-1.5 font-mono text-white focus:outline-none focus:border-brand-500">
-                  </div>
-                  <div>
-                    <label class="text-[10px] text-zinc-400">Motivation Ernährung (1-10)</label>
-                    <input type="number" min="1" max="10" id="checkin-motivation-nutrition" placeholder="6" class="w-full mt-1 bg-surface-card border border-surface-border rounded-lg px-2 py-1.5 font-mono text-white focus:outline-none focus:border-brand-500">
-                  </div>
+            <div style="background: var(--bg-900); padding: 0.75rem; border-radius: 0.875rem; border: 1px solid var(--border);" class="space-y">
+              <span style="font-size: 11px; font-weight: 700; text-transform: uppercase;" class="text-brand">Kernmesswerte</span>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;">
+                <div>
+                  <label style="font-size: 10px;" class="text-muted">Gewicht (kg)*</label>
+                  <input type="number" step="0.1" id="checkin-weight" placeholder="110.1" class="font-mono" style="margin-top: 0.25rem;">
                 </div>
                 <div>
-                  <label class="text-[10px] text-zinc-400">Kleidungssitz</label>
-                  <select id="checkin-clothes" class="w-full mt-1 bg-surface-card border border-surface-border rounded-lg px-2 py-1.5 text-white focus:outline-none focus:border-brand-500">
-                    <option value="unverändert">Unverändert</option>
-                    <option value="etwas lockerer">Lockerer</option>
-                    <option value="etwas enger">Enger</option>
-                  </select>
+                  <label style="font-size: 10px;" class="text-muted">KFA (%)</label>
+                  <input type="number" step="0.1" id="checkin-kfa" placeholder="36.1" class="font-mono" style="margin-top: 0.25rem;">
+                </div>
+                <div>
+                  <label style="font-size: 10px;" class="text-muted">Bauch (cm)</label>
+                  <input type="number" step="0.5" id="checkin-waist" placeholder="118.0" class="font-mono" style="margin-top: 0.25rem;">
                 </div>
               </div>
+            </div>
 
-              <div class="flex gap-2 pt-1">
-                <button onclick="saveCheckinEntry(false)" class="flex-1 py-2.5 bg-surface-850 hover:bg-zinc-800 text-zinc-200 font-semibold rounded-xl border border-surface-border transition-all">
-                  Nur Speichern
-                </button>
-                <button onclick="saveCheckinEntry(true)" class="flex-1 py-2.5 bg-brand-500 hover:bg-brand-400 text-black font-bold rounded-xl transition-all shadow-md flex items-center justify-center gap-1.5">
-                  <i data-lucide="sparkles" class="w-4 h-4 fill-black"></i> Speichern & Bewerten
-                </button>
+            <div style="background: var(--bg-900); padding: 0.75rem; border-radius: 0.875rem; border: 1px solid var(--border);" class="space-y">
+              <span style="font-size: 11px; font-weight: 700; text-transform: uppercase;">Plan & Feedback</span>
+              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+                <div>
+                  <label style="font-size: 10px;" class="text-muted">Gym (Soll: 2)</label>
+                  <input type="number" id="checkin-gym" placeholder="2" class="font-mono" style="margin-top: 0.25rem;">
+                </div>
+                <div>
+                  <label style="font-size: 10px;" class="text-muted">Cut-Tage (Soll: 4)</label>
+                  <input type="number" id="checkin-cutdays" placeholder="4" class="font-mono" style="margin-top: 0.25rem;">
+                </div>
               </div>
+              <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem;">
+                <div>
+                  <label style="font-size: 10px;" class="text-muted">Motivation Training (1-10)</label>
+                  <input type="number" min="1" max="10" id="checkin-motivation-training" placeholder="6" class="font-mono" style="margin-top: 0.25rem;">
+                </div>
+                <div>
+                  <label style="font-size: 10px;" class="text-muted">Motivation Ernährung (1-10)</label>
+                  <input type="number" min="1" max="10" id="checkin-motivation-nutrition" placeholder="6" class="font-mono" style="margin-top: 0.25rem;">
+                </div>
+              </div>
+              <div>
+                <label style="font-size: 10px;" class="text-muted">Kleidungssitz</label>
+                <select id="checkin-clothes" style="margin-top: 0.25rem;">
+                  <option value="unverändert">Unverändert</option>
+                  <option value="etwas lockerer">Lockerer</option>
+                  <option value="etwas enger">Enger</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 0.5rem;">
+              <button onclick="saveCheckinEntry(false)" class="btn btn-secondary" style="flex: 1;">Nur Speichern</button>
+              <button onclick="saveCheckinEntry(true)" class="btn btn-primary" style="flex: 1;">
+                <i data-lucide="sparkles" class="w-4"></i> Bewerten
+              </button>
             </div>
           </div>
 
-          <div class="lg:col-span-2 space-y-6">
-            <div class="bg-surface-card p-4 md:p-5 rounded-2xl border border-surface-border">
-              <h4 class="font-bold text-sm text-white mb-2">Chronologischer Verlauf</h4>
-              <div class="h-64">
+          <div class="space-y-lg">
+            <div class="card">
+              <h4 class="text-sm font-bold" style="margin-bottom: 0.75rem;">Chronologischer Verlauf</h4>
+              <div style="height: 16rem;">
                 <canvas id="fullWeightChart"></canvas>
               </div>
             </div>
 
-            <div class="bg-surface-card rounded-2xl border border-surface-border overflow-hidden">
-              <div class="p-3.5 border-b border-surface-border">
-                <h4 class="font-bold text-xs text-zinc-300 uppercase tracking-wider">Messwert-Historie</h4>
+            <div class="card" style="padding: 0; overflow: hidden;">
+              <div style="padding: 0.875rem 1rem; border-bottom: 1px solid var(--border);">
+                <h4 class="text-xs font-bold text-muted" style="text-transform: uppercase;">Messwert-Historie</h4>
               </div>
-              <div class="max-h-60 overflow-y-auto">
-                <table class="w-full text-left text-xs border-collapse font-mono">
-                  <thead class="bg-surface-900/60 text-zinc-400 border-b border-surface-border">
+              <div class="table-wrap" style="max-height: 15rem;">
+                <table class="font-mono">
+                  <thead>
                     <tr>
-                      <th class="p-3">Datum</th>
-                      <th class="p-3">Gewicht</th>
-                      <th class="p-3">Bauch</th>
-                      <th class="p-3">KFA</th>
-                      <th class="p-3">Gym/Cut</th>
-                      <th class="p-3 text-right">Aktion</th>
+                      <th>Datum</th>
+                      <th>Gewicht</th>
+                      <th>Bauch</th>
+                      <th>KFA</th>
+                      <th>Gym/Cut</th>
+                      <th style="text-align: right;">Aktion</th>
                     </tr>
                   </thead>
-                  <tbody id="checkin-history-tbody" class="divide-y divide-surface-border text-zinc-300"></tbody>
+                  <tbody id="checkin-history-tbody"></tbody>
                 </table>
               </div>
             </div>
@@ -476,93 +807,91 @@
       </section>
 
       <!-- ================= 4. HABIT TRACKER TAB ================= -->
-      <section id="view-habits" class="space-y-6 hidden">
-        <div class="bg-surface-card p-4 md:p-5 rounded-2xl border border-surface-border flex flex-col md:flex-row justify-between md:items-center gap-4">
+      <section id="view-habits" class="space-y-lg hidden">
+        <div class="card flex-between" style="flex-wrap: wrap; gap: 1rem;">
           <div>
-            <span class="text-xs uppercase font-extrabold tracking-wider bg-brand-500/10 text-brand-400 px-2 py-0.5 rounded border border-brand-500/30">Routinen</span>
-            <h3 class="text-base md:text-lg font-bold text-white mt-1">Tägliche Habits</h3>
-            <p class="text-xs text-zinc-400">Kreatin • Omega-3 • Himbeeren/Apfel + Mandeln • Flohsamenschalen</p>
+            <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; background: rgba(16,185,129,0.15); color: var(--brand-400); padding: 2px 8px; border-radius: 4px;">Routinen</span>
+            <h3 class="text-sm font-bold" style="margin-top: 0.375rem;">Tägliche Habits</h3>
+            <p class="text-xs text-muted">Kreatin • Omega-3 • Himbeeren/Apfel + Mandeln • Flohsamenschalen</p>
           </div>
-          <div class="flex items-center gap-2">
-            <button onclick="resetHabitsWeek()" class="px-3 py-2 rounded-xl bg-surface-900 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 text-xs border border-surface-border flex items-center gap-1.5 transition-colors" title="Alle Habits zurücksetzen">
-              <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Zurücksetzen
+          <div class="flex-center">
+            <button onclick="resetHabitsWeek()" class="btn btn-secondary">
+              <i data-lucide="rotate-ccw" class="w-4"></i> Zurücksetzen
             </button>
-            <button onclick="openHabitModal()" class="bg-brand-500 hover:bg-brand-400 text-black font-bold px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 transition-all shadow-md">
-              <i data-lucide="plus" class="w-4 h-4"></i> Neues Habit
+            <button onclick="openHabitModal()" class="btn btn-primary">
+              <i data-lucide="plus" class="w-4"></i> Neues Habit
             </button>
           </div>
         </div>
 
-        <div class="bg-surface-card rounded-2xl border border-surface-border overflow-hidden">
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr class="border-b border-surface-border bg-surface-900/50 text-zinc-400 font-mono">
-                  <th class="p-3.5 font-semibold text-zinc-200">Routine</th>
-                  <th class="p-3.5 text-center">Mo</th>
-                  <th class="p-3.5 text-center">Di</th>
-                  <th class="p-3.5 text-center">Mi</th>
-                  <th class="p-3.5 text-center">Do</th>
-                  <th class="p-3.5 text-center">Fr</th>
-                  <th class="p-3.5 text-center">Sa</th>
-                  <th class="p-3.5 text-center">So</th>
-                  <th class="p-3.5 text-right">Streak</th>
-                  <th class="p-3.5 text-center">Aktion</th>
+        <div class="card" style="padding: 0; overflow: hidden;">
+          <div class="table-wrap">
+            <table>
+              <thead class="font-mono">
+                <tr>
+                  <th>Routine</th>
+                  <th style="text-align: center;">Mo</th>
+                  <th style="text-align: center;">Di</th>
+                  <th style="text-align: center;">Mi</th>
+                  <th style="text-align: center;">Do</th>
+                  <th style="text-align: center;">Fr</th>
+                  <th style="text-align: center;">Sa</th>
+                  <th style="text-align: center;">So</th>
+                  <th style="text-align: right;">Streak</th>
+                  <th style="text-align: center;">Aktion</th>
                 </tr>
               </thead>
-              <tbody id="habits-table-body" class="divide-y divide-surface-border text-zinc-300"></tbody>
+              <tbody id="habits-table-body"></tbody>
             </table>
           </div>
         </div>
       </section>
 
       <!-- ================= 5. ERNÄHRUNG & CSV TAB ================= -->
-      <section id="view-nutrition" class="space-y-6 hidden">
-        <div class="bg-surface-card p-6 rounded-2xl border border-dashed border-zinc-700 text-center">
-          <div class="w-12 h-12 rounded-2xl bg-brand-500/10 text-brand-400 mx-auto flex items-center justify-center mb-3">
-            <i data-lucide="file-spreadsheet" class="w-6 h-6"></i>
-          </div>
-          <h3 class="text-base font-bold text-white mt-2">Ernährungs-CSV importieren</h3>
-          <p class="text-xs text-zinc-400 max-w-md mx-auto mt-1 mb-4">
+      <section id="view-nutrition" class="space-y-lg hidden">
+        <div class="card" style="border-style: dashed; text-align: center; padding: 2rem 1rem;">
+          <i data-lucide="file-spreadsheet" class="text-brand" style="width: 2.5rem; height: 2.5rem; margin: 0 auto 0.75rem auto;"></i>
+          <h3 class="text-sm font-bold">Ernährungs-CSV importieren</h3>
+          <p class="text-xs text-muted" style="max-width: 26rem; margin: 0.375rem auto 1.25rem auto;">
             Lade deine wöchentliche CSV-Datei hoch. TAGESSUMME-Zeilen werden automatisch ignoriert.
           </p>
-          <div class="flex flex-wrap items-center justify-center gap-3">
-            <label class="cursor-pointer bg-brand-500 hover:bg-brand-400 text-black font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 transition-all shadow-md">
-              <i data-lucide="upload" class="w-4 h-4"></i> Ernährungs-CSV auswählen
+          <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem;">
+            <label class="btn btn-primary">
+              <i data-lucide="upload" class="w-4"></i> Ernährungs-CSV auswählen
               <input type="file" id="csv-file-input" accept=".csv, .txt" class="hidden" onchange="handleNutritionCsvUpload(event)">
             </label>
-            <button onclick="loadSampleNutritionCsv()" class="bg-surface-850 hover:bg-zinc-800 text-zinc-300 font-semibold px-4 py-2.5 rounded-xl text-xs border border-surface-border">
+            <button onclick="loadSampleNutritionCsv()" class="btn btn-secondary">
               Musterwoche laden
             </button>
           </div>
         </div>
 
-        <div id="nutrition-results-container" class="space-y-6 hidden">
-          <div class="bg-surface-card p-4 md:p-5 rounded-2xl border border-surface-border flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div id="nutrition-results-container" class="space-y-lg hidden">
+          <div class="card flex-between" style="flex-wrap: wrap; gap: 1rem;">
             <div>
-              <h4 class="font-bold text-white text-base">Berechnete Tagesübersicht</h4>
-              <p class="text-xs text-zinc-400 mt-1" id="nutrition-summary-text"></p>
+              <h4 class="text-sm font-bold">Berechnete Tagesübersicht</h4>
+              <p class="text-xs text-muted" id="nutrition-summary-text"></p>
             </div>
-            <button onclick="requestAiFullNutritionReview()" class="bg-brand-500 hover:bg-brand-400 text-black font-bold px-4 py-2.5 rounded-xl text-xs flex items-center gap-2 transition-all shadow-md">
-              <i data-lucide="sparkles" class="w-4 h-4 fill-black"></i> Ausführliche CSV-Analyse starten
+            <button onclick="requestAiFullNutritionReview()" class="btn btn-primary">
+              <i data-lucide="sparkles" class="w-4"></i> Ausführliche CSV-Analyse starten
             </button>
           </div>
-          <div class="bg-surface-card rounded-2xl border border-surface-border overflow-hidden">
-            <div class="overflow-x-auto">
-              <table class="w-full text-left text-xs border-collapse font-mono">
-                <thead class="bg-surface-900/70 text-zinc-400 border-b border-surface-border">
+          <div class="card" style="padding: 0; overflow: hidden;">
+            <div class="table-wrap">
+              <table class="font-mono">
+                <thead>
                   <tr>
-                    <th class="p-3">Datum</th>
-                    <th class="p-3 text-right">Kalorien</th>
-                    <th class="p-3 text-right">Protein</th>
-                    <th class="p-3 text-right">Carbs</th>
-                    <th class="p-3 text-right">Fett</th>
-                    <th class="p-3 text-right">Ballastst.</th>
-                    <th class="p-3 text-center">Score</th>
-                    <th class="p-3 text-center">Cut-Tag?</th>
+                    <th>Datum</th>
+                    <th style="text-align: right;">Kalorien</th>
+                    <th style="text-align: right;">Protein</th>
+                    <th style="text-align: right;">Carbs</th>
+                    <th style="text-align: right;">Fett</th>
+                    <th style="text-align: right;">Ballastst.</th>
+                    <th style="text-align: center;">Score</th>
+                    <th style="text-align: center;">Cut-Tag?</th>
                   </tr>
                 </thead>
-                <tbody id="nutrition-days-tbody" class="divide-y divide-surface-border text-zinc-300"></tbody>
+                <tbody id="nutrition-days-tbody"></tbody>
               </table>
             </div>
           </div>
@@ -570,62 +899,54 @@
       </section>
 
       <!-- ================= 6. WORKOUT LOGGER ================= -->
-      <section id="view-workout" class="space-y-6 hidden">
-        <div class="bg-surface-card p-4 md:p-5 rounded-2xl border border-surface-border">
-          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-            <div>
-              <div class="flex items-center gap-2">
-                <span class="text-xs uppercase font-extrabold tracking-wider bg-brand-500/10 text-brand-400 px-2 py-0.5 rounded border border-brand-500/30">Trainingsplan</span>
-                <span class="text-[10px] font-mono bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded border border-yellow-500/30 font-bold">Technogym Geräte</span>
-              </div>
-              <h3 class="text-lg md:text-xl font-extrabold text-white mt-1">Technik vor Gewicht (Kadenz 2-1-2)</h3>
-              <p class="text-xs text-zinc-400 mt-0.5">Tippe auf das Häkchen, sobald du ein Gerät oder Cardio abgeschlossen hast.</p>
+      <section id="view-workout" class="space-y-lg hidden">
+        <div class="card flex-between" style="flex-wrap: wrap; gap: 1rem;">
+          <div>
+            <div class="flex-center">
+              <span style="font-size: 10px; font-weight: 800; text-transform: uppercase; background: rgba(16,185,129,0.15); color: var(--brand-400); padding: 2px 8px; border-radius: 4px;">Trainingsplan</span>
+              <span style="font-size: 10px; font-weight: 700; background: rgba(251,191,36,0.15); color: var(--amber-400); padding: 2px 8px; border-radius: 4px;" class="font-mono">Technogym</span>
             </div>
-            
-            <div class="flex flex-wrap items-center gap-2">
-              <div class="flex items-center gap-1 bg-surface-900 p-1 rounded-xl border border-surface-border text-xs">
-                <button onclick="loadWorkout('kraftA')" id="btn-wo-kraftA" class="px-3 py-1.5 rounded-lg font-bold bg-brand-500 text-black">Kraft A</button>
-                <button onclick="loadWorkout('cardio')" id="btn-wo-cardio" class="px-3 py-1.5 rounded-lg font-bold text-zinc-400 hover:text-white">Cardiotag</button>
-                <button onclick="loadWorkout('kraftB')" id="btn-wo-kraftB" class="px-3 py-1.5 rounded-lg font-bold text-zinc-400 hover:text-white">Kraft B</button>
-              </div>
-              <button onclick="resetCurrentWorkoutLogs()" class="px-2.5 py-1.5 rounded-xl bg-surface-900 hover:bg-zinc-800 text-zinc-400 hover:text-zinc-200 text-xs border border-surface-border flex items-center gap-1" title="Alle Haken zurücksetzen">
-                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Zurücksetzen
-              </button>
+            <h3 class="text-sm font-bold" style="margin-top: 0.375rem;">Technik vor Gewicht (Kadenz 2-1-2)</h3>
+            <p class="text-xs text-muted">Tippe auf das Häkchen, sobald du ein Gerät oder Cardio abgeschlossen hast.</p>
+          </div>
+          
+          <div class="flex-center" style="flex-wrap: wrap;">
+            <div style="display: flex; gap: 0.25rem; background: var(--bg-900); padding: 0.25rem; border-radius: 0.75rem; border: 1px solid var(--border);">
+              <button onclick="loadWorkout('kraftA')" id="btn-wo-kraftA" class="btn btn-primary">Kraft A</button>
+              <button onclick="loadWorkout('cardio')" id="btn-wo-cardio" class="btn btn-ghost">Cardiotag</button>
+              <button onclick="loadWorkout('kraftB')" id="btn-wo-kraftB" class="btn btn-ghost">Kraft B</button>
             </div>
+            <button onclick="resetCurrentWorkoutLogs()" class="btn btn-secondary">
+              <i data-lucide="rotate-ccw" class="w-4"></i> Zurücksetzen
+            </button>
           </div>
         </div>
 
-        <div id="exercises-list" class="space-y-3"></div>
+        <div id="exercises-list" class="space-y"></div>
       </section>
 
       <!-- ================= 7. CHAT TAB ================= -->
-      <section id="view-chat" class="h-[calc(100vh-14rem)] md:h-[calc(100vh-10rem)] flex flex-col bg-surface-card rounded-2xl border border-surface-border overflow-hidden hidden">
-        <div class="p-3.5 border-b border-surface-border flex items-center justify-between bg-surface-850">
-          <div class="flex items-center gap-2.5">
-            <div class="w-8 h-8 rounded-lg bg-brand-500/10 border border-brand-500/30 flex items-center justify-center text-brand-400">
-              <i data-lucide="bot" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <h3 class="font-bold text-xs md:text-sm text-white flex items-center gap-1.5">
-                Coach Marcus <span class="w-2 h-2 rounded-full bg-brand-500"></span>
-              </h3>
-            </div>
+      <section id="view-chat" class="chat-box hidden">
+        <div class="flex-between" style="padding: 0.875rem 1rem; border-bottom: 1px solid var(--border); background: var(--bg-850);">
+          <div class="flex-center">
+            <i data-lucide="bot" class="w-5 text-brand"></i>
+            <h3 class="text-sm font-bold">Coach Marcus</h3>
           </div>
-          <button onclick="clearChatHistory()" title="Chat leeren" class="text-zinc-500 hover:text-zinc-300 p-1.5 rounded-lg hover:bg-surface-card">
-            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          <button onclick="clearChatHistory()" title="Chat leeren" class="btn-ghost">
+            <i data-lucide="trash-2" class="w-4"></i>
           </button>
         </div>
 
-        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4"></div>
+        <div id="chat-messages" class="chat-messages"></div>
 
-        <div class="p-2.5 border-t border-surface-border bg-surface-850 flex items-center gap-2">
-          <label class="cursor-pointer p-2 rounded-xl bg-surface-900 border border-surface-border hover:border-amber-400 text-zinc-400 hover:text-amber-400" title="Post-it Foto an Marcus senden">
-            <i data-lucide="camera" class="w-4 h-4"></i>
+        <div style="padding: 0.75rem; border-top: 1px solid var(--border); background: var(--bg-850); display: flex; align-items: center; gap: 0.5rem;">
+          <label class="btn btn-secondary" style="padding: 0.5rem;" title="Post-it Foto senden">
+            <i data-lucide="camera" class="w-4 text-amber"></i>
             <input type="file" accept="image/*" capture="environment" class="hidden" onchange="handlePostitPhotoUpload(event)">
           </label>
-          <input type="text" id="chat-input" onkeydown="if(event.key === 'Enter') handleUserSendMessage()" placeholder="Frage an Coach Marcus..." class="flex-1 bg-surface-900 border border-surface-border rounded-xl px-3 py-2 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-brand-500">
-          <button onclick="handleUserSendMessage()" class="bg-brand-500 hover:bg-brand-400 text-black font-bold p-2 rounded-xl transition-all shadow-md">
-            <i data-lucide="send" class="w-4 h-4 fill-black"></i>
+          <input type="text" id="chat-input" onkeydown="if(event.key === 'Enter') handleUserSendMessage()" placeholder="Frage an Coach Marcus..." style="flex: 1;">
+          <button onclick="handleUserSendMessage()" class="btn btn-primary" style="padding: 0.5rem 0.75rem;">
+            <i data-lucide="send" class="w-4"></i>
           </button>
         </div>
       </section>
@@ -633,96 +954,91 @@
     </div>
   </main>
 
-  <!-- MOBILE SCROLLABLE BOTTOM BAR -->
-  <nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-surface-850 border-t border-surface-border flex items-center justify-around px-1 z-40 backdrop-blur overflow-x-auto no-scrollbar">
-    <button onclick="switchTab('dashboard')" class="flex flex-col items-center justify-center shrink-0 w-13 gap-1 text-[10px] text-brand-400 font-medium">
-      <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+  <!-- MOBILE BOTTOM BAR -->
+  <nav class="mobile-nav">
+    <button onclick="switchTab('dashboard')" class="mob-btn active" data-mob="dashboard">
+      <i data-lucide="layout-dashboard" class="w-4"></i>
       <span>Dash</span>
     </button>
-    <button onclick="switchTab('postit')" class="flex flex-col items-center justify-center shrink-0 w-13 gap-1 text-[10px] text-amber-400 font-medium">
-      <i data-lucide="sticky-note" class="w-4 h-4"></i>
+    <button onclick="switchTab('postit')" class="mob-btn" data-mob="postit">
+      <i data-lucide="sticky-note" class="w-4 text-amber"></i>
       <span>Post-it</span>
     </button>
-    <button onclick="switchTab('checkin')" class="flex flex-col items-center justify-center shrink-0 w-13 gap-1 text-[10px] text-zinc-400 hover:text-white">
-      <i data-lucide="scale" class="w-4 h-4"></i>
+    <button onclick="switchTab('checkin')" class="mob-btn" data-mob="checkin">
+      <i data-lucide="scale" class="w-4"></i>
       <span>Check-in</span>
     </button>
-    <button onclick="switchTab('workout')" class="flex flex-col items-center justify-center shrink-0 w-13 gap-1 text-[10px] text-zinc-400 hover:text-white">
-      <i data-lucide="dumbbell" class="w-4 h-4"></i>
+    <button onclick="switchTab('workout')" class="mob-btn" data-mob="workout">
+      <i data-lucide="dumbbell" class="w-4"></i>
       <span>Workout</span>
     </button>
-    <button onclick="switchTab('habits')" class="flex flex-col items-center justify-center shrink-0 w-13 gap-1 text-[10px] text-emerald-400 font-medium">
-      <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+    <button onclick="switchTab('habits')" class="mob-btn" data-mob="habits">
+      <i data-lucide="check-circle-2" class="w-4 text-brand"></i>
       <span>Habits</span>
     </button>
-    <button onclick="switchTab('nutrition')" class="flex flex-col items-center justify-center shrink-0 w-13 gap-1 text-[10px] text-zinc-400 hover:text-white">
-      <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+    <button onclick="switchTab('nutrition')" class="mob-btn" data-mob="nutrition">
+      <i data-lucide="file-spreadsheet" class="w-4"></i>
       <span>CSV</span>
     </button>
-    <button onclick="switchTab('chat')" class="flex flex-col items-center justify-center shrink-0 w-13 gap-1 text-[10px] text-zinc-400 hover:text-white">
-      <i data-lucide="bot" class="w-4 h-4"></i>
+    <button onclick="switchTab('chat')" class="mob-btn" data-mob="chat">
+      <i data-lucide="bot" class="w-4"></i>
       <span>Marcus</span>
     </button>
   </nav>
 
   <!-- MODALS -->
-  <div id="modal-steps" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-surface-card border border-surface-border w-full max-w-sm p-5 rounded-2xl space-y-4 shadow-2xl">
-      <div class="flex items-center justify-between border-b border-surface-border pb-2.5">
-        <h3 class="font-bold text-white text-sm flex items-center gap-2">
-          <i data-lucide="footprints" class="w-4 h-4 text-emerald-400"></i>
-          Schritt-Durchschnitt erfassen
+  <div id="modal-steps" class="modal-backdrop hidden">
+    <div class="modal-panel">
+      <div class="flex-between" style="border-bottom: 1px solid var(--border); padding-bottom: 0.625rem;">
+        <h3 class="text-sm font-bold flex-center">
+          <i data-lucide="footprints" class="w-4 text-brand"></i>
+          <span>Schritt-Durchschnitt erfassen</span>
         </h3>
-        <button onclick="closeStepsModal()" class="text-zinc-500 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+        <button onclick="closeStepsModal()" class="btn-ghost"><i data-lucide="x" class="w-4"></i></button>
       </div>
-      <div class="space-y-2 text-xs">
-        <p class="text-zinc-300">Gib deinen durchschnittlichen täglichen Schrittwert der letzten Woche ein (Ziel: 7.000 Schritte/Tag):</p>
-        <input type="number" id="input-steps-avg" placeholder="z. B. 6450" class="w-full bg-surface-900 border border-surface-border rounded-xl px-3 py-2 text-sm font-mono text-white focus:outline-none focus:border-emerald-400">
+      <div class="space-y text-xs">
+        <p class="text-muted">Gib deinen durchschnittlichen täglichen Schrittwert der letzten Woche ein (Ziel: 7.000 Schritte/Tag):</p>
+        <input type="number" id="input-steps-avg" placeholder="z. B. 6450" class="font-mono">
       </div>
-      <div class="flex justify-end gap-2 pt-2 border-t border-surface-border">
-        <button onclick="closeStepsModal()" class="px-3 py-1.5 text-xs text-zinc-400 hover:text-white">Abbrechen</button>
-        <button onclick="saveAverageSteps()" class="px-4 py-2 text-xs font-bold bg-emerald-500 hover:bg-emerald-400 text-black rounded-xl shadow-md">Berechnen & Speichern</button>
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border);">
+        <button onclick="closeStepsModal()" class="btn btn-ghost">Abbrechen</button>
+        <button onclick="saveAverageSteps()" class="btn btn-primary">Speichern</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: HABIT (OHNE UHRZEIT) -->
-  <div id="modal-new-habit" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-surface-card border border-surface-border w-full max-w-md p-5 rounded-2xl space-y-4">
-      <div class="flex items-center justify-between border-b border-surface-border pb-2.5">
-        <h3 class="font-bold text-white text-sm" id="modal-habit-title">Neues Habit anlegen</h3>
-        <button onclick="closeHabitModal()" class="text-zinc-500 hover:text-white"><i data-lucide="x" class="w-4 h-4"></i></button>
+  <div id="modal-new-habit" class="modal-backdrop hidden">
+    <div class="modal-panel">
+      <div class="flex-between" style="border-bottom: 1px solid var(--border); padding-bottom: 0.625rem;">
+        <h3 class="text-sm font-bold" id="modal-habit-title">Neues Habit anlegen</h3>
+        <button onclick="closeHabitModal()" class="btn-ghost"><i data-lucide="x" class="w-4"></i></button>
       </div>
       <input type="hidden" id="input-habit-edit-index" value="-1">
-      <div class="space-y-2 text-xs">
-        <div>
-          <label class="text-zinc-400">Name der Gewohnheit</label>
-          <input type="text" id="input-habit-name" placeholder="z. B. Magnesium vor dem Schlafen" class="w-full mt-1 bg-surface-900 border border-surface-border rounded-xl px-3 py-2 text-white">
-        </div>
+      <div class="space-y text-xs">
+        <label class="text-muted">Name der Gewohnheit</label>
+        <input type="text" id="input-habit-name" placeholder="z. B. Magnesium vor dem Schlafen">
       </div>
-      <div class="flex justify-end gap-2 pt-2 border-t border-surface-border">
-        <button onclick="closeHabitModal()" class="px-3 py-1.5 text-xs text-zinc-400">Abbrechen</button>
-        <button onclick="saveCustomHabit()" class="px-4 py-2 text-xs font-bold bg-brand-500 text-black rounded-xl">Speichern</button>
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border);">
+        <button onclick="closeHabitModal()" class="btn btn-ghost">Abbrechen</button>
+        <button onclick="saveCustomHabit()" class="btn btn-primary">Speichern</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: API KEY -->
-  <div id="modal-api-key" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-surface-card border border-surface-border w-full max-w-md p-5 rounded-2xl space-y-3">
-      <h3 class="font-bold text-white text-sm">Gemini API Key hinterlegen</h3>
-      <p class="text-[11px] text-zinc-400">Wird ausschließlich lokal in deinem Browser gespeichert.</p>
-      <input type="password" id="input-api-key" placeholder="AQ..." class="w-full bg-surface-900 border border-surface-border rounded-xl px-3 py-2 text-xs font-mono text-white">
-      <div class="flex justify-end gap-2">
-        <button onclick="closeApiKeyModal()" class="px-3 py-1.5 text-xs text-zinc-400">Abbrechen</button>
-        <button onclick="saveApiKey()" class="px-3 py-1.5 text-xs font-bold bg-brand-500 text-black rounded-xl">Speichern</button>
+  <div id="modal-api-key" class="modal-backdrop hidden">
+    <div class="modal-panel">
+      <h3 class="text-sm font-bold">Gemini API Key hinterlegen</h3>
+      <p style="font-size: 11px;" class="text-muted">Wird ausschließlich lokal in deinem Browser gespeichert.</p>
+      <input type="password" id="input-api-key" placeholder="AIza..." class="font-mono">
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+        <button onclick="closeApiKeyModal()" class="btn btn-ghost">Abbrechen</button>
+        <button onclick="saveApiKey()" class="btn btn-primary">Speichern</button>
       </div>
     </div>
   </div>
 
   <!-- JAVASCRIPT LOGIK -->
   <script>
-    // 1. ZENTRALE GLOBALE TAB-STEUERUNG
     window.switchTab = function(tabId) {
       try {
         const views = ['dashboard', 'postit', 'checkin', 'workout', 'habits', 'nutrition', 'chat'];
@@ -735,11 +1051,11 @@
         if (targetView) targetView.classList.remove('hidden');
 
         document.querySelectorAll('.nav-btn').forEach(btn => {
-          if (btn.getAttribute('data-tab') === tabId) {
-            btn.className = "nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm transition-all bg-brand-500/10 text-brand-400 border border-brand-500/20";
-          } else {
-            btn.className = "nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl font-medium text-sm text-zinc-400 hover:text-zinc-200 hover:bg-surface-card transition-all";
-          }
+          btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
+        });
+
+        document.querySelectorAll('.mob-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.getAttribute('data-mob') === tabId);
         });
 
         const titles = {
@@ -770,7 +1086,6 @@
       }
     };
 
-    // 2. BASIS-STANDARDS
     const DEFAULT_ACTIVE_GOALS = [
       { id: 1, type: "numeric", label: "Ø 7.000 Schritte täglich", targetVal: 7000, unit: "Schritte" },
       { id: 2, type: "days", label: "Vor 22:30 Uhr einschlafen", targetVal: 7, unit: "Tage" },
@@ -795,38 +1110,38 @@
       kraftA: {
         title: "Kraft A",
         exercises: [
-          { id: "leg_press", name: "Leg Press", machineNo: "#1", cat: "Unterkörper", sets: 3, reps: "15 normal", note: "Zittern <10 Wdh = Satz abbrechen & Gewicht senken!" },
-          { id: "leg_curl", name: "Leg Curl", machineNo: "#3", cat: "Unterkörper", sets: 3, reps: "15", note: "Kadenz 2-1-2" },
-          { id: "pulldown", name: "Pulldown / Vert. Traction", machineNo: "#14 / #13", cat: "Rücken", sets: 3, reps: "15", note: "Voller Bewegungsumfang" },
-          { id: "low_row", name: "Low Row", machineNo: "#16", cat: "Rücken", sets: 3, reps: "15", note: "Schulterblätter fixieren" },
-          { id: "chest_press", name: "Chest Press / Upper Back", machineNo: "#23 / #15", cat: "Brust", sets: 3, reps: "15", note: "Sauber drücken" },
-          { id: "shoulder_press", name: "Shoulder Press / Upper Back", machineNo: "#30 / #15", cat: "Schulter", sets: 3, reps: "15", note: "2-1-2 Tempo" },
-          { id: "crunch", name: "Abdominal Crunch", machineNo: "#36", cat: "Core", sets: 3, reps: "15", note: "Kontrolliert rollen" },
-          { id: "lower_back", name: "Lower Back", machineNo: "#37", cat: "Core", sets: 3, reps: "15", note: "Rückenstrecker" },
-          { id: "cardio_finish", name: "Crosstrainer Finisher", machineNo: "Cardio", cat: "Cardio", sets: 1, reps: "15 min", note: "Pulszone 3, 75-80W, Stufe 7" }
+          { id: "leg_press", name: "Leg Press", machineNo: "#1", sets: 3, reps: "15 normal", note: "Zittern <10 Wdh = Satz abbrechen & Gewicht senken!" },
+          { id: "leg_curl", name: "Leg Curl", machineNo: "#3", sets: 3, reps: "15", note: "Kadenz 2-1-2" },
+          { id: "pulldown", name: "Pulldown / Vert. Traction", machineNo: "#14 / #13", sets: 3, reps: "15", note: "Voller Bewegungsumfang" },
+          { id: "low_row", name: "Low Row", machineNo: "#16", sets: 3, reps: "15", note: "Schulterblätter fixieren" },
+          { id: "chest_press", name: "Chest Press / Upper Back", machineNo: "#23 / #15", sets: 3, reps: "15", note: "Sauber drücken" },
+          { id: "shoulder_press", name: "Shoulder Press / Upper Back", machineNo: "#30 / #15", sets: 3, reps: "15", note: "2-1-2 Tempo" },
+          { id: "crunch", name: "Abdominal Crunch", machineNo: "#36", sets: 3, reps: "15", note: "Kontrolliert rollen" },
+          { id: "lower_back", name: "Lower Back", machineNo: "#37", sets: 3, reps: "15", note: "Rückenstrecker" },
+          { id: "cardio_finish", name: "Crosstrainer Finisher", machineNo: "Cardio", sets: 1, reps: "15 min", note: "Pulszone 3, 75-80W, Stufe 7" }
         ]
       },
       cardio: {
         title: "Cardiotag",
         exercises: [
-          { id: "c_liss", name: "Crosstrainer LISS", machineNo: "Cardio", cat: "LISS", sets: 1, reps: "24 min", note: "75-80 Watt, Pulszone 3" },
-          { id: "c_bike", name: "Bike Intervall", machineNo: "Ergometer", cat: "Intervall", sets: 1, reps: "27 min", note: "3 Min locker (75-85W) / 1 Min schnell (120-140W)" },
-          { id: "c_stairs", name: "Stair Climber / Laufband", machineNo: "Cardio", cat: "Steigung", sets: 1, reps: "16 min", note: "8 min Stairs (Lvl 5-6) + 8 min Gehen 6.8-7 km/h" }
+          { id: "c_liss", name: "Crosstrainer LISS", machineNo: "Cardio", sets: 1, reps: "24 min", note: "75-80 Watt, Pulszone 3" },
+          { id: "c_bike", name: "Bike Intervall", machineNo: "Ergometer", sets: 1, reps: "27 min", note: "3 Min locker (75-85W) / 1 Min schnell (120-140W)" },
+          { id: "c_stairs", name: "Stair Climber / Laufband", machineNo: "Cardio", sets: 1, reps: "16 min", note: "8 min Stairs (Lvl 5-6) + 8 min Gehen 6.8-7 km/h" }
         ]
       },
       kraftB: {
         title: "Kraft B",
         exercises: [
-          { id: "leg_press_b", name: "Leg Press (kurz)", machineNo: "#1", cat: "Unterkörper", sets: 3, reps: "15 kurz", note: "Konstante Spannung" },
-          { id: "leg_ext", name: "Leg Ext. / Prone Leg Curl", machineNo: "#4 / #2", cat: "Unterkörper", sets: 3, reps: "15", note: "2-1-2 Kadenz" },
-          { id: "pulldown_b", name: "Pulldown / Vert. Traction", machineNo: "#14 / #13", cat: "Rücken", sets: 3, reps: "15", note: "Sauber zur Brust" },
-          { id: "low_row_b", name: "Low Row", machineNo: "#16", cat: "Rücken", sets: 3, reps: "15", note: "Lats fokussieren" },
-          { id: "pectoral", name: "Pectoral", machineNo: "#24", cat: "Brust", sets: 3, reps: "15", note: "Dehnung spüren" },
-          { id: "arm_curl", name: "Arm Curl", machineNo: "#33", cat: "Arme", sets: 3, reps: "12", note: "3x12 kein Schwung" },
-          { id: "arm_ext", name: "Arm Extension", machineNo: "#34", cat: "Arme", sets: 3, reps: "15", note: "Trizeps 1s halten" },
-          { id: "crunch_b", name: "Abdominal Crunch", machineNo: "#36", cat: "Core", sets: 3, reps: "15", note: "3x15" },
-          { id: "lower_back_b", name: "Lower Back", machineNo: "#37", cat: "Core", sets: 3, reps: "15", note: "Rumpfspannung" },
-          { id: "bike_finish", name: "Bike Finisher", machineNo: "Ergometer", cat: "Cardio", sets: 1, reps: "18 min", note: "70-75 RPM, 90-100W" }
+          { id: "leg_press_b", name: "Leg Press (kurz)", machineNo: "#1", sets: 3, reps: "15 kurz", note: "Konstante Spannung" },
+          { id: "leg_ext", name: "Leg Ext. / Prone Leg Curl", machineNo: "#4 / #2", sets: 3, reps: "15", note: "2-1-2 Kadenz" },
+          { id: "pulldown_b", name: "Pulldown / Vert. Traction", machineNo: "#14 / #13", sets: 3, reps: "15", note: "Sauber zur Brust" },
+          { id: "low_row_b", name: "Low Row", machineNo: "#16", sets: 3, reps: "15", note: "Lats fokussieren" },
+          { id: "pectoral", name: "Pectoral", machineNo: "#24", sets: 3, reps: "15", note: "Dehnung spüren" },
+          { id: "arm_curl", name: "Arm Curl", machineNo: "#33", sets: 3, reps: "12", note: "3x12 kein Schwung" },
+          { id: "arm_ext", name: "Arm Extension", machineNo: "#34", sets: 3, reps: "15", note: "Trizeps 1s halten" },
+          { id: "crunch_b", name: "Abdominal Crunch", machineNo: "#36", sets: 3, reps: "15", note: "3x15" },
+          { id: "lower_back_b", name: "Lower Back", machineNo: "#37", sets: 3, reps: "15", note: "Rumpfspannung" },
+          { id: "bike_finish", name: "Bike Finisher", machineNo: "Ergometer", sets: 1, reps: "18 min", note: "70-75 RPM, 90-100W" }
         ]
       }
     };
@@ -835,42 +1150,40 @@
       { date: "2026-11-07", weight: 110.1, kfa: 36.1, waist: 118.0, gymCount: 1, cutDays: 3, steps: 6800, motivationTraining: 6, motivationNutrition: 6 }
     ];
 
-    // 3. CENTRAL STATE
     let state = {
-      habits: JSON.parse(localStorage.getItem('fc_habits_v17') || 'null') || DEFAULT_HABITS,
-      checkins: JSON.parse(localStorage.getItem('fc_checkins_v17') || 'null') || DEFAULT_CHECKINS,
-      activeGoals: JSON.parse(localStorage.getItem('fc_goals_v17') || 'null') || DEFAULT_ACTIVE_GOALS,
-      postitHistory: JSON.parse(localStorage.getItem('fc_postit_v17') || 'null') || DEFAULT_POSTIT_HISTORY,
-      postitDraft: JSON.parse(localStorage.getItem('fc_postit_draft_v17') || '{"values": {}, "notes": ""}'),
-      avgSteps: parseFloat(localStorage.getItem('fc_avg_steps_v17') || '0'),
-      chatHistory: JSON.parse(localStorage.getItem('fc_chat_v17') || 'null') || [
+      habits: JSON.parse(localStorage.getItem('fc_habits_v18') || 'null') || DEFAULT_HABITS,
+      checkins: JSON.parse(localStorage.getItem('fc_checkins_v18') || 'null') || DEFAULT_CHECKINS,
+      activeGoals: JSON.parse(localStorage.getItem('fc_goals_v18') || 'null') || DEFAULT_ACTIVE_GOALS,
+      postitHistory: JSON.parse(localStorage.getItem('fc_postit_v18') || 'null') || DEFAULT_POSTIT_HISTORY,
+      postitDraft: JSON.parse(localStorage.getItem('fc_postit_draft_v18') || '{"values": {}, "notes": ""}'),
+      avgSteps: parseFloat(localStorage.getItem('fc_avg_steps_v18') || '0'),
+      chatHistory: JSON.parse(localStorage.getItem('fc_chat_v18') || 'null') || [
         {
           sender: "coach",
           text: "Servus Athlet! Ich bin dein persönlicher Fitness-Coach Marcus 💪.\n\nIch bin bereit. Wie läuft dein Training oder deine Ernährung heute?"
         }
       ],
       currentWorkoutKey: "kraftA",
-      workoutLogs: JSON.parse(localStorage.getItem('fc_workout_logs_v17') || '{}'),
-      parsedWeekData: JSON.parse(localStorage.getItem('fc_parsed_week_v17') || 'null')
+      workoutLogs: JSON.parse(localStorage.getItem('fc_workout_logs_v18') || '{}'),
+      parsedWeekData: JSON.parse(localStorage.getItem('fc_parsed_week_v18') || 'null')
     };
 
     function persistData() {
       try {
-        localStorage.setItem('fc_habits_v17', JSON.stringify(state.habits));
-        localStorage.setItem('fc_checkins_v17', JSON.stringify(state.checkins));
-        localStorage.setItem('fc_goals_v17', JSON.stringify(state.activeGoals));
-        localStorage.setItem('fc_postit_v17', JSON.stringify(state.postitHistory));
-        localStorage.setItem('fc_postit_draft_v17', JSON.stringify(state.postitDraft));
-        localStorage.setItem('fc_chat_v17', JSON.stringify(state.chatHistory));
-        localStorage.setItem('fc_workout_logs_v17', JSON.stringify(state.workoutLogs));
-        localStorage.setItem('fc_parsed_week_v17', JSON.stringify(state.parsedWeekData));
-        localStorage.setItem('fc_avg_steps_v17', state.avgSteps.toString());
+        localStorage.setItem('fc_habits_v18', JSON.stringify(state.habits));
+        localStorage.setItem('fc_checkins_v18', JSON.stringify(state.checkins));
+        localStorage.setItem('fc_goals_v18', JSON.stringify(state.activeGoals));
+        localStorage.setItem('fc_postit_v18', JSON.stringify(state.postitHistory));
+        localStorage.setItem('fc_postit_draft_v18', JSON.stringify(state.postitDraft));
+        localStorage.setItem('fc_chat_v18', JSON.stringify(state.chatHistory));
+        localStorage.setItem('fc_workout_logs_v18', JSON.stringify(state.workoutLogs));
+        localStorage.setItem('fc_parsed_week_v18', JSON.stringify(state.parsedWeekData));
+        localStorage.setItem('fc_avg_steps_v18', state.avgSteps.toString());
       } catch (e) {
         console.warn("Storage Error:", e);
       }
     }
 
-    // 4. SCHRITTZIEL KACHEL
     function openStepsModal() {
       const input = document.getElementById('input-steps-avg');
       if (input) input.value = state.avgSteps > 0 ? state.avgSteps : '';
@@ -884,7 +1197,7 @@
     function saveAverageSteps() {
       const val = parseFloat(document.getElementById('input-steps-avg').value);
       if (isNaN(val) || val < 0) {
-        alert("Bitte eine gültige Zahl für den täglichen Schrittedurchschnitt eingeben!");
+        alert("Bitte eine gültige Zahl eingeben!");
         return;
       }
       state.avgSteps = Math.round(val);
@@ -897,39 +1210,30 @@
       const pctEl = document.getElementById('dash-steps-pct');
       const subEl = document.getElementById('dash-steps-subtext');
       if (!pctEl || !subEl) return;
-
       const pct = Math.min(100, Math.round((state.avgSteps / 7000) * 100));
-      pctEl.innerHTML = `${pct} <span class="text-xs text-zinc-400">%</span>`;
+      pctEl.innerHTML = `${pct} <span class="text-xs text-muted">%</span>`;
       subEl.innerText = `Ø ${state.avgSteps.toLocaleString('de-AT')} / 7.000 Schritte`;
     }
 
-    // 5. MISSION TEXTE & DASHBOARD STATS
     function getLatestCheckin() {
       return state.checkins[state.checkins.length - 1] || { weight: 110.1, waist: 118, kfa: 36.1 };
-    }
-
-    function updateMissionTexts(currentWeight) {
-      const weightStr = currentWeight.toFixed(1);
-      const text = `${weightStr} kg → 85.0 kg`;
-      
-      const sidebarEl = document.getElementById('sidebar-mission-text');
-      if (sidebarEl) sidebarEl.innerText = text;
     }
 
     let dashChartInstance = null;
     function renderDashboardCharts() {
       const ctx = document.getElementById('dashWeightChart');
-      if (!ctx) return;
+      if (!ctx || typeof Chart === 'undefined') return;
       const latest = getLatestCheckin();
       const currentWeight = Number(latest.weight || 110.1);
 
-      document.getElementById('dash-weight').innerHTML = `${currentWeight.toFixed(1)} <span class="text-xs text-zinc-400">kg</span>`;
-      document.getElementById('dash-waist').innerHTML = `${latest.waist || 118} <span class="text-xs text-zinc-400">cm</span>`;
+      document.getElementById('dash-weight').innerHTML = `${currentWeight.toFixed(1)} <span class="text-xs text-muted">kg</span>`;
+      document.getElementById('dash-waist').innerHTML = `${latest.waist || 118} <span class="text-xs text-muted">cm</span>`;
       document.getElementById('dash-kfa').innerText = `~${latest.kfa || 36.1}%`;
       const diffTotal = (currentWeight - 85.0).toFixed(1);
       document.getElementById('dash-weight-diff').innerText = `(-${diffTotal} kg)`;
 
-      updateMissionTexts(currentWeight);
+      const sidebarEl = document.getElementById('sidebar-mission-text');
+      if (sidebarEl) sidebarEl.innerText = `${currentWeight.toFixed(1)} kg → 85.0 kg`;
       renderStepsTile();
 
       const labels = state.checkins.map(c => c.date.substring(5));
@@ -946,12 +1250,11 @@
       });
     }
 
-    // 6. WORKOUT LOGGER (1-KLICK HAKEN)
     function loadWorkout(k) {
       state.currentWorkoutKey = k;
       ['kraftA', 'cardio', 'kraftB'].forEach(key => {
         const btn = document.getElementById('btn-wo-' + key);
-        if (btn) btn.className = key === k ? "px-3 py-1.5 rounded-lg font-bold bg-brand-500 text-black" : "px-3 py-1.5 rounded-lg font-bold text-zinc-400 hover:text-white";
+        if (btn) btn.className = key === k ? "btn btn-primary" : "btn btn-ghost";
       });
       renderWorkoutExercises();
     }
@@ -963,30 +1266,23 @@
 
       container.innerHTML = plan.exercises.map(ex => {
         const isDone = !!state.workoutLogs[ex.id];
-
         return `
-          <div class="bg-surface-card p-3.5 rounded-2xl border ${isDone ? 'border-brand-500/50 bg-brand-500/5' : 'border-surface-border'} flex items-center justify-between gap-3 transition-colors">
-            <div class="space-y-0.5 flex-1 min-w-0">
-              <div class="flex items-center gap-1.5">
-                <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 font-bold shrink-0">${ex.machineNo || 'Technogym'}</span>
-                <span class="font-bold text-xs text-white truncate ${isDone ? 'text-brand-300' : ''}">${ex.name}</span>
+          <div class="card flex-between" style="padding: 0.875rem 1rem; gap: 0.75rem; ${isDone ? 'border-color: rgba(16,185,129,0.5); background: rgba(16,185,129,0.05);' : ''}">
+            <div style="flex: 1; min-width: 0;">
+              <div class="flex-center">
+                <span style="font-size: 10px; padding: 2px 6px; border-radius: 4px; background: rgba(251,191,36,0.15); color: var(--amber-400); font-weight: 700;" class="font-mono">${ex.machineNo}</span>
+                <span class="text-xs font-bold truncate" style="${isDone ? 'color: var(--brand-400);' : ''}">${ex.name}</span>
               </div>
-              <div class="text-[10px] text-zinc-400 truncate">${ex.sets} × ${ex.reps} • ${ex.note}</div>
+              <div style="font-size: 11px; margin-top: 0.25rem;" class="text-muted truncate">${ex.sets} × ${ex.reps} • ${ex.note}</div>
             </div>
 
-            <button onclick="toggleExerciseDone('${ex.id}')" 
-                    class="px-3.5 py-2 rounded-xl font-bold text-xs flex items-center gap-1.5 transition-all shadow-md shrink-0 ${
-                      isDone 
-                        ? 'bg-brand-500 hover:bg-brand-400 text-black border border-brand-400 shadow-brand-500/20' 
-                        : 'bg-surface-900 hover:bg-surface-border text-zinc-400 border border-surface-border'
-                    }">
-              <i data-lucide="${isDone ? 'check-circle-2' : 'circle'}" class="w-4 h-4 ${isDone ? 'text-black' : 'text-zinc-500'}"></i>
+            <button onclick="toggleExerciseDone('${ex.id}')" class="btn ${isDone ? 'btn-primary' : 'btn-secondary'}" style="flex-shrink: 0;">
+              <i data-lucide="${isDone ? 'check-circle-2' : 'circle'}" class="w-4"></i>
               <span>${isDone ? 'Erledigt' : 'Offen'}</span>
             </button>
           </div>
         `;
       }).join('');
-      
       if (window.lucide) { try { lucide.createIcons(); } catch(e){} }
     }
 
@@ -1000,30 +1296,23 @@
       const plan = WORKOUT_PLANS[state.currentWorkoutKey];
       if (!plan) return;
       if (confirm(`Alle Haken für ${plan.title} zurücksetzen?`)) {
-        plan.exercises.forEach(ex => {
-          delete state.workoutLogs[ex.id];
-        });
+        plan.exercises.forEach(ex => delete state.workoutLogs[ex.id]);
         persistData();
         renderWorkoutExercises();
       }
     }
 
-    // 7. HABITS LOGIK (OHNE UHRZEITEN)
     function renderHabitsTable() {
       const tbody = document.getElementById('habits-table-body');
       if (!tbody) return;
       tbody.innerHTML = state.habits.map((h, hIdx) => `
-        <tr class="hover:bg-surface-850">
-          <td class="p-3 font-medium text-zinc-200">
-            <span>${h.name}</span>
-          </td>
-          ${h.days.map((c, dIdx) => `<td class="p-3 text-center"><input type="checkbox" ${c ? 'checked' : ''} onchange="toggleHabitDay(${hIdx}, ${dIdx})" class="w-4 h-4 rounded bg-surface-900 text-brand-500"></td>`).join('')}
-          <td class="p-3 text-right font-mono font-bold text-brand-400">${h.streak}T</td>
-          <td class="p-3 text-center">
-            <div class="flex items-center justify-center gap-1">
-              <button onclick="editHabit(${hIdx})" class="text-zinc-500 hover:text-amber-400 p-1" title="Bearbeiten"><i data-lucide="edit-2" class="w-3.5 h-3.5"></i></button>
-              <button onclick="deleteHabit(${hIdx})" class="text-zinc-600 hover:text-red-400 p-1" title="Löschen"><i data-lucide="trash" class="w-3.5 h-3.5"></i></button>
-            </div>
+        <tr>
+          <td class="font-bold">${h.name}</td>
+          ${h.days.map((c, dIdx) => `<td style="text-align: center;"><input type="checkbox" ${c ? 'checked' : ''} onchange="toggleHabitDay(${hIdx}, ${dIdx})"></td>`).join('')}
+          <td style="text-align: right; font-weight: 700;" class="font-mono text-brand">${h.streak}T</td>
+          <td style="text-align: center;">
+            <button onclick="editHabit(${hIdx})" class="btn-ghost" title="Bearbeiten"><i data-lucide="edit-2" class="w-4 text-amber"></i></button>
+            <button onclick="deleteHabit(${hIdx})" class="btn-ghost" title="Löschen"><i data-lucide="trash" class="w-4"></i></button>
           </td>
         </tr>
       `).join('');
@@ -1039,10 +1328,7 @@
 
     function resetHabitsWeek() {
       if (confirm("Möchtest du alle abgehakten Habits dieser Woche zurücksetzen?")) {
-        state.habits.forEach(h => {
-          h.days = [false, false, false, false, false, false, false];
-          h.streak = 0;
-        });
+        state.habits.forEach(h => { h.days = [false, false, false, false, false, false, false]; h.streak = 0; });
         persistData();
         renderHabitsTable();
       }
@@ -1069,15 +1355,12 @@
     function saveCustomHabit() {
       const n = document.getElementById('input-habit-name').value.trim();
       const editIdx = parseInt(document.getElementById('input-habit-edit-index').value);
-
       if (!n) return alert("Name fehlt!");
-
       if (editIdx >= 0 && state.habits[editIdx]) {
         state.habits[editIdx].name = n;
       } else {
         state.habits.push({ id: "h_" + Date.now(), name: n, days: [false,false,false,false,false,false,false], streak: 0 });
       }
-
       persistData();
       closeHabitModal();
       renderHabitsTable();
@@ -1085,23 +1368,17 @@
 
     function deleteHabit(idx) { if (confirm("Löschen?")) { state.habits.splice(idx, 1); persistData(); renderHabitsTable(); } }
 
-    // 8. POST-IT LOGIK (MIT ZWISCHENSPEICHERN & ZURÜCKSETZEN)
     function renderPostitWidget() {
       const listEl = document.getElementById('postit-goals-list');
       const dashListEl = document.getElementById('dash-postit-list');
       if (!listEl) return;
 
-      listEl.innerHTML = state.activeGoals.map((g, idx) => `
-        <li class="flex items-start gap-1.5">
-          <span>${idx + 1}.</span> <span>${g.label}</span>
-        </li>
-      `).join('');
-
+      listEl.innerHTML = state.activeGoals.map((g, idx) => `<li>${idx + 1}. ${g.label}</li>`).join('');
       if (dashListEl) {
         dashListEl.innerHTML = state.activeGoals.map((g, idx) => `
-          <li class="flex items-center justify-between">
-            <span class="truncate max-w-[180px]">${idx + 1}. ${g.label}</span>
-            <span class="font-mono text-zinc-400 text-[10px]">Aktiv</span>
+          <li class="flex-between">
+            <span class="truncate" style="max-width: 12rem;">${idx + 1}. ${g.label}</span>
+            <span style="font-size: 10px;" class="font-mono text-muted">Aktiv</span>
           </li>
         `).join('');
       }
@@ -1110,7 +1387,6 @@
     function renderPostitForm() {
       const container = document.getElementById('postit-form-container');
       if (!container) return;
-
       const draftValues = (state.postitDraft && state.postitDraft.values) ? state.postitDraft.values : {};
 
       container.innerHTML = state.activeGoals.map((goal, idx) => {
@@ -1118,11 +1394,11 @@
         let inputHtml = '';
 
         if (goal.type === 'numeric') {
-          inputHtml = `<input type="number" id="postit-val-${idx}" value="${savedVal}" oninput="savePostitDraft()" placeholder="z. B. ${goal.targetVal || 7000}" class="w-full bg-surface-card border border-surface-border rounded-xl px-3 py-2 font-mono text-white focus:outline-none focus:border-amber-400">`;
+          inputHtml = `<input type="number" id="postit-val-${idx}" value="${savedVal}" oninput="savePostitDraft()" placeholder="z. B. ${goal.targetVal || 7000}" class="font-mono">`;
         } else if (goal.type === 'gym') {
           const sel = savedVal !== '' ? savedVal.toString() : '0';
           inputHtml = `
-            <select id="postit-val-${idx}" onchange="savePostitDraft()" class="w-full bg-surface-card border border-surface-border rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
+            <select id="postit-val-${idx}" onchange="savePostitDraft()">
               <option value="0" ${sel === '0' ? 'selected' : ''}>0-mal (0%)</option>
               <option value="1" ${sel === '1' ? 'selected' : ''}>1-mal (50%)</option>
               <option value="2" ${sel === '2' ? 'selected' : ''}>2-mal (100% - Ziel erreicht)</option>
@@ -1132,29 +1408,25 @@
         } else {
           const sel = savedVal !== '' ? savedVal.toString() : '0';
           inputHtml = `
-            <select id="postit-val-${idx}" onchange="savePostitDraft()" class="w-full bg-surface-card border border-surface-border rounded-xl px-3 py-2 text-white focus:outline-none focus:border-amber-400">
+            <select id="postit-val-${idx}" onchange="savePostitDraft()">
               ${[0,1,2,3,4,5,6,7].map(d => `<option value="${d}" ${sel === d.toString() ? 'selected' : ''}>${d} von 7 Tagen (${Math.round(d/7*100)}%)</option>`).join('')}
             </select>
           `;
         }
 
         return `
-          <div class="p-3.5 bg-surface-900/70 rounded-xl border border-surface-border space-y-1.5">
-            <div class="flex items-center justify-between">
-              <label class="font-bold text-zinc-200 flex items-center gap-2">
-                <span class="w-5 h-5 rounded-md bg-amber-500/10 text-amber-400 flex items-center justify-center font-mono text-[11px]">${idx + 1}</span>
-                ${goal.label}
-              </label>
-            </div>
+          <div style="background: var(--bg-900); padding: 0.875rem; border-radius: 0.875rem; border: 1px solid var(--border);" class="space-y">
+            <label class="text-xs font-bold flex-center">
+              <span style="padding: 2px 6px; border-radius: 4px; background: rgba(251,191,36,0.15); color: var(--amber-400);" class="font-mono">${idx + 1}</span>
+              <span>${goal.label}</span>
+            </label>
             ${inputHtml}
           </div>
         `;
       }).join('');
 
       const notesEl = document.getElementById('postit-notes');
-      if (notesEl) {
-        notesEl.value = (state.postitDraft && state.postitDraft.notes) ? state.postitDraft.notes : '';
-      }
+      if (notesEl) notesEl.value = (state.postitDraft && state.postitDraft.notes) ? state.postitDraft.notes : '';
     }
 
     function savePostitDraft() {
@@ -1164,10 +1436,7 @@
         if (el) values[i] = el.value;
       }
       const notesEl = document.getElementById('postit-notes');
-      state.postitDraft = {
-        values: values,
-        notes: notesEl ? notesEl.value : ''
-      };
+      state.postitDraft = { values: values, notes: notesEl ? notesEl.value : '' };
       persistData();
     }
 
@@ -1204,30 +1473,20 @@
       const overallP = Math.round(totalPercentage / (state.activeGoals.length || 5));
       const notes = document.getElementById('postit-notes').value.trim();
 
-      const newEntry = {
+      state.postitHistory.push({
         weekRange: new Date().toLocaleDateString('de-AT'),
         overallP,
         goalsSnapshot: goalsResultSummary.join(' • '),
         notes
-      };
-
-      state.postitHistory.push(newEntry);
+      });
       persistData();
       renderPostitHistoryTable();
 
       const dashScore = document.getElementById('dash-postit-score');
-      if (dashScore) dashScore.innerHTML = `${overallP} <span class="text-xs text-zinc-400">%</span>`;
+      if (dashScore) dashScore.innerHTML = `${overallP} <span class="text-xs text-muted">%</span>`;
 
       switchTab('chat');
-      const promptMsg = `
-Hier sind meine Antworten zum wöchentlichen Post-it-Zielcheck:
-${goalsResultSummary.map((s, idx) => `${idx + 1}. ${s}`).join('\n')}
-
-- Gesamtergebnis: ${overallP}% Zielerreichung
-- Anmerkungen: ${notes || 'keine'}
-
-Bitte erstelle die Trainerbewertung (Gesamtübersicht mit Text-Balken, Einzelbewertung der Ziele, Trainerfazit) und frage mich erst am Schluss, ob ich ein neues Post-it Foto senden oder die Ziele beibehalten möchte!
-`;
+      const promptMsg = `Hier sind meine Antworten zum wöchentlichen Post-it-Zielcheck:\n${goalsResultSummary.map((s, idx) => `${idx + 1}. ${s}`).join('\n')}\n\n- Gesamtergebnis: ${overallP}% Zielerreichung\n- Anmerkungen: ${notes || 'keine'}\n\nBitte erstelle die Trainerbewertung (Gesamtübersicht mit Text-Balken, Einzelbewertung der Ziele, Trainerfazit) und frage mich erst am Schluss, ob ich ein neues Post-it Foto senden oder die Ziele beibehalten möchte!`;
       sendQuickMessage(promptMsg.trim());
     }
 
@@ -1235,10 +1494,10 @@ Bitte erstelle die Trainerbewertung (Gesamtübersicht mit Text-Balken, Einzelbew
       const tbody = document.getElementById('postit-history-tbody');
       if (!tbody) return;
       tbody.innerHTML = state.postitHistory.slice().reverse().map(item => `
-        <tr class="hover:bg-surface-850">
-          <td class="p-3 text-zinc-300 font-bold">${item.weekRange}</td>
-          <td class="p-3 text-xs text-zinc-400 truncate max-w-xs">${item.goalsSnapshot || '-'}</td>
-          <td class="p-3 text-right font-bold text-amber-400">${item.overallP}%</td>
+        <tr>
+          <td class="font-bold">${item.weekRange}</td>
+          <td class="text-muted truncate" style="max-width: 14rem;">${item.goalsSnapshot || '-'}</td>
+          <td style="text-align: right; font-weight: 700;" class="text-amber">${item.overallP}%</td>
         </tr>
       `).join('');
     }
@@ -1246,13 +1505,8 @@ Bitte erstelle die Trainerbewertung (Gesamtübersicht mit Text-Balken, Einzelbew
     async function handlePostitPhotoUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
-
       const apiKey = (localStorage.getItem('apex_gemini_api_key') || '').trim();
-      if (!apiKey) {
-        alert("Bitte zuerst API Key hinterlegen!");
-        openApiKeyModal();
-        return;
-      }
+      if (!apiKey) { alert("Bitte zuerst API Key hinterlegen!"); openApiKeyModal(); return; }
 
       const statusEl = document.getElementById('postit-ocr-status');
       if (statusEl) statusEl.classList.remove('hidden');
@@ -1260,9 +1514,8 @@ Bitte erstelle die Trainerbewertung (Gesamtübersicht mit Text-Balken, Einzelbew
       const reader = new FileReader();
       reader.onload = async function() {
         const base64Data = reader.result.split(',')[1];
-        
         switchTab('chat');
-        state.chatHistory.push({ sender: 'user', text: "📸 *[Post-it Foto gesendet]* Marcus, lies bitte meine neuen handschriftlichen Wochenziele von diesem Post-it ab und aktualisiere die Ziele für die Folgewoche!" });
+        state.chatHistory.push({ sender: 'user', text: "📸 *[Post-it Foto gesendet]* Marcus, lies bitte meine neuen handschriftlichen Wochenziele ab!" });
         renderChat();
 
         const typingId = "coach_typing_" + Date.now();
@@ -1273,36 +1526,14 @@ Bitte erstelle die Trainerbewertung (Gesamtübersicht mit Text-Balken, Einzelbew
           const res = await callGeminiApi(apiKey, [{
             role: "user",
             parts: [
-              {
-                text: `Du bist Coach Marcus. Lies dieses Foto eines handschriftlichen Post-its vom Badezimmerspiegel aus. 
-Extrahiere die 5 Ziele für die kommende Woche. 
-Antworte in zwei Teilen:
-1. Eine kurze, motivierende Trainer-Nachricht, in der du die erkannten 5 Ziele aufzählst.
-2. Am allerletzten Ende deiner Antwort ein striktes JSON-Array im Format:
-\`\`\`json
-[
-  {"id": 1, "label": "Ziel 1 Name", "type": "numeric oder days oder gym", "targetVal": 7000},
-  {"id": 2, "label": "Ziel 2 Name", "type": "days", "targetVal": 7},
-  {"id": 3, "label": "Ziel 3 Name", "type": "days", "targetVal": 7},
-  {"id": 4, "label": "Ziel 4 Name", "type": "gym", "targetVal": 2},
-  {"id": 5, "label": "Ziel 5 Name", "type": "days", "targetVal": 7}
-]
-\`\`\``
-              },
-              {
-                inlineData: {
-                  mimeType: file.type || "image/jpeg",
-                  data: base64Data
-                }
-              }
+              { text: `Du bist Coach Marcus. Lies dieses Foto eines handschriftlichen Post-its aus. Extrahiere die 5 Ziele für die kommende Woche. Antworte kurz und hänge am Schluss ein JSON-Array an:\n\`\`\`json\n[{"id": 1, "label": "Ziel 1", "type": "numeric", "targetVal": 7000}, {"id": 2, "label": "Ziel 2", "type": "days", "targetVal": 7}, {"id": 3, "label": "Ziel 3", "type": "days", "targetVal": 7}, {"id": 4, "label": "Ziel 4", "type": "gym", "targetVal": 2}, {"id": 5, "label": "Ziel 5", "type": "days", "targetVal": 7}]\n\`\`\`` },
+              { inlineData: { mimeType: file.type || "image/jpeg", data: base64Data } }
             ]
           }]);
 
           state.chatHistory = state.chatHistory.filter(m => m.id !== typingId);
-
           if (res.ok && res.text) {
             state.chatHistory.push({ sender: 'coach', text: res.text });
-
             const jsonMatch = res.text.match(/```json\s*([\s\S]*?)\s*```/);
             if (jsonMatch && jsonMatch[1]) {
               try {
@@ -1313,18 +1544,16 @@ Antworte in zwei Teilen:
                   persistData();
                   renderPostitWidget();
                   renderPostitForm();
-                  alert("✓ Perfekt! Marcus hat deine neuen Post-it-Ziele erfolgreich eingelesen und aktiviert.");
+                  alert("✓ Neue Post-it-Ziele aktiviert!");
                 }
-              } catch (parseErr) {
-                console.warn("JSON Parse Fehler:", parseErr);
-              }
+              } catch (e) {}
             }
           } else {
-            state.chatHistory.push({ sender: 'coach', text: `Ich konnte das Bild leider nicht verarbeiten: ${res.error || 'Serverfehler'}` });
+            state.chatHistory.push({ sender: 'coach', text: `❌ Fehler: ${res.error}` });
           }
         } catch (err) {
           state.chatHistory = state.chatHistory.filter(m => m.id !== typingId);
-          state.chatHistory.push({ sender: 'coach', text: `Fehler: ${err.message}` });
+          state.chatHistory.push({ sender: 'coach', text: `❌ Fehler: ${err.message}` });
         }
 
         if (statusEl) statusEl.classList.add('hidden');
@@ -1334,12 +1563,11 @@ Antworte in zwei Teilen:
       reader.readAsDataURL(file);
     }
 
-    // 9. CHECK-IN LOGIK
     let fullChartInstance = null;
     function renderFullWeighingChart() {
       const ctx = document.getElementById('fullWeightChart');
       const tbody = document.getElementById('checkin-history-tbody');
-      if (!ctx) return;
+      if (!ctx || typeof Chart === 'undefined') return;
       const labels = state.checkins.map(w => w.date);
       const dataWeights = state.checkins.map(w => Number(w.weight || 0));
       const dataWaist = state.checkins.map(w => Number(w.waist || 0));
@@ -1367,14 +1595,14 @@ Antworte in zwei Teilen:
 
       if (tbody) {
         tbody.innerHTML = state.checkins.slice().reverse().map((entry, idx) => `
-          <tr class="hover:bg-surface-850">
-            <td class="p-3">${entry.date}</td>
-            <td class="p-3 font-bold text-brand-400">${Number(entry.weight || 0).toFixed(1)} kg</td>
-            <td class="p-3 text-accent-400">${entry.waist || '-'} cm</td>
-            <td class="p-3">${entry.kfa || '-'}%</td>
-            <td class="p-3">${entry.gymCount || 0} / ${entry.cutDays || 0}</td>
-            <td class="p-3 text-right">
-              <button onclick="deleteCheckin(${state.checkins.length - 1 - idx})" class="text-zinc-500 hover:text-red-400"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+          <tr>
+            <td>${entry.date}</td>
+            <td class="font-bold text-brand">${Number(entry.weight || 0).toFixed(1)} kg</td>
+            <td class="text-accent">${entry.waist || '-'} cm</td>
+            <td>${entry.kfa || '-'}%</td>
+            <td>${entry.gymCount || 0} / ${entry.cutDays || 0}</td>
+            <td style="text-align: right;">
+              <button onclick="deleteCheckin(${state.checkins.length - 1 - idx})" class="btn-ghost"><i data-lucide="trash-2" class="w-4"></i></button>
             </td>
           </tr>
         `).join('');
@@ -1394,8 +1622,7 @@ Antworte in zwei Teilen:
       const clothes = document.getElementById('checkin-clothes').value;
 
       if (isNaN(weight)) return alert("Bitte gültiges Gewicht eingeben!");
-      const newEntry = { date, weight, kfa, waist, gymCount, cutDays, motivationTraining, motivationNutrition, clothes };
-      state.checkins.push(newEntry);
+      state.checkins.push({ date, weight, kfa, waist, gymCount, cutDays, motivationTraining, motivationNutrition, clothes });
       persistData();
       renderDashboardCharts();
       renderFullWeighingChart();
@@ -1410,15 +1637,9 @@ Antworte in zwei Teilen:
     }
 
     function deleteCheckin(idx) {
-      if (confirm("Löschen?")) {
-        state.checkins.splice(idx, 1);
-        persistData();
-        renderDashboardCharts();
-        renderFullWeighingChart();
-      }
+      if (confirm("Löschen?")) { state.checkins.splice(idx, 1); persistData(); renderDashboardCharts(); renderFullWeighingChart(); }
     }
 
-    // 10. CSV PARSER
     function calculateCutDayScore(d) {
       let s = 10.0;
       if (d.kcal >= 1600 && d.kcal <= 1800) {} else if (d.kcal >= 1500 && d.kcal <= 1900) s -= 0.5; else s -= 2.0;
@@ -1431,16 +1652,12 @@ Antworte in zwei Teilen:
 
     function handleNutritionCsvUpload(event) {
       const file = event.target.files[0];
-      if (!file) return;
-      Papa.parse(file, {
-        header: true, dynamicTyping: true, skipEmptyLines: 'greedy', delimiter: "",
-        complete: function(r) { processRawNutritionRows(r.data); }
-      });
+      if (!file || typeof Papa === 'undefined') return;
+      Papa.parse(file, { header: true, dynamicTyping: true, skipEmptyLines: 'greedy', delimiter: "", complete: function(r) { processRawNutritionRows(r.data); } });
     }
 
     function processRawNutritionRows(rows) {
       const daysMap = {};
-      let totalValidFoods = 0;
       rows.forEach(row => {
         const name = (row.Lebensmittelbezeichnung || row.Lebensmittel || row.Name || '').toString().trim();
         const date = (row.Datum || row.Date || row.Tag || '').toString().trim();
@@ -1450,12 +1667,9 @@ Antworte in zwei Teilen:
         const c = parseFloat(row['Kohlenhydrate (g)'] || row.Kohlenhydrate || 0) || 0;
         const f = parseFloat(row['Fett (g)'] || row.Fett || 0) || 0;
         const b = parseFloat(row['Ballaststoffe (g)'] || row.Ballaststoffe || 0) || 0;
-        const sugar = parseFloat(row['Zucker (g)'] || row.Zucker || 0) || 0;
 
-        if (!daysMap[date]) daysMap[date] = { date, kcal: 0, p: 0, c: 0, f: 0, b: 0, sugar: 0, foods: [] };
-        daysMap[date].kcal += kcal; daysMap[date].p += p; daysMap[date].c += c; daysMap[date].f += f; daysMap[date].b += b; daysMap[date].sugar += sugar;
-        daysMap[date].foods.push({ name, kcal: Math.round(kcal), p, c, f, b, sugar });
-        totalValidFoods++;
+        if (!daysMap[date]) daysMap[date] = { date, kcal: 0, p: 0, c: 0, f: 0, b: 0 };
+        daysMap[date].kcal += kcal; daysMap[date].p += p; daysMap[date].c += c; daysMap[date].f += f; daysMap[date].b += b;
       });
       const daysArray = Object.keys(daysMap).map(k => {
         const d = daysMap[k];
@@ -1464,7 +1678,7 @@ Antworte in zwei Teilen:
         d.isCutDay = d.score >= 8.5;
         return d;
       });
-      state.parsedWeekData = { days: daysArray, totalFoods: totalValidFoods };
+      state.parsedWeekData = { days: daysArray };
       persistData();
       renderParsedNutritionUI(state.parsedWeekData);
     }
@@ -1479,15 +1693,15 @@ Antworte in zwei Teilen:
       tbody.innerHTML = data.days.map(d => {
         if (d.isCutDay) cutDaysCount++;
         return `
-          <tr class="hover:bg-surface-850">
-            <td class="p-3 font-bold text-white">${d.date}</td>
-            <td class="p-3 text-right font-bold text-brand-400">${d.kcal}</td>
-            <td class="p-3 text-right">${d.p}g</td>
-            <td class="p-3 text-right">${d.c}g</td>
-            <td class="p-3 text-right">${d.f}g</td>
-            <td class="p-3 text-right">${d.b}g</td>
-            <td class="p-3 text-center font-bold ${d.score >= 8.5 ? 'text-brand-400' : 'text-amber-400'}">${d.score.toFixed(1)}</td>
-            <td class="p-3 text-center font-bold">${d.isCutDay ? '✓ JA' : 'NEIN'}</td>
+          <tr>
+            <td class="font-bold">${d.date}</td>
+            <td style="text-align: right; font-weight: 700;" class="text-brand">${d.kcal}</td>
+            <td style="text-align: right;">${d.p}g</td>
+            <td style="text-align: right;">${d.c}g</td>
+            <td style="text-align: right;">${d.f}g</td>
+            <td style="text-align: right;">${d.b}g</td>
+            <td style="text-align: center; font-weight: 700;" class="${d.score >= 8.5 ? 'text-brand' : 'text-amber'}">${d.score.toFixed(1)}</td>
+            <td style="text-align: center; font-weight: 700;">${d.isCutDay ? '✓ JA' : 'NEIN'}</td>
           </tr>
         `;
       }).join('');
@@ -1495,17 +1709,8 @@ Antworte in zwei Teilen:
     }
 
     function loadSampleNutritionCsv() {
-      const sample = `Datum;Lebensmittelbezeichnung;Kalorien (kcal);Protein (g);Kohlenhydrate (g);Fett (g);Ballaststoffe (g);Zucker (g)
-03.11.2026;Standard-Porridge;365;37;34;8;7;6
-03.11.2026;Geräucherte Forelle & Cottage Cheese;260;43;4;6;0;4
-03.11.2026;Mandeln & Beeren Snack;185;6;10;14;5;7
-03.11.2026;Hühnerbrust mit Kartoffeln;490;52;48;7;6;3
-03.11.2026;Whey Shake & Flohsamen;185;22;9;3;5;7
-03.11.2026;TAGESSUMME;1485;160;105;38;23;27
-04.11.2026;Standard-Porridge;365;37;34;8;7;6
-04.11.2026;Thunfisch-Kidneybohnen-Salat;420;46;38;6;12;4
-04.11.2026;Rindersteak & Backkartoffel;510;54;44;12;6;5
-04.11.2026;Proteinshake & Flohsamen;185;22;9;3;5;7`;
+      if (typeof Papa === 'undefined') return;
+      const sample = `Datum;Lebensmittelbezeichnung;Kalorien (kcal);Protein (g);Kohlenhydrate (g);Fett (g);Ballaststoffe (g)\n03.11.2026;Standard-Porridge;365;37;34;8;7\n03.11.2026;Forelle & Cottage Cheese;260;43;4;6;0\n03.11.2026;Hühnerbrust & Kartoffeln;490;52;48;7;6\n03.11.2026;Whey & Flohsamen;185;22;9;3;5`;
       Papa.parse(sample, { header: true, dynamicTyping: true, skipEmptyLines: 'greedy', delimiter: ";", complete: function(r) { processRawNutritionRows(r.data); } });
     }
 
@@ -1515,7 +1720,6 @@ Antworte in zwei Teilen:
       sendQuickMessage(`Hier ist meine Ernährungs-CSV der Woche:\n\`\`\`json\n${JSON.stringify(state.parsedWeekData.days, null, 2)}\n\`\`\`\nBitte führe die Tagesanalysen (A-E) und die Wochenbilanz durch!`);
     }
 
-    // 11. CHAT & DIREKTE GEMINI API (OHNE FALLBACK-SCHLEIFE)
     const COACH_MARCUS_SYSTEM_PROMPT = `
 Du bist Coach Marcus, der persönliche Fitness- und Ernährungscoach des Nutzers.
 Konstanz statt Perfektion.
@@ -1535,17 +1739,14 @@ D. Erst am Schluss nach Bestätigung oder neuem Post-it Foto fragen!
     function renderChat() {
       const container = document.getElementById('chat-messages');
       if (!container) return;
-      container.innerHTML = state.chatHistory.map(m => `
-        <div class="flex gap-2.5 ${m.sender === 'coach' ? 'items-start' : 'items-start flex-row-reverse'}">
-          <div class="w-7 h-7 rounded-lg flex items-center justify-center shrink-0 ${m.sender === 'coach' ? 'bg-brand-500/20 text-brand-400' : 'bg-surface-border text-zinc-300'}">
-            <i data-lucide="${m.sender === 'coach' ? 'bot' : 'user'}" class="w-3.5 h-3.5"></i>
+      container.innerHTML = state.chatHistory.map(m => {
+        const htmlContent = (m.sender === 'coach' && typeof marked !== 'undefined') ? marked.parse(m.text) : m.text;
+        return `
+          <div class="msg-row ${m.sender === 'coach' ? 'coach' : 'user'}">
+            <div class="msg-bubble ${m.sender === 'coach' ? 'coach' : 'user'}">${htmlContent}</div>
           </div>
-          <div class="max-w-[85%] rounded-2xl p-3 text-xs leading-relaxed ${m.sender === 'coach' ? 'bg-surface-850 border border-surface-border text-zinc-200' : 'bg-brand-500 text-black font-medium'}">
-            ${m.sender === 'coach' ? marked.parse(m.text) : m.text}
-          </div>
-        </div>
-      `).join('');
-      if (window.lucide) { try { lucide.createIcons(); } catch(e){} }
+        `;
+      }).join('');
       scrollChatToBottom();
     }
 
@@ -1554,10 +1755,9 @@ D. Erst am Schluss nach Bestätigung oder neuem Post-it Foto fragen!
       if (c) c.scrollTop = c.scrollHeight;
     }
 
-    // Direkter, schneller Aufruf über gemini-2.5-flash ohne Denkbudget
     async function callGeminiApi(apiKey, contents) {
       try {
-        const res = await fetch(`[https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$](https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=$){apiKey}`, {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -1575,11 +1775,7 @@ D. Erst am Schluss nach Bestätigung oder neuem Post-it Foto fragen!
         if (res.ok && resData.candidates && resData.candidates[0].content) {
           return { ok: true, text: resData.candidates[0].content.parts[0].text };
         }
-
-        return { 
-          ok: false, 
-          error: resData.error ? `(${resData.error.code}) ${resData.error.message}` : "Unbekannter Serverfehler" 
-        };
+        return { ok: false, error: resData.error ? `(${resData.error.code}) ${resData.error.message}` : "Serverfehler" };
       } catch (e) {
         return { ok: false, error: e.message };
       }
@@ -1601,9 +1797,7 @@ D. Erst am Schluss nach Bestätigung oder neuem Post-it Foto fragen!
       if (!apiKey) {
         state.chatHistory = state.chatHistory.filter(m => m.id !== typingId);
         state.chatHistory.push({ sender: 'coach', text: "⚠️ Bitte hinterlege deinen **Gemini API Key** über das Schlüssel-Icon oben rechts!" });
-        persistData(); 
-        renderChat();
-        return;
+        persistData(); renderChat(); return;
       }
 
       const conversationHistory = [];
@@ -1616,9 +1810,7 @@ D. Erst am Schluss nach Bestätigung oder neuem Post-it Foto fragen!
         }
       });
 
-      if (conversationHistory.length > 0 && conversationHistory[0].role !== 'user') {
-        conversationHistory.shift();
-      }
+      if (conversationHistory.length > 0 && conversationHistory[0].role !== 'user') conversationHistory.shift();
 
       const result = await callGeminiApi(apiKey, conversationHistory);
       state.chatHistory = state.chatHistory.filter(m => m.id !== typingId);
@@ -1644,7 +1836,6 @@ D. Erst am Schluss nach Bestätigung oder neuem Post-it Foto fragen!
       closeApiKeyModal();
     }
 
-    // 12. INITIALISIERUNG
     window.addEventListener('DOMContentLoaded', () => {
       try {
         renderDashboardCharts();

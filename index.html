@@ -11,11 +11,9 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="theme-color" content="#09090b">
 
-  <!-- Chart.js, PapaParse, Lucide, Marked -->
+  <!-- Chart.js & Lucide Icons -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Kalam:wght@400;700&display=swap');
@@ -181,14 +179,6 @@
       border-color: rgba(16, 185, 129, 0.25);
     }
 
-    .sidebar-footer {
-      display: none;
-      margin-top: 1.5rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--border);
-    }
-    @media (min-width: 768px) { .sidebar-footer { display: block; } }
-
     /* Main Content */
     .main-viewport {
       flex: 1;
@@ -291,7 +281,7 @@
     .btn-ghost { background: transparent; color: var(--text-muted); padding: 0.375rem; }
     .btn-ghost:hover { color: #fff; background: var(--bg-850); }
 
-    input[type="text"], input[type="number"], input[type="date"], input[type="password"], select {
+    input[type="text"], input[type="number"], input[type="date"], select {
       width: 100%;
       background-color: var(--bg-900);
       border: 1px solid var(--border);
@@ -327,14 +317,6 @@
     th { background-color: rgba(9, 9, 11, 0.6); color: var(--text-muted); padding: 0.75rem; border-bottom: 1px solid var(--border); font-weight: 600; }
     td { padding: 0.75rem; border-bottom: 1px solid var(--border); color: var(--text-main); }
     tr:hover td { background-color: rgba(255, 255, 255, 0.02); }
-
-    /* Markdown Output in CSV */
-    .md-output { font-size: 0.8rem; line-height: 1.6; color: var(--text-main); user-select: text; }
-    .md-output h1, .md-output h2, .md-output h3, .md-output h4 { color: var(--brand-400); margin-top: 1rem; margin-bottom: 0.5rem; font-size: 0.9rem; }
-    .md-output p { margin-bottom: 0.625rem; }
-    .md-output ul, .md-output ol { margin-left: 1.25rem; margin-bottom: 0.625rem; }
-    .md-output li { margin-bottom: 0.25rem; }
-    .md-output strong { color: #fff; }
 
     /* Mobile Bottom Bar */
     .mobile-nav {
@@ -459,9 +441,6 @@
             <div class="brand-sub font-mono" id="sidebar-mission-text">110.1 kg → 85.0 kg</div>
           </div>
         </div>
-        <button onclick="openApiKeyModal()" class="btn-ghost" title="Gemini API Key (für Foto & CSV)">
-          <i data-lucide="key" class="w-5"></i>
-        </button>
       </div>
 
       <nav class="desktop-nav" id="nav-container">
@@ -485,18 +464,7 @@
           <i data-lucide="check-circle-2" class="w-4 text-brand"></i>
           <span>Habit Tracker</span>
         </button>
-        <button onclick="switchTab('nutrition')" class="nav-btn" data-tab="nutrition">
-          <i data-lucide="file-spreadsheet" class="w-4"></i>
-          <span>Ernährungs-CSV</span>
-        </button>
       </nav>
-    </div>
-
-    <div class="sidebar-footer">
-      <button onclick="openApiKeyModal()" class="nav-btn" style="font-size: 11px;">
-        <i data-lucide="key" class="w-4 text-brand"></i>
-        <span>Gemini API Key</span>
-      </button>
     </div>
   </aside>
 
@@ -638,28 +606,22 @@
               <ul class="font-handwriting font-bold space-y" style="font-size: 1rem; list-style: none;" id="postit-goals-list"></ul>
               <div style="margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid rgba(0,0,0,0.12); display: flex; align-items: center; justify-content: space-between;">
                 <button onclick="openEditGoalsModal()" style="background: rgba(0,0,0,0.12); border: none; color: #18181b; font-weight: 700; font-size: 11px; padding: 4px 10px; border-radius: 6px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
-                  <i data-lucide="edit-3" style="width: 12px; height: 12px;"></i> Manuell ändern
+                  <i data-lucide="edit-3" style="width: 12px; height: 12px;"></i> Ziele bearbeiten
                 </button>
                 <span style="font-size: 11px; font-style: italic;" class="font-mono">Jeden Samstag neu!</span>
               </div>
             </div>
 
-            <!-- Direktes Foto-Auslesen mit automatischer Bildkomprimierung -->
-            <div class="card space-y" style="border-color: rgba(251, 191, 36, 0.3);">
+            <div class="card space-y">
               <div class="flex-center">
-                <i data-lucide="camera" class="w-4 text-amber"></i>
-                <h4 class="text-xs font-bold">Neues Post-it abfotografieren</h4>
+                <i data-lucide="clipboard-check" class="w-4 text-amber"></i>
+                <h4 class="text-xs font-bold">Ablauf für Gemini-Chat</h4>
               </div>
-              <p style="font-size: 11px; color: var(--text-muted); line-height: 1.4;">
-                Das Foto wird automatisch auf ~150 KB komprimiert, in wenigen Sekunden ausgelesen und direkt in dein Spiegel-Post-it übernommen.
+              <p style="font-size: 11px; color: var(--text-muted); line-height: 1.5;">
+                1. Werte rechts ausfüllen.<br>
+                2. Auf <strong>„Speichern & für Gemini-Chat teilen“</strong> tippen – die Auswertung wird lokal gespeichert und in deine Zwischenablage kopiert.<br>
+                3. In deinen <strong>Post-it Check Chat</strong> in der Gemini-App einfügen.
               </p>
-              <label class="btn btn-amber" style="width: 100%;">
-                <i data-lucide="upload" class="w-4"></i> Post-it Foto hochladen
-                <input type="file" id="postit-photo-input" accept="image/*" capture="environment" class="hidden" onchange="handlePostitPhotoDirect(event)">
-              </label>
-              <div id="postit-ocr-status" class="hidden text-xs text-amber font-mono" style="text-align: center;">
-                Komprimiere Bild...
-              </div>
             </div>
           </div>
 
@@ -853,70 +815,7 @@
         </div>
       </section>
 
-      <!-- ================= 5. ERNÄHRUNG & CSV TAB ================= -->
-      <section id="view-nutrition" class="space-y-lg hidden">
-        <div class="card" style="border-style: dashed; text-align: center; padding: 2rem 1rem;">
-          <i data-lucide="file-spreadsheet" class="text-brand" style="width: 2.5rem; height: 2.5rem; margin: 0 auto 0.75rem auto;"></i>
-          <h3 class="text-sm font-bold">Ernährungs-CSV importieren</h3>
-          <p class="text-xs text-muted" style="max-width: 26rem; margin: 0.375rem auto 1.25rem auto;">
-            Lade deine wöchentliche CSV-Datei hoch. TAGESSUMME-Zeilen werden automatisch ignoriert.
-          </p>
-          <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem;">
-            <label class="btn btn-primary">
-              <i data-lucide="upload" class="w-4"></i> Ernährungs-CSV auswählen
-              <input type="file" id="csv-file-input" accept=".csv, .txt" class="hidden" onchange="handleNutritionCsvUpload(event)">
-            </label>
-            <button onclick="loadSampleNutritionCsv()" class="btn btn-secondary">
-              Musterwoche laden
-            </button>
-          </div>
-        </div>
-
-        <div id="nutrition-results-container" class="space-y-lg hidden">
-          <div class="card flex-between" style="flex-wrap: wrap; gap: 1rem;">
-            <div>
-              <h4 class="text-sm font-bold">Berechnete Tagesübersicht</h4>
-              <p class="text-xs text-muted" id="nutrition-summary-text"></p>
-            </div>
-            <button onclick="runDirectCsvAnalysis()" class="btn btn-primary" id="btn-csv-analyze">
-              <i data-lucide="sparkles" class="w-4"></i> Ausführliche CSV-Analyse starten
-            </button>
-          </div>
-
-          <!-- Direktes Ergebnis der CSV-Analyse -->
-          <div id="csv-ai-analysis-box" class="card space-y hidden" style="border-color: rgba(16, 185, 129, 0.4);">
-            <div class="flex-between" style="border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">
-              <span class="text-xs font-bold text-brand flex-center">
-                <i data-lucide="sparkles" class="w-4"></i> Auswertung deiner Ernährungswoche
-              </span>
-              <button onclick="document.getElementById('csv-ai-analysis-box').classList.add('hidden')" class="btn-ghost"><i data-lucide="x" class="w-4"></i></button>
-            </div>
-            <div id="csv-ai-analysis-content" class="md-output"></div>
-          </div>
-
-          <div class="card" style="padding: 0; overflow: hidden;">
-            <div class="table-wrap">
-              <table class="font-mono">
-                <thead>
-                  <tr>
-                    <th>Datum</th>
-                    <th style="text-align: right;">Kalorien</th>
-                    <th style="text-align: right;">Protein</th>
-                    <th style="text-align: right;">Carbs</th>
-                    <th style="text-align: right;">Fett</th>
-                    <th style="text-align: right;">Ballastst.</th>
-                    <th style="text-align: center;">Score</th>
-                    <th style="text-align: center;">Cut-Tag?</th>
-                  </tr>
-                </thead>
-                <tbody id="nutrition-days-tbody"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ================= 6. WORKOUT LOGGER ================= -->
+      <!-- ================= 5. WORKOUT LOGGER ================= -->
       <section id="view-workout" class="space-y-lg hidden">
         <div class="card flex-between" style="flex-wrap: wrap; gap: 1rem;">
           <div>
@@ -968,10 +867,6 @@
       <i data-lucide="check-circle-2" class="w-4 text-brand"></i>
       <span>Habits</span>
     </button>
-    <button onclick="switchTab('nutrition')" class="mob-btn" data-mob="nutrition">
-      <i data-lucide="file-spreadsheet" class="w-4"></i>
-      <span>CSV</span>
-    </button>
   </nav>
 
   <!-- MODALS -->
@@ -995,7 +890,7 @@
     </div>
   </div>
 
-  <!-- MODAL: SPIEGEL-POST-IT ZIELE MANUELL BEARBEITEN -->
+  <!-- MODAL: SPIEGEL-POST-IT ZIELE BEARBEITEN -->
   <div id="modal-edit-goals" class="modal-backdrop hidden">
     <div class="modal-panel">
       <div class="flex-between" style="border-bottom: 1px solid var(--border); padding-bottom: 0.625rem;">
@@ -1005,7 +900,7 @@
         </h3>
         <button onclick="closeEditGoalsModal()" class="btn-ghost"><i data-lucide="x" class="w-4"></i></button>
       </div>
-      <p style="font-size: 11px;" class="text-muted">Passe deine 5 Wochenziele manuell an oder nutze den Foto-Upload.</p>
+      <p style="font-size: 11px;" class="text-muted">Passe deine 5 Wochenziele an. Spiegel-Post-it und Wochenabfrage aktualisieren sich sofort.</p>
       <div id="edit-goals-list" class="space-y"></div>
       <div style="display: flex; justify-content: flex-end; gap: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border);">
         <button onclick="closeEditGoalsModal()" class="btn btn-ghost">Abbrechen</button>
@@ -1028,19 +923,6 @@
       <div style="display: flex; justify-content: flex-end; gap: 0.5rem; padding-top: 0.5rem; border-top: 1px solid var(--border);">
         <button onclick="closeHabitModal()" class="btn btn-ghost">Abbrechen</button>
         <button onclick="saveCustomHabit()" class="btn btn-primary">Speichern</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: API KEY (NUR FÜR FOTO-OCR & CSV-ANALYSE) -->
-  <div id="modal-api-key" class="modal-backdrop hidden">
-    <div class="modal-panel">
-      <h3 class="text-sm font-bold">Gemini API Key hinterlegen</h3>
-      <p style="font-size: 11px;" class="text-muted">Wird ausschließlich lokal im Browser für das Post-it-Foto und die ausführliche CSV-Analyse genutzt.</p>
-      <input type="password" id="input-api-key" placeholder="AIza..." class="font-mono">
-      <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
-        <button onclick="closeApiKeyModal()" class="btn btn-ghost">Abbrechen</button>
-        <button onclick="saveApiKey()" class="btn btn-primary">Speichern</button>
       </div>
     </div>
   </div>
@@ -1084,86 +966,10 @@
       }
     }
 
-    // AUTOMATISCHE BILDKOMPRIMIERUNG AUF MAX. 1000 PX & JPEG (80%)
-    function compressImageToJpeg(file, maxDimension = 1000, quality = 0.8) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-          const img = new Image();
-          img.onload = function() {
-            let width = img.width;
-            let height = img.height;
-
-            if (width > maxDimension || height > maxDimension) {
-              if (width > height) {
-                height = Math.round((height * maxDimension) / width);
-                width = maxDimension;
-              } else {
-                width = Math.round((width * maxDimension) / height);
-                height = maxDimension;
-              }
-            }
-
-            const canvas = document.createElement('canvas');
-            canvas.width = width;
-            canvas.height = height;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0, width, height);
-
-            const dataUrl = canvas.toDataURL('image/jpeg', quality);
-            const base64Data = dataUrl.split(',')[1];
-            const sizeKb = Math.round((base64Data.length * 3) / 4 / 1024);
-            resolve({ base64: base64Data, mimeType: 'image/jpeg', sizeKb });
-          };
-          img.onerror = () => reject(new Error("Bild konnte nicht geladen werden."));
-          img.src = event.target.result;
-        };
-        reader.onerror = () => reject(new Error("Datei konnte nicht gelesen werden."));
-        reader.readAsDataURL(file);
-      });
-    }
-
-    // HINTERGRUND-API AUFRUF (SCHNELL, OHNE DENKBUDGET)
-    async function callGeminiBackground(parts) {
-      const apiKey = (localStorage.getItem('apex_gemini_api_key') || '').trim();
-      if (!apiKey) {
-        openApiKeyModal();
-        return { ok: false, error: "Bitte hinterlege zuerst deinen Gemini API Key über das Schlüssel-Icon." };
-      }
-
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000);
-      try {
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent?key=${apiKey}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          signal: controller.signal,
-          body: JSON.stringify({
-            contents: [{ role: "user", parts: parts }],
-            generationConfig: {
-              temperature: 0.25,
-              maxOutputTokens: 2000,
-              thinkingConfig: { thinkingBudget: 0 }
-            }
-          })
-        });
-        clearTimeout(timeoutId);
-
-        const resData = await res.json();
-        if (res.ok && resData.candidates && resData.candidates[0].content) {
-          return { ok: true, text: resData.candidates[0].content.parts[0].text };
-        }
-        return { ok: false, error: resData.error ? `(${resData.error.code}) ${resData.error.message}` : "Serverfehler" };
-      } catch (e) {
-        clearTimeout(timeoutId);
-        return { ok: false, error: e.name === 'AbortError' ? "Zeitüberschreitung (30s) – bitte erneut versuchen." : e.message };
-      }
-    }
-
     // TAB NAVIGATION
     window.switchTab = function(tabId) {
       try {
-        const views = ['dashboard', 'postit', 'checkin', 'workout', 'habits', 'nutrition'];
+        const views = ['dashboard', 'postit', 'checkin', 'workout', 'habits'];
         views.forEach(v => {
           const el = document.getElementById('view-' + v);
           if (el) el.classList.add('hidden');
@@ -1185,8 +991,7 @@
           postit: "Wöchentlicher Post-it-Zielcheck",
           checkin: "Fitness-Check-in & Körperdaten",
           workout: "Trainingsplan & Technogym Logger",
-          habits: "Habit Tracker",
-          nutrition: "Ernährungs-CSV Analyse"
+          habits: "Habit Tracker"
         };
         const titleEl = document.getElementById('page-title');
         if (titleEl) titleEl.innerText = titles[tabId] || "Dashboard";
@@ -1196,7 +1001,6 @@
         if (tabId === 'checkin') renderFullWeighingChart();
         if (tabId === 'workout') renderWorkoutExercises();
         if (tabId === 'habits') renderHabitsTable();
-        if (tabId === 'nutrition' && state.parsedWeekData) renderParsedNutritionUI(state.parsedWeekData);
         
         if (window.lucide) {
           try { lucide.createIcons(); } catch(e){}
@@ -1271,27 +1075,25 @@
     ];
 
     let state = {
-      habits: JSON.parse(localStorage.getItem('fc_habits_v20') || 'null') || DEFAULT_HABITS,
-      checkins: JSON.parse(localStorage.getItem('fc_checkins_v20') || 'null') || DEFAULT_CHECKINS,
-      activeGoals: JSON.parse(localStorage.getItem('fc_goals_v20') || 'null') || DEFAULT_ACTIVE_GOALS,
-      postitHistory: JSON.parse(localStorage.getItem('fc_postit_v20') || 'null') || DEFAULT_POSTIT_HISTORY,
-      postitDraft: JSON.parse(localStorage.getItem('fc_postit_draft_v20') || '{"values": {}, "notes": ""}'),
-      avgSteps: parseFloat(localStorage.getItem('fc_avg_steps_v20') || '0'),
+      habits: JSON.parse(localStorage.getItem('fc_habits_v22') || 'null') || DEFAULT_HABITS,
+      checkins: JSON.parse(localStorage.getItem('fc_checkins_v22') || 'null') || DEFAULT_CHECKINS,
+      activeGoals: JSON.parse(localStorage.getItem('fc_goals_v22') || 'null') || DEFAULT_ACTIVE_GOALS,
+      postitHistory: JSON.parse(localStorage.getItem('fc_postit_v22') || 'null') || DEFAULT_POSTIT_HISTORY,
+      postitDraft: JSON.parse(localStorage.getItem('fc_postit_draft_v22') || '{"values": {}, "notes": ""}'),
+      avgSteps: parseFloat(localStorage.getItem('fc_avg_steps_v22') || '0'),
       currentWorkoutKey: "kraftA",
-      workoutLogs: JSON.parse(localStorage.getItem('fc_workout_logs_v20') || '{}'),
-      parsedWeekData: JSON.parse(localStorage.getItem('fc_parsed_week_v20') || 'null')
+      workoutLogs: JSON.parse(localStorage.getItem('fc_workout_logs_v22') || '{}')
     };
 
     function persistData() {
       try {
-        localStorage.setItem('fc_habits_v20', JSON.stringify(state.habits));
-        localStorage.setItem('fc_checkins_v20', JSON.stringify(state.checkins));
-        localStorage.setItem('fc_goals_v20', JSON.stringify(state.activeGoals));
-        localStorage.setItem('fc_postit_v20', JSON.stringify(state.postitHistory));
-        localStorage.setItem('fc_postit_draft_v20', JSON.stringify(state.postitDraft));
-        localStorage.setItem('fc_workout_logs_v20', JSON.stringify(state.workoutLogs));
-        localStorage.setItem('fc_parsed_week_v20', JSON.stringify(state.parsedWeekData));
-        localStorage.setItem('fc_avg_steps_v20', state.avgSteps.toString());
+        localStorage.setItem('fc_habits_v22', JSON.stringify(state.habits));
+        localStorage.setItem('fc_checkins_v22', JSON.stringify(state.checkins));
+        localStorage.setItem('fc_goals_v22', JSON.stringify(state.activeGoals));
+        localStorage.setItem('fc_postit_v22', JSON.stringify(state.postitHistory));
+        localStorage.setItem('fc_postit_draft_v22', JSON.stringify(state.postitDraft));
+        localStorage.setItem('fc_workout_logs_v22', JSON.stringify(state.workoutLogs));
+        localStorage.setItem('fc_avg_steps_v22', state.avgSteps.toString());
       } catch (e) {}
     }
 
@@ -1483,7 +1285,7 @@
 
     function deleteHabit(idx) { if (confirm("Löschen?")) { state.habits.splice(idx, 1); persistData(); renderHabitsTable(); } }
 
-    // POST-IT ZIELE, KOMPRIMIERTER FOTO-UPLOAD & BEARBEITUNG
+    // POST-IT ZIELE & BEARBEITUNG
     function renderPostitWidget() {
       const listEl = document.getElementById('postit-goals-list');
       const dashListEl = document.getElementById('dash-postit-list');
@@ -1497,68 +1299,6 @@
             <span style="font-size: 10px;" class="font-mono text-muted">Aktiv</span>
           </li>
         `).join('');
-      }
-    }
-
-    async function handlePostitPhotoDirect(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const statusEl = document.getElementById('postit-ocr-status');
-      if (statusEl) {
-        statusEl.innerText = "Komprimiere Bild...";
-        statusEl.classList.remove('hidden');
-      }
-
-      try {
-        const compressed = await compressImageToJpeg(file, 1000, 0.8);
-        if (statusEl) {
-          statusEl.innerText = `Lese handschriftliche Ziele aus (${compressed.sizeKb} KB)...`;
-        }
-
-        const promptText = `Lies dieses Foto eines handschriftlichen Post-its vom Badezimmerspiegel aus.
-Extrahiere die 5 Ziele für die kommende Woche und gib AUSSCHLIESSLICH ein reines JSON-Array ohne weiteren Text zurück:
-[
-  {"id": 1, "label": "Ziel 1", "type": "numeric oder days oder gym", "targetVal": 7000},
-  {"id": 2, "label": "Ziel 2", "type": "days", "targetVal": 7},
-  {"id": 3, "label": "Ziel 3", "type": "days", "targetVal": 7},
-  {"id": 4, "label": "Ziel 4", "type": "gym", "targetVal": 2},
-  {"id": 5, "label": "Ziel 5", "type": "days", "targetVal": 7}
-]
-Regeln für type: "numeric" bei konkreten Zahlenzielen wie Schritten (targetVal = Zielzahl), "gym" bei Fitnessstudio-Einheiten (targetVal = 2), sonst "days" (targetVal = 7).`;
-
-        const res = await callGeminiBackground([
-          { text: promptText },
-          { inlineData: { mimeType: compressed.mimeType, data: compressed.base64 } }
-        ]);
-
-        if (statusEl) statusEl.classList.add('hidden');
-        event.target.value = '';
-
-        if (res.ok && res.text) {
-          try {
-            const cleanJson = res.text.replace(/```json/g, '').replace(/```/g, '').trim();
-            const parsedGoals = JSON.parse(cleanJson);
-            if (Array.isArray(parsedGoals) && parsedGoals.length > 0) {
-              state.activeGoals = parsedGoals;
-              state.postitDraft = { values: {}, notes: '' };
-              persistData();
-              renderPostitWidget();
-              renderPostitForm();
-              showToast(`✓ Ziele übernommen (${compressed.sizeKb} KB)!`);
-            } else {
-              alert("Die Ziele konnten nicht eindeutig erkannt werden. Bitte nutze 'Manuell ändern'.");
-            }
-          } catch (e) {
-            alert("Fehler beim Auslesen des Bildes. Bitte nutze 'Manuell ändern'.");
-          }
-        } else {
-          alert("Fehler: " + (res.error || "Bild konnte nicht verarbeitet werden."));
-        }
-      } catch (compErr) {
-        if (statusEl) statusEl.classList.add('hidden');
-        event.target.value = '';
-        alert("Bildfehler: " + compErr.message);
       }
     }
 
@@ -1835,125 +1575,6 @@ ${shareLines.join('\n')}
 
     function deleteCheckin(idx) {
       if (confirm("Löschen?")) { state.checkins.splice(idx, 1); persistData(); renderDashboardCharts(); renderFullWeighingChart(); }
-    }
-
-    // ERNÄHRUNGS-CSV & DIREKTE AUSWERTUNG IN DER APP
-    function calculateCutDayScore(d) {
-      let s = 10.0;
-      if (d.kcal >= 1600 && d.kcal <= 1800) {} else if (d.kcal >= 1500 && d.kcal <= 1900) s -= 0.5; else s -= 2.0;
-      if (d.p >= 140) {} else if (d.p >= 125) s -= 0.5; else s -= 2.0;
-      if (d.c >= 135 && d.c <= 155) {} else if (d.c <= 175) s -= 0.5; else s -= 1.5;
-      if (d.f >= 40 && d.f <= 60) {} else if (d.f <= 70) s -= 0.5; else s -= 1.5;
-      if (d.b >= 25) {} else if (d.b >= 22) s -= 0.5; else s -= 1.5;
-      return Math.max(0, Math.min(10, Math.round(s * 10) / 10));
-    }
-
-    function handleNutritionCsvUpload(event) {
-      const file = event.target.files[0];
-      if (!file || typeof Papa === 'undefined') return;
-      Papa.parse(file, { header: true, dynamicTyping: true, skipEmptyLines: 'greedy', delimiter: "", complete: function(r) { processRawNutritionRows(r.data); } });
-    }
-
-    function processRawNutritionRows(rows) {
-      const daysMap = {};
-      rows.forEach(row => {
-        const name = (row.Lebensmittelbezeichnung || row.Lebensmittel || row.Name || '').toString().trim();
-        const date = (row.Datum || row.Date || row.Tag || '').toString().trim();
-        if (!name || !date || name.toUpperCase().includes('TAGESSUMME')) return;
-        const kcal = parseFloat(row['Kalorien (kcal)'] || row.Kalorien || row.kcal || 0) || 0;
-        const p = parseFloat(row['Protein (g)'] || row.Protein || 0) || 0;
-        const c = parseFloat(row['Kohlenhydrate (g)'] || row.Kohlenhydrate || 0) || 0;
-        const f = parseFloat(row['Fett (g)'] || row.Fett || 0) || 0;
-        const b = parseFloat(row['Ballaststoffe (g)'] || row.Ballaststoffe || 0) || 0;
-
-        if (!daysMap[date]) daysMap[date] = { date, kcal: 0, p: 0, c: 0, f: 0, b: 0 };
-        daysMap[date].kcal += kcal; daysMap[date].p += p; daysMap[date].c += c; daysMap[date].f += f; daysMap[date].b += b;
-      });
-      const daysArray = Object.keys(daysMap).map(k => {
-        const d = daysMap[k];
-        d.kcal = Math.round(d.kcal); d.p = Math.round(d.p * 10) / 10; d.c = Math.round(d.c * 10) / 10; d.f = Math.round(d.f * 10) / 10; d.b = Math.round(d.b * 10) / 10;
-        d.score = calculateCutDayScore(d);
-        d.isCutDay = d.score >= 8.5;
-        return d;
-      });
-      state.parsedWeekData = { days: daysArray };
-      persistData();
-      renderParsedNutritionUI(state.parsedWeekData);
-    }
-
-    function renderParsedNutritionUI(data) {
-      const container = document.getElementById('nutrition-results-container');
-      const tbody = document.getElementById('nutrition-days-tbody');
-      const summaryText = document.getElementById('nutrition-summary-text');
-      if (!container || !tbody) return;
-      container.classList.remove('hidden');
-      let cutDaysCount = 0;
-      tbody.innerHTML = data.days.map(d => {
-        if (d.isCutDay) cutDaysCount++;
-        return `
-          <tr>
-            <td class="font-bold">${d.date}</td>
-            <td style="text-align: right; font-weight: 700;" class="text-brand">${d.kcal}</td>
-            <td style="text-align: right;">${d.p}g</td>
-            <td style="text-align: right;">${d.c}g</td>
-            <td style="text-align: right;">${d.f}g</td>
-            <td style="text-align: right;">${d.b}g</td>
-            <td style="text-align: center; font-weight: 700;" class="${d.score >= 8.5 ? 'text-brand' : 'text-amber'}">${d.score.toFixed(1)}</td>
-            <td style="text-align: center; font-weight: 700;">${d.isCutDay ? '✓ JA' : 'NEIN'}</td>
-          </tr>
-        `;
-      }).join('');
-      summaryText.innerText = `${cutDaysCount} von ${data.days.length} Cut-Tagen erfolgreich (Ziel: 6–7 Cut-Tage, Score ≥ 8,5)`;
-    }
-
-    function loadSampleNutritionCsv() {
-      if (typeof Papa === 'undefined') return;
-      const sample = `Datum;Lebensmittelbezeichnung;Kalorien (kcal);Protein (g);Kohlenhydrate (g);Fett (g);Ballaststoffe (g)\n03.11.2026;Standard-Porridge;365;37;34;8;7\n03.11.2026;Forelle & Cottage Cheese;260;43;4;6;0\n03.11.2026;Hühnerbrust & Kartoffeln;490;52;48;7;6\n03.11.2026;Whey & Flohsamen;185;22;9;3;5`;
-      Papa.parse(sample, { header: true, dynamicTyping: true, skipEmptyLines: 'greedy', delimiter: ";", complete: function(r) { processRawNutritionRows(r.data); } });
-    }
-
-    async function runDirectCsvAnalysis() {
-      if (!state.parsedWeekData || !state.parsedWeekData.days) return alert("Erst CSV laden!");
-      const btn = document.getElementById('btn-csv-analyze');
-      const box = document.getElementById('csv-ai-analysis-box');
-      const content = document.getElementById('csv-ai-analysis-content');
-
-      if (btn) btn.disabled = true;
-      box.classList.remove('hidden');
-      content.innerHTML = `<p class="text-brand font-mono">Analysiere Tageswerte und Wochenbilanz...</p>`;
-
-      const promptText = `Analysiere diese Ernährungswoche kurz, strukturiert und praxisnah (Zielwerte Cut-Tag: ~1.700 kcal, 150-170g Protein, 150-180g Carbs, 40-55g Fett, >=30g Ballaststoffe; Wochenziel: 6–7 Cut-Tage + maximal 1 optionaler Genusstag à 2.000 kcal).
-Daten:
-${JSON.stringify(state.parsedWeekData.days, null, 2)}
-
-Gliedere die Antwort in:
-1. Kurze Tagesbewertung (Stärken & Ausreißer)
-2. Wochenbilanz (Cut-Tage-Quote vs. Soll 6–7 Tage, Protein- und Ballaststoffschnitt)
-3. 2 konkrete Hebel für nächste Woche.`;
-
-      const res = await callGeminiBackground([{ text: promptText }]);
-      if (btn) btn.disabled = false;
-
-      if (res.ok && res.text) {
-        content.innerHTML = typeof marked !== 'undefined' ? marked.parse(res.text) : res.text;
-      } else {
-        content.innerHTML = `<p style="color: #f87171;">❌ Fehler: ${res.error}</p>`;
-      }
-      if (window.lucide) { try { lucide.createIcons(); } catch(e){} }
-    }
-
-    // API KEY MODAL
-    function openApiKeyModal() { document.getElementById('input-api-key').value = localStorage.getItem('apex_gemini_api_key') || ''; document.getElementById('modal-api-key').classList.remove('hidden'); }
-    function closeApiKeyModal() { document.getElementById('modal-api-key').classList.add('hidden'); }
-    function saveApiKey() {
-      const k = document.getElementById('input-api-key').value.trim();
-      if (k) {
-        localStorage.setItem('apex_gemini_api_key', k);
-        showToast("✓ Gemini API Key gespeichert!");
-      } else {
-        localStorage.removeItem('apex_gemini_api_key');
-      }
-      closeApiKeyModal();
     }
 
     // INITIALISIERUNG
